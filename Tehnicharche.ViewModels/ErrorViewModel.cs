@@ -1,4 +1,4 @@
-namespace Tehnicharche.Models
+namespace Tehnicharche.ViewModels
 {
     public class ErrorViewModel
     {
