@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tehnicharche.Data.Models", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tehnicharche.ViewModels", "Tehnicharche.ViewModels\Tehnicharche.ViewModels.csproj", "{9DC5455D-4297-410C-9CFA-EEE709E198F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tehnicharche.Services.Core", "Tehnicharche.Services.Core\Tehnicharche.Services.Core.csproj", "{457FDD6A-B547-4A3C-9625-F49E4E2758D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{9DC5455D-4297-410C-9CFA-EEE709E198F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DC5455D-4297-410C-9CFA-EEE709E198F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DC5455D-4297-410C-9CFA-EEE709E198F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{457FDD6A-B547-4A3C-9625-F49E4E2758D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{457FDD6A-B547-4A3C-9625-F49E4E2758D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{457FDD6A-B547-4A3C-9625-F49E4E2758D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{457FDD6A-B547-4A3C-9625-F49E4E2758D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +60,7 @@ Global
 		{B2E0AFAD-CCBC-4FAC-BED9-3C75AC1B0D2E} = {C19605D1-7EFD-4B28-8093-94C483EE09C3}
 		{242A3D0A-D661-489F-884A-B8F7485578AC} = {C19605D1-7EFD-4B28-8093-94C483EE09C3}
 		{9DC5455D-4297-410C-9CFA-EEE709E198F0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{457FDD6A-B547-4A3C-9625-F49E4E2758D0} = {25D7E815-4015-4188-B7D4-F649553DFD16}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BFC2D89-BBB2-4905-838D-159E4EECA59C}

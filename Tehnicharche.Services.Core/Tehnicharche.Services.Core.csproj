@@ -6,4 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tehnicharche.Data.Models\Tehnicharche.Data.Models.csproj" />
+    <ProjectReference Include="..\Tehnicharche.Data\Tehnicharche.Data.csproj" />
+    <ProjectReference Include="..\Tehnicharche.GCommon\Tehnicharche.GCommon.csproj" />
+    <ProjectReference Include="..\Tehnicharche.ViewModels\Tehnicharche.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>

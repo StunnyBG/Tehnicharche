@@ -15,4 +15,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.23" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Tehnicharche.Data.Models\Tehnicharche.Data.Models.csproj" />
+    <ProjectReference Include="..\Tehnicharche.Data\Tehnicharche.Data.csproj" />
+    <ProjectReference Include="..\Tehnicharche.GCommon\Tehnicharche.GCommon.csproj" />
+    <ProjectReference Include="..\Tehnicharche.Services.Core\Tehnicharche.Services.Core.csproj" />
+    <ProjectReference Include="..\Tehnicharche.ViewModels\Tehnicharche.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>
