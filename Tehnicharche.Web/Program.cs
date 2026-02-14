@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Tehnicharche.Data;
 using Tehnicharche.Data.Models;
+using Tehnicharche.Services.Core;
+using Tehnicharche.Services.Core.Interfaces;
 
 namespace Tehnicharche.Web
 {
@@ -18,6 +20,8 @@ namespace Tehnicharche.Web
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<TehnicharcheDbContext>();
+
+            builder.Services.AddScoped<IListingService, ListingService>();
 
             builder.Services.AddControllersWithViews();
 

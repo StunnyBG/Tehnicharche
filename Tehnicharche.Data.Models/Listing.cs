@@ -18,18 +18,19 @@ namespace Tehnicharche.Data.Models
         public string? Description { get; set; }
 
         [Column(TypeName = PriceColumnType)]
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
 
         [Required]
         public int CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
         public virtual Category Category { get; set; } = null!;
-        
-        public int? RegionId { get; set; }
+
+        [Required]
+        public int RegionId { get; set; }
 
         [ForeignKey(nameof(RegionId))]
-        public virtual Region? Region { get; set; }
+        public virtual Region Region { get; set; } = null!;
 
         public int? CityId { get; set; }
 

@@ -25,11 +25,12 @@ namespace Tehnicharche.GCommon
             public const int TitleMaxLength = 200;
 
             // Description
-            public const int DescriptionMinLength = 10;
             public const int DescriptionMaxLength = 2000;
 
             // Price
             public const string PriceColumnType = "decimal(9,2)";
+            public const decimal PriceMinValue = 0.01m;
+            public const decimal PriceMaxValue = 9999999.99m;
 
             // Image URL
             public const int ImageUrlMaxLength = 2048;
