@@ -1,0 +1,39 @@
+﻿@model Tehnicharche.ViewModels.ListingDetailsViewModel
+@{
+    ViewData["Title"] = Model?.Title ?? "Listing Details";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-3">
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <img src="@Model.ImageUrl" class="card-img-top" alt="@Model.Title" style="height:380px; object-fit:cover;" />
+            }
+            <div class="card-body">
+                <h2 class="card-title text-brand">@Model.Title</h2>
+                <p class="lead">@Model.Price</p>
+                <p>@Model.Description</p>
+            </div>
+        </div>
+
+        <div class="card card-border-brand mb-3">
+            <div class="card-body">
+                <p><strong>Category:</strong> @Model.CategoryName</p>
+                <p><strong>Region:</strong> @Model.RegionName</p>
+                <p><strong>City:</strong> @Model.CityName</p>
+                <p class="mb-0"><strong>Created by:</strong> @Model.CreatorName</p>
+                <p><small class="text-muted">Created: @Model.CreatedAt • Updated: @Model.UpdatedAt</small></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="d-grid gap-2">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-brand">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">Delete</a>
+            <a asp-action="Index" class="btn btn-outline-secondary">Back to Listings</a>
+        </div>
+    </div>
+</div>
