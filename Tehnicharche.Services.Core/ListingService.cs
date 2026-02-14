@@ -309,7 +309,6 @@ namespace Tehnicharche.Services.Core
                 .ToListAsync();
         }
 
-
         public async Task<IEnumerable<RegionViewModel>> GetAllRegionsAsync()
         {
             return await context.Regions
