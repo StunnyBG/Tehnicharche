@@ -8,7 +8,17 @@ namespace Tehnicharche.GCommon
             public const int NameMaxLength = 100;
         }
 
-        public static class Post
+        public static class City
+        {
+            public const int NameMaxLength = 50;
+        }
+
+        public static class Region
+        {
+            public const int NameMaxLength = 50;
+        }
+
+        public static class Listing
         {
             // Title
             public const int TitleMinLength = 5;
@@ -16,10 +26,13 @@ namespace Tehnicharche.GCommon
 
             // Description
             public const int DescriptionMinLength = 10;
-            public const int DescriptionMaxLength = 1000;
+            public const int DescriptionMaxLength = 2000;
+
+            // Price
+            public const string PriceColumnType = "decimal(9,2)";
 
             // Image URL
-            public const int ImageUrlMaxLength = 500;
+            public const int ImageUrlMaxLength = 2048;
 
         }
     }

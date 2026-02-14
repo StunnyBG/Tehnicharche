@@ -5,6 +5,6 @@ namespace Tehnicharche.Data.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        public virtual ICollection<Post> Posts { get; set; } = new HashSet<Post>();
+        public virtual ICollection<Listing> Listings { get; set; } = new HashSet<Listing>();
     }
 }

@@ -12,8 +12,8 @@ using Tehnicharche.Data;
 namespace Tehnicharche.Data.Migrations
 {
     [DbContext(typeof(TehnicharcheDbContext))]
-    [Migration("20260213144459_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20260214121402_InitialDbDesign")]
+    partial class InitialDbDesign
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -245,7 +245,7 @@ namespace Tehnicharche.Data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Tehnicharche.Data.Models.Post", b =>
+            modelBuilder.Entity("Tehnicharche.Data.Models.City", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -253,28 +253,57 @@ namespace Tehnicharche.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AuthorId")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("RegionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RegionId");
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("Tehnicharche.Data.Models.Listing", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CityId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Description")
-                        .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)");
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
 
                     b.Property<string>("ImageUrl")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Region")
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(9,2)");
+
+                    b.Property<int?>("RegionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -287,11 +316,33 @@ namespace Tehnicharche.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Posts");
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("RegionId");
+
+                    b.ToTable("Listings");
+                });
+
+            modelBuilder.Entity("Tehnicharche.Data.Models.Region", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Regions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -345,33 +396,68 @@ namespace Tehnicharche.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Tehnicharche.Data.Models.Post", b =>
+            modelBuilder.Entity("Tehnicharche.Data.Models.City", b =>
                 {
-                    b.HasOne("Tehnicharche.Data.Models.ApplicationUser", "Author")
-                        .WithMany("Posts")
-                        .HasForeignKey("AuthorId")
+                    b.HasOne("Tehnicharche.Data.Models.Region", "Region")
+                        .WithMany("Cities")
+                        .HasForeignKey("RegionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Region");
+                });
+
+            modelBuilder.Entity("Tehnicharche.Data.Models.Listing", b =>
+                {
                     b.HasOne("Tehnicharche.Data.Models.Category", "Category")
-                        .WithMany("Posts")
+                        .WithMany("Listings")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
+                    b.HasOne("Tehnicharche.Data.Models.City", "City")
+                        .WithMany("Listings")
+                        .HasForeignKey("CityId");
+
+                    b.HasOne("Tehnicharche.Data.Models.ApplicationUser", "Creator")
+                        .WithMany("Listings")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Tehnicharche.Data.Models.Region", "Region")
+                        .WithMany("Listings")
+                        .HasForeignKey("RegionId");
 
                     b.Navigation("Category");
+
+                    b.Navigation("City");
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("Region");
                 });
 
             modelBuilder.Entity("Tehnicharche.Data.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Posts");
+                    b.Navigation("Listings");
                 });
 
             modelBuilder.Entity("Tehnicharche.Data.Models.Category", b =>
                 {
-                    b.Navigation("Posts");
+                    b.Navigation("Listings");
+                });
+
+            modelBuilder.Entity("Tehnicharche.Data.Models.City", b =>
+                {
+                    b.Navigation("Listings");
+                });
+
+            modelBuilder.Entity("Tehnicharche.Data.Models.Region", b =>
+                {
+                    b.Navigation("Cities");
+
+                    b.Navigation("Listings");
                 });
 #pragma warning restore 612, 618
         }

@@ -13,7 +13,11 @@ namespace Tehnicharche.Data
 
         public virtual DbSet<Category> Categories { get; set; } = null!;
 
-        public virtual DbSet<Post> Posts { get; set; } = null!;
+        public virtual DbSet<Region> Regions { get; set; } = null!;
+
+        public virtual DbSet<City> Cities { get; set; } = null!;
+
+        public virtual DbSet<Listing> Listings { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

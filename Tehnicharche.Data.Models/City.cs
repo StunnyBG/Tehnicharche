@@ -1,10 +1,12 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
-using static Tehnicharche.GCommon.ValidationConstants.Category;
+using System.ComponentModel.DataAnnotations.Schema;
+using static Tehnicharche.GCommon.ValidationConstants.City;
+
 
 namespace Tehnicharche.Data.Models
 {
-    public class Category
+    public class City
     {
         [Key]
         public int Id { get; set; }
@@ -12,6 +14,12 @@ namespace Tehnicharche.Data.Models
         [Required]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; } = null!;
+
+        [Required]
+        public int RegionId { get; set; }
+
+        [ForeignKey(nameof(RegionId))]
+        public Region Region { get; set; } = null!;
 
         public virtual ICollection<Listing> Listings { get; set; } = new HashSet<Listing>();
     }
