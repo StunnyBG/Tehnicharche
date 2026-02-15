@@ -9,6 +9,8 @@ namespace Tehnicharche.Services.Core.Interfaces
 
         Task<ListingIndexViewModel?> GetListingByIdAsync(int id);
 
+        Task<IEnumerable<ListingIndexViewModel>> GetListingsByUserAsync(string userId);
+
         Task<ListingDetailsViewModel> GetListingDetailsByIdAsync(int id);
 
         Task<ListingCreateViewModel> GetListingCreateViewModelAsync();

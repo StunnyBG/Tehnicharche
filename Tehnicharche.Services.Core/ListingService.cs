@@ -57,15 +57,33 @@ namespace Tehnicharche.Services.Core
 
             return model;
         }
-       
+
+        public async Task<IEnumerable<ListingIndexViewModel>> GetListingsByUserAsync(string userId)
+        {
+            return await context.Listings
+                .Where(l => !l.IsDeleted && l.CreatorId == userId)
+                .Select(l => new ListingIndexViewModel
+                {
+                    Id = l.Id,
+                    Title = l.Title,
+                    Price = l.Price.ToString(),
+                    CategoryName = l.Category.Name,
+                    RegionName = l.Region.Name,
+                    CityName = l.City.Name,
+                    ImageUrl = l.ImageUrl
+                })
+                .ToListAsync();
+        }
+
+
         public async Task<ListingDetailsViewModel> GetListingDetailsByIdAsync(int id)
         {
             var listing = await context.Listings
-                .Where(l => !l.IsDeleted)
                 .Include(l => l.Category)
                 .Include(l => l.Region)
                 .Include(l => l.City)
                 .Include(l => l.Creator)
+                .Where(l => !l.IsDeleted)
                 .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null)
@@ -81,11 +99,14 @@ namespace Tehnicharche.Services.Core
                 Price = listing.Price.ToString(),
                 CategoryName = listing.Category.Name,
                 RegionName = listing.Region.Name,
-                CityName = listing.City.Name,
+                CityName = listing.City?.Name ?? string.Empty,
                 ImageUrl = listing.ImageUrl,
                 CreatorName = listing.Creator.UserName!,
+                CreatorEmail = listing.Creator.Email!,
+                CreatorPhoneNumber = listing.Creator?.PhoneNumber,
+                CreatorId = listing.CreatorId!,
                 CreatedAt = listing.CreatedAt.ToString(DateFormat),
-                UpdatedAt = listing.UpdatedAt?.ToString("yyyy-MM-dd") ?? listing.CreatedAt.ToString(DateFormat)
+                UpdatedAt = listing.UpdatedAt?.ToString(DateFormat) ?? listing.CreatedAt.ToString(DateFormat)
             };
 
             return model;
@@ -161,7 +182,13 @@ namespace Tehnicharche.Services.Core
      
         public async Task<ListingEditViewModel> GetListingEditAsync(int id, string userId)
         {
-            var listing = await context.Listings.Where(l => !l.IsDeleted).FirstOrDefaultAsync(l => l.Id == id);
+            var listing = await context.Listings
+                            .Include(l => l.Category)
+                            .Include(l => l.Region)
+                            .Include(l => l.City)
+                            .Include(l => l.Creator)
+                            .Where(l => !l.IsDeleted)
+                            .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null)
             {
@@ -216,7 +243,7 @@ namespace Tehnicharche.Services.Core
 
             if (price < PriceMinValue || price > PriceMaxValue)
             {
-                throw new ArgumentOutOfRangeException($"Price must be between {PriceMaxValue} and {PriceMaxValue}.");
+                throw new ArgumentOutOfRangeException($"Price must be between {PriceMinValue} and {PriceMaxValue}.");
             }
 
             bool categoryExists = await context.Categories.AnyAsync(c => c.Id == model.CategoryId);
@@ -310,7 +337,8 @@ namespace Tehnicharche.Services.Core
                 .Select(c => new CityViewModel
                 {
                     Id = c.Id,
-                    Name = c.Name
+                    Name = c.Name,
+                    RegionId = c.RegionId
                 })
                 .ToListAsync();
         }

@@ -19,7 +19,13 @@ namespace Tehnicharche.ViewModels
        
         public string? ImageUrl { get; set; }
 
+        public string CreatorId { get; set; } = null!;
+        
         public string CreatorName { get; set; } = null!;
+       
+        public string CreatorEmail { get; set; } = null!;
+       
+        public string? CreatorPhoneNumber { get; set; }
 
         public string CreatedAt { get; set; } = null!;
 

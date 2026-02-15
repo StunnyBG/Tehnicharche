@@ -39,10 +39,15 @@
 
     <div class="mb-3">
         <label asp-for="CityId"></label>
-        <select asp-for="CityId" class="form-select"
-                asp-items="@(new SelectList(Model.Cities, "Id", "Name"))">
+        <select asp-for="CityId" class="form-select" id="CitySelect">
+            <option value="">-- Select city --</option>
+            @foreach (var c in Model.Cities)
+            {
+                <option value="@c.Id" data-region="@c.RegionId">@c.Name</option>
+            }
         </select>
     </div>
+
 
     <div class="mb-3">
         <label asp-for="ImageUrl"></label>
@@ -51,3 +56,7 @@
 
     <button class="btn btn-success">Create</button>
 </form>
+
+@section Scripts {
+    <script src="~/js/city-filter.js"></script>
+}

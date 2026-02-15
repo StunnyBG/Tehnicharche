@@ -23,3 +23,19 @@ body {
     font-weight: bold;
     color: #157347;
 }
+
+html, body {
+    height: 100%;
+}
+
+body.d-flex {
+    min-height: 100vh;
+}
+
+main.flex-grow-1 {
+    flex: 1 0 auto;
+}
+
+.site-footer {
+    border-top: 1px solid rgba(0,0,0,0.06);
+}

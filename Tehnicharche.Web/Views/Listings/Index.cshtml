@@ -5,20 +5,34 @@
     ViewData["Title"] = "All Listings";
 }
 
-<div class="d-flex justify-content-between mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3">
     <h2>All Listings</h2>
+
     @if (User.Identity!.IsAuthenticated)
     {
-        <a class="btn btn-success" asp-action="Create">Create Listing</a>
+        <div>
+            <a class="btn btn-outline-success me-2"
+               asp-action="MyListings">
+                My Listings
+            </a>
+
+            <a class="btn btn-success"
+               asp-action="Create">
+                Create Listing
+            </a>
+        </div>
     }
 </div>
+
 
 <div class="row">
     @foreach (var item in Model)
     {
         <div class="col-md-4 mb-4">
             <div class="card p-3 h-100">
-                <img src="@item.ImageUrl" class="img-fluid rounded mb-2" />
+                <img src="@item.ImageUrl"
+                     class="img-fluid rounded mb-2"
+                     onerror="this.onerror=null;this.src='/images/placeholder.png';" />
                 <h5>@item.Title</h5>
                 <p class="price-tag">@item.Price BGN</p>
                 <p>@item.CategoryName</p>

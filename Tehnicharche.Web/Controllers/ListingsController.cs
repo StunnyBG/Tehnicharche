@@ -7,6 +7,7 @@ using Tehnicharche.ViewModels;
 
 namespace Tehnicharche.Web.Controllers
 {
+    [Authorize]
     public class ListingsController : Controller
     {
         private readonly IListingService listingService;
@@ -20,6 +21,8 @@ namespace Tehnicharche.Web.Controllers
             this.userManager = userManager;
         }
 
+
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -27,6 +30,7 @@ namespace Tehnicharche.Web.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
@@ -41,7 +45,18 @@ namespace Tehnicharche.Web.Controllers
             }
         }
 
-        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> MyListings()
+        {
+            if (UserId == null)
+            {
+                return RedirectToAction("Login", "Account", new { area = "Identity" });
+            }
+
+            var listings = await listingService.GetListingsByUserAsync(UserId);
+            return View("MyListings", listings);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -49,9 +64,7 @@ namespace Tehnicharche.Web.Controllers
             return View(model);
         }
 
-        [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ListingCreateViewModel model)
         {
             if (!ModelState.IsValid)
@@ -96,7 +109,6 @@ namespace Tehnicharche.Web.Controllers
             return View(model);
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -119,7 +131,6 @@ namespace Tehnicharche.Web.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(ListingEditViewModel model)
         {
@@ -169,7 +180,6 @@ namespace Tehnicharche.Web.Controllers
             return View(model);
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -184,7 +194,7 @@ namespace Tehnicharche.Web.Controllers
             }
             catch (UnauthorizedAccessException)
             {
-                return Forbid();
+                return Unauthorized();
             }
             catch (InvalidOperationException)
             {
@@ -192,7 +202,6 @@ namespace Tehnicharche.Web.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
