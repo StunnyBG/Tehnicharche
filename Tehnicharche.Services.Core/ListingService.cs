@@ -277,6 +277,8 @@ namespace Tehnicharche.Services.Core
             listing.CityId = model.CityId;
             listing.ImageUrl = model.ImageUrl;
             listing.UpdatedAt = DateTime.UtcNow;
+
+            await context.SaveChangesAsync();
         }
       
         public async Task DeleteListingAsync(int id, string userId)
