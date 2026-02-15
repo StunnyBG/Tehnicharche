@@ -1,83 +1,53 @@
-﻿@model Tehnicharche.ViewModels.ListingCreateViewModel
-@{
-    ViewData["Title"] = "Create Listing";
-    Layout = "_Layout";
-}
+﻿@model ListingCreateViewModel
+@using Tehnicharche.ViewModels
 
-<h2 class="text-brand">Create Listing</h2>
+<h2>Create Listing</h2>
 
-<form asp-action="Create" method="post" class="mt-3">
-    @Html.AntiForgeryToken()
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
     <div class="mb-3">
-        <label asp-for="Title" class="form-label"></label>
+        <label asp-for="Title"></label>
         <input asp-for="Title" class="form-control" />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Description" class="form-label"></label>
-        <textarea asp-for="Description" class="form-control" rows="5"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4 mb-3">
-            <label asp-for="Price" class="form-label"></label>
-            <input asp-for="Price" class="form-control" />
-            <span asp-validation-for="Price" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-4 mb-3">
-            <label asp-for="CategoryId" class="form-label">Category</label>
-            <select asp-for="CategoryId" class="form-select">
-                <option value="">-- choose category --</option>
-                @foreach (var c in Model.Categories)
-                {
-                    <option value="@c.Id">@c.Name</option>
-                }
-            </select>
-            <span asp-validation-for="CategoryId" class="text-danger"></span>
-        </div>
-
-        <div class="col-md-4 mb-3">
-            <label asp-for="RegionId" class="form-label">Region</label>
-            <select asp-for="RegionId" class="form-select">
-                <option value="">-- choose region --</option>
-                @foreach (var r in Model.Regions)
-                {
-                    <option value="@r.Id">@r.Name</option>
-                }
-            </select>
-            <span asp-validation-for="RegionId" class="text-danger"></span>
-        </div>
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
     </div>
 
     <div class="mb-3">
-        <label asp-for="CityId" class="form-label">City (optional)</label>
-        <select asp-for="CityId" class="form-select">
-            <option value="">-- choose city --</option>
-            @foreach (var c in Model.Cities)
-            {
-                <option value="@c.Id">@c.Name</option>
-            }
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" class="form-select"
+                asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
         </select>
-        <span asp-validation-for="CityId" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="ImageUrl" class="form-label">Image URL</label>
+        <label asp-for="RegionId"></label>
+        <select asp-for="RegionId" class="form-select"
+                asp-items="@(new SelectList(Model.Regions, "Id", "Name"))">
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CityId"></label>
+        <select asp-for="CityId" class="form-select"
+                asp-items="@(new SelectList(Model.Cities, "Id", "Name"))">
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ImageUrl"></label>
         <input asp-for="ImageUrl" class="form-control" />
-        <span asp-validation-for="ImageUrl" class="text-danger"></span>
     </div>
 
-    <div class="d-flex gap-2">
-        <button type="submit" class="btn btn-brand">Create</button>
-        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
-    </div>
+    <button class="btn btn-success">Create</button>
 </form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

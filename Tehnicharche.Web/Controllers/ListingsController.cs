@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Services.Core.Interfaces;
 using Tehnicharche.ViewModels;
@@ -13,6 +12,8 @@ namespace Tehnicharche.Web.Controllers
         private readonly IListingService listingService;
         private readonly UserManager<ApplicationUser> userManager;
 
+        private string? UserId => userManager.GetUserId(User);
+
         public ListingsController(IListingService listingService, UserManager<ApplicationUser> userManager)
         {
             this.listingService = listingService;
@@ -22,8 +23,7 @@ namespace Tehnicharche.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            string? userId = userManager.GetUserId(User);
-            var model = await listingService.GetAllListingsAsync(userId);
+            var model = await listingService.GetAllListingsAsync(UserId);
             return View(model);
         }
 
@@ -65,8 +65,11 @@ namespace Tehnicharche.Web.Controllers
 
             try
             {
-                string? userId = userManager.GetUserId(User) ?? throw new InvalidOperationException("User id not found.");
-                await listingService.AddListingAsync(model, userId);
+                if (UserId == null)
+                {
+                    throw new InvalidOperationException("User id not found.");
+                }
+                await listingService.AddListingAsync(model, UserId);
                 return RedirectToAction(nameof(Index));
             }
             catch (FormatException ex)
@@ -99,8 +102,11 @@ namespace Tehnicharche.Web.Controllers
         {
             try
             {
-                string? userId = userManager.GetUserId(User) ?? throw new InvalidOperationException("User id not found.");
-                var model = await listingService.GetListingEditAsync(id, userId);
+                if (UserId == null)
+                {
+                    throw new InvalidOperationException("User id not found.");
+                }
+                var model = await listingService.GetListingEditAsync(id, UserId);
                 return View(model);
             }
             catch (UnauthorizedAccessException)
@@ -128,8 +134,11 @@ namespace Tehnicharche.Web.Controllers
 
             try
             {
-                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ?? throw new InvalidOperationException("User id not found.");
-                await listingService.EditListingAsync(model, userId);
+                if (UserId == null)
+                {
+                    throw new InvalidOperationException("User id not found.");
+                }
+                await listingService.EditListingAsync(model, UserId);
                 return RedirectToAction(nameof(Details), new { id = model.Id });
             }
             catch (UnauthorizedAccessException)
@@ -166,8 +175,11 @@ namespace Tehnicharche.Web.Controllers
         {
             try
             {
-                string userId = userManager.GetUserId(User) ?? throw new InvalidOperationException("User id not found.");
-                var model = await listingService.GetListingDeleteDetailsAsync(id, userId);
+                if (UserId == null)
+                {
+                    throw new InvalidOperationException("User id not found.");
+                }
+                var model = await listingService.GetListingDeleteDetailsAsync(id, UserId);
                 return View(model);
             }
             catch (UnauthorizedAccessException)
@@ -186,8 +198,11 @@ namespace Tehnicharche.Web.Controllers
         {
             try
             {
-                string? userId = userManager.GetUserId(User) ?? throw new InvalidOperationException("User id not found.");
-                await listingService.DeleteListingAsync(id, userId);
+                if (UserId == null)
+                {
+                    throw new InvalidOperationException("User id not found.");
+                }
+                await listingService.DeleteListingAsync(id, UserId);
                 return RedirectToAction(nameof(Index));
             }
             catch (UnauthorizedAccessException)

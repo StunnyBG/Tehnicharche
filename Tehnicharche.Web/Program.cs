@@ -3,6 +3,7 @@ using Tehnicharche.Data;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Services.Core;
 using Tehnicharche.Services.Core.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace Tehnicharche.Web
 {

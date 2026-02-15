@@ -60,7 +60,13 @@ namespace Tehnicharche.Services.Core
        
         public async Task<ListingDetailsViewModel> GetListingDetailsByIdAsync(int id)
         {
-            var listing = await context.Listings.Where(l => !l.IsDeleted).FirstOrDefaultAsync(l => l.Id == id);
+            var listing = await context.Listings
+                .Where(l => !l.IsDeleted)
+                .Include(l => l.Category)
+                .Include(l => l.Region)
+                .Include(l => l.City)
+                .Include(l => l.Creator)
+                .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null)
             {
