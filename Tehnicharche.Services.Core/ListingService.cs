@@ -156,10 +156,14 @@ namespace Tehnicharche.Services.Core
 
             if (model.CityId != null)
             {
-                bool cityExists = await context.Cities.AnyAsync(c => c.Id == model.CityId);
-                if (!cityExists)
+                var city = await context.Cities.Include(c => c.RegionId).FirstOrDefaultAsync(c => c.Id == model.CityId);
+                if (city == null)
                 {
                     throw new InvalidOperationException("Invalid city id");
+                }
+                if (city.RegionId != model.RegionId)
+                {
+                    throw new InvalidOperationException("City is not from this region");
                 }
             }
 
@@ -168,8 +172,8 @@ namespace Tehnicharche.Services.Core
                 Title = model.Title,
                 Description = model.Description,
                 Price = price,
-                CategoryId = model.CategoryId,
-                RegionId = model.RegionId,
+                CategoryId = (int)model.CategoryId!,
+                RegionId = (int)model.RegionId!,
                 CityId = model.CityId,
                 ImageUrl = model.ImageUrl,
                 CreatorId = creatorId,
@@ -272,8 +276,8 @@ namespace Tehnicharche.Services.Core
             listing.Title = model.Title;
             listing.Description = model.Description;
             listing.Price = price;
-            listing.CategoryId = model.CategoryId;
-            listing.RegionId = model.RegionId;
+            listing.CategoryId = (int)model.CategoryId!;
+            listing.RegionId = (int)model.RegionId!;
             listing.CityId = model.CityId;
             listing.ImageUrl = model.ImageUrl;
             listing.UpdatedAt = DateTime.UtcNow;

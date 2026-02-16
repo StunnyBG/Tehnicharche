@@ -20,10 +20,10 @@ namespace Tehnicharche.ViewModels
         public string Price { get; set; } = null!;
 
         [Required]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
         [Required]
-        public int RegionId { get; set; }
+        public int? RegionId { get; set; }
 
         public int? CityId { get; set; }
 

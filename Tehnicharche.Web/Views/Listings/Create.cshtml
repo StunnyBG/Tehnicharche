@@ -25,20 +25,30 @@
 
     <div class="mb-3">
         <label asp-for="CategoryId">Category</label>
-        <select asp-for="CategoryId" class="form-select"
-                asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
+        <select asp-for="CategoryId" class="form-select">
+            <option value="">-- Select Category --</option>
+            @foreach (var category in Model.Categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
         </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="RegionId">Region</label>
-        <select asp-for="RegionId" class="form-select"
-                asp-items="@(new SelectList(Model.Regions, "Id", "Name"))">
+        <select asp-for="RegionId" class="form-select" id="RegionSelect">
+            <option value="">-- Select Region --</option>
+            @foreach (var region in Model.Regions)
+            {
+                <option value="@region.Id">@region.Name</option>
+            }
         </select>
+        <span asp-validation-for="RegionId" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="CityId">City</label>
+        <label asp-for="CityId">City <span class="text-secondary">(you must select a region first)</span></label>
         <select asp-for="CityId" class="form-select" id="CitySelect">
             <option value="">-- Select city --</option>
             @foreach (var c in Model.Cities)
@@ -47,7 +57,6 @@
             }
         </select>
     </div>
-
 
     <div class="mb-3">
         <label asp-for="ImageUrl"></label>
