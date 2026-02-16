@@ -48,9 +48,9 @@ namespace Tehnicharche.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> MyListings()
         {
-            if (UserId == null)
+            if (string.IsNullOrEmpty(UserId))
             {
-                return RedirectToAction("Login", "Account", new { area = "Identity" });
+                return RedirectToAction("Login", "Account");
             }
 
             var listings = await listingService.GetListingsByUserAsync(UserId);
@@ -67,21 +67,20 @@ namespace Tehnicharche.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ListingCreateViewModel model)
         {
+            if (string.IsNullOrEmpty(UserId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (!ModelState.IsValid)
             {
-                var refreshed = await listingService.GetListingCreateViewModelAsync();
-                model.Categories = refreshed.Categories;
-                model.Regions = refreshed.Regions;
-                model.Cities = refreshed.Cities;
+                model = await listingService.GetListingCreateViewModelAsync();
                 return View(model);
             }
 
             try
             {
-                if (UserId == null)
-                {
-                    throw new InvalidOperationException("User id not found.");
-                }
+                
                 await listingService.AddListingAsync(model, UserId);
                 return RedirectToAction(nameof(Index));
             }
@@ -102,22 +101,20 @@ namespace Tehnicharche.Web.Controllers
                 ModelState.AddModelError(string.Empty, "Unexpected error while creating listing.");
             }
 
-            var refreshedOnError = await listingService.GetListingCreateViewModelAsync();
-            model.Categories = refreshedOnError.Categories;
-            model.Regions = refreshedOnError.Regions;
-            model.Cities = refreshedOnError.Cities;
+            model = await listingService.GetListingCreateViewModelAsync();
             return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            if (string.IsNullOrEmpty(UserId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             try
             {
-                if (UserId == null)
-                {
-                    throw new InvalidOperationException("User id not found.");
-                }
                 var model = await listingService.GetListingEditAsync(id, UserId);
                 return View(model);
             }
@@ -134,27 +131,28 @@ namespace Tehnicharche.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(ListingEditViewModel model)
         {
+            if (string.IsNullOrEmpty(UserId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             if (!ModelState.IsValid)
             {
-                var refreshed = await listingService.GetListingCreateViewModelAsync();
-                model.Categories = refreshed.Categories;
-                model.Regions = refreshed.Regions;
-                model.Cities = refreshed.Cities;
+                model.Categories = await listingService.GetAllCategoriesAsync();
+                model.Regions = await listingService.GetAllRegionsAsync();
+                model.Cities = await listingService.GetAllCitiesAsync();
                 return View(model);
             }
 
             try
             {
-                if (UserId == null)
-                {
-                    throw new InvalidOperationException("User id not found.");
-                }
+                
                 await listingService.EditListingAsync(model, UserId);
                 return RedirectToAction(nameof(Details), new { id = model.Id });
             }
             catch (UnauthorizedAccessException)
             {
-                return Forbid();
+                return Unauthorized();
             }
             catch (InvalidOperationException ex)
             {
@@ -173,22 +171,21 @@ namespace Tehnicharche.Web.Controllers
                 ModelState.AddModelError(string.Empty, "Unexpected error while editing listing.");
             }
 
-            var refreshedOnError = await listingService.GetListingCreateViewModelAsync();
-            model.Categories = refreshedOnError.Categories;
-            model.Regions = refreshedOnError.Regions;
-            model.Cities = refreshedOnError.Cities;
+            model.Categories = await listingService.GetAllCategoriesAsync();
+            model.Regions = await listingService.GetAllRegionsAsync();
+            model.Cities = await listingService.GetAllCitiesAsync();
             return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
+            if (string.IsNullOrEmpty(UserId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
             try
             {
-                if (UserId == null)
-                {
-                    throw new InvalidOperationException("User id not found.");
-                }
                 var model = await listingService.GetListingDeleteDetailsAsync(id, UserId);
                 return View(model);
             }
@@ -205,14 +202,13 @@ namespace Tehnicharche.Web.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (string.IsNullOrEmpty(UserId))
+            {
+                return RedirectToAction("Login", "Account");
+            }
             try
             {
-                if (UserId == null)
-                {
-                    throw new InvalidOperationException("User id not found.");
-                }
                 await listingService.DeleteListingAsync(id, UserId);
-                return RedirectToAction(nameof(Index));
             }
             catch (UnauthorizedAccessException)
             {
@@ -222,6 +218,8 @@ namespace Tehnicharche.Web.Controllers
             {
                 return NotFound();
             }
+
+            return RedirectToAction("Index");
         }
     }
 }

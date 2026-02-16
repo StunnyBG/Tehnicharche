@@ -28,19 +28,9 @@
 else
 {
     <div class="row g-3">
-        @foreach (var l in Model)
+        @foreach (var item in Model)
         {
-            <div class="col-md-6">
-                <div class="card p-3">
-                    <img src="@l.ImageUrl" class="img-fluid rounded mb-2" alt="" />
-                    <h5>@l.Title</h5>
-                    <p class="price-tag">@l.Price BGN</p>
-                    <div class="d-flex justify-content-between">
-                        <a class="btn btn-outline-success btn-sm" asp-action="Details" asp-route-id="@l.Id">View</a>
-                        <a class="btn btn-link btn-sm" asp-action="Edit" asp-route-id="@l.Id">Edit</a>
-                    </div>
-                </div>
-            </div>
+            <partial name="_MyListingsCardPartial" model="item" />
         }
     </div>
 }

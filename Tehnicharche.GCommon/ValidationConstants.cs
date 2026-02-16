@@ -22,7 +22,7 @@ namespace Tehnicharche.GCommon
         {
             // Title
             public const int TitleMinLength = 5;
-            public const int TitleMaxLength = 200;
+            public const int TitleMaxLength = 100;
 
             // Description
             public const int DescriptionMaxLength = 2000;

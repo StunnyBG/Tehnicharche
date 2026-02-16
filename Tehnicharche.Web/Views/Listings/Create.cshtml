@@ -24,21 +24,21 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="CategoryId"></label>
+        <label asp-for="CategoryId">Category</label>
         <select asp-for="CategoryId" class="form-select"
                 asp-items="@(new SelectList(Model.Categories, "Id", "Name"))">
         </select>
     </div>
 
     <div class="mb-3">
-        <label asp-for="RegionId"></label>
+        <label asp-for="RegionId">Region</label>
         <select asp-for="RegionId" class="form-select"
                 asp-items="@(new SelectList(Model.Regions, "Id", "Name"))">
         </select>
     </div>
 
     <div class="mb-3">
-        <label asp-for="CityId"></label>
+        <label asp-for="CityId">City</label>
         <select asp-for="CityId" class="form-select" id="CitySelect">
             <option value="">-- Select city --</option>
             @foreach (var c in Model.Cities)
@@ -54,7 +54,12 @@
         <input asp-for="ImageUrl" class="form-control" />
     </div>
 
-    <button class="btn btn-success">Create</button>
+    <button class="btn btn-success me-2">Create</button>
+
+    <a class="btn btn-outline-secondary" href="/Listings/Index">
+        Back
+    </a>
+
 </form>
 
 @section Scripts {

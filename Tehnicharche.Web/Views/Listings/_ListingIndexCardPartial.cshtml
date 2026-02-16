@@ -1,0 +1,40 @@
+﻿@model Tehnicharche.ViewModels.ListingIndexViewModel
+
+<div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+
+        <img src="@Model.ImageUrl"
+             class="card-img-top"
+             style="height: 220px; object-fit: cover;"
+             onerror="this.onerror=null;this.src='/images/placeholder.png';" />
+
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title">@Model.Title</h5>
+            
+            <hr>
+            
+            <p class="card-text mb-1">
+                <strong>@Model.CategoryName</strong>
+            </p>
+
+            <p class="card-text text-muted mb-2">
+                @Model.RegionName
+                @if (!string.IsNullOrEmpty(Model.CityName))
+                {
+                    <span> - @Model.CityName</span>
+                }
+            </p>
+
+            <div class="mt-auto">
+                <p class="fw-bold fs-5 text-dark mb-3">
+                    @Model.Price €
+                </p>
+                <a asp-action="Details"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-outline-success w-100">
+                    Details
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
