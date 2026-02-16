@@ -2,8 +2,83 @@
     ViewData["Title"] = "Home";
 }
 
-<div class="p-5 mb-4 bg-success text-white rounded">
-    <h1>Welcome to Tehnicharche</h1>
-    <p>Buy and sell electronics easily.</p>
-    <a class="btn btn-light" asp-controller="Listings" asp-action="Index">Browse Listings</a>
-</div>
+<section class="hero-section text-white d-flex align-items-center">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-3">
+            Find Technical Services Near You
+        </h1>
+        <p class="lead mb-4">
+            From soldering and electronics to appliance repair —
+            connect with skilled people ready to help.
+        </p>
+
+        <a asp-controller="Listings"
+           asp-action="Index"
+           class="btn btn-success btn-lg me-2">
+            Browse Listings
+        </a>
+
+        @if (User.Identity!.IsAuthenticated)
+        {
+            <a asp-controller="Listings"
+               asp-action="Create"
+               class="btn btn-outline-light btn-lg">
+                Offer a Service
+            </a>
+        }
+    </div>
+</section>
+
+
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <img src="/images/showcase1.jpg"
+                     class="img-fluid rounded shadow"
+                     style="height: 300px; width: 100%; object-fit: cover;" />
+            </div>
+
+            <div class="col-md-4">
+                <img src="/images/showcase2.jpg"
+                     class="img-fluid rounded shadow"
+                     style="height: 300px; width: 100%; object-fit: cover;" />
+            </div>
+
+            <div class="col-md-4">
+                <img src="/images/showcase3.jpg"
+                     class="img-fluid rounded shadow"
+                     style="height: 300px; width: 100%; object-fit: cover;" />
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<section class="py-5 text-center bg-light">
+    <div class="container">
+        <h2 class="fw-bold mb-3">Have Technical Skills?</h2>
+        <p class="lead mb-4">
+            Join the community and start offering your services today.
+        </p>
+
+        @if (!User.Identity!.IsAuthenticated)
+        {
+            <a asp-area="Identity"
+               asp-page="/Account/Register"
+               class="btn btn-success btn-lg">
+                Create an Account
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Listings"
+               asp-action="Create"
+               class="btn btn-success btn-lg">
+                Create Your First Listing
+            </a>
+        }
+    </div>
+</section>
