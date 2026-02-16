@@ -156,12 +156,13 @@ namespace Tehnicharche.Services.Core
 
             if (model.CityId != null)
             {
-                var city = await context.Cities.Include(c => c.RegionId).FirstOrDefaultAsync(c => c.Id == model.CityId);
+                var city = await context.Cities.Include(c => c.Region).FirstOrDefaultAsync(c => c.Id == model.CityId);
+                
                 if (city == null)
                 {
                     throw new InvalidOperationException("Invalid city id");
                 }
-                if (city.RegionId != model.RegionId)
+                if (city.Region.Id != model.RegionId)
                 {
                     throw new InvalidOperationException("City is not from this region");
                 }

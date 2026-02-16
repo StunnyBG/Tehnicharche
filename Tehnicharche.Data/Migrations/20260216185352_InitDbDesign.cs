@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tehnicharche.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDbDesign : Migration
+    public partial class InitDbDesign : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -208,11 +208,11 @@ namespace Tehnicharche.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(9,2)", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(9,2)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    RegionId = table.Column<int>(type: "int", nullable: true),
+                    RegionId = table.Column<int>(type: "int", nullable: false),
                     CityId = table.Column<int>(type: "int", nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
                     CreatorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -244,7 +244,8 @@ namespace Tehnicharche.Data.Migrations
                         name: "FK_Listings_Regions_RegionId",
                         column: x => x.RegionId,
                         principalTable: "Regions",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

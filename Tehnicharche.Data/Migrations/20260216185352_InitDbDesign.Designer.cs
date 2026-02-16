@@ -12,8 +12,8 @@ using Tehnicharche.Data;
 namespace Tehnicharche.Data.Migrations
 {
     [DbContext(typeof(TehnicharcheDbContext))]
-    [Migration("20260214121402_InitialDbDesign")]
-    partial class InitialDbDesign
+    [Migration("20260216185352_InitDbDesign")]
+    partial class InitDbDesign
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -300,16 +300,16 @@ namespace Tehnicharche.Data.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(9,2)");
 
-                    b.Property<int?>("RegionId")
+                    b.Property<int>("RegionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -427,7 +427,9 @@ namespace Tehnicharche.Data.Migrations
 
                     b.HasOne("Tehnicharche.Data.Models.Region", "Region")
                         .WithMany("Listings")
-                        .HasForeignKey("RegionId");
+                        .HasForeignKey("RegionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
 

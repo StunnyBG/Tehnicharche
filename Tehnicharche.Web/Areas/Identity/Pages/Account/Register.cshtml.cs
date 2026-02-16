@@ -85,7 +85,7 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Phone]
-            [Display(Name = "Phone number (optional)")]
+            [Display(Name = "Phone number")]
             public string? PhoneNumber { get; set; }
 
             /// <summary>

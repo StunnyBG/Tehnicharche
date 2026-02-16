@@ -41,6 +41,10 @@ main.flex-grow-1 {
 }
 
 .hero-section {
-    height: 85vh;
-    background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('/images/placeholder.png') center no-repeat;
+    position: relative;
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("https://cdn.pixabay.com/photo/2014/09/20/13/52/board-453758_1280.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 50vh
 }

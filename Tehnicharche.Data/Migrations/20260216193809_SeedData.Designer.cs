@@ -12,7 +12,7 @@ using Tehnicharche.Data;
 namespace Tehnicharche.Data.Migrations
 {
     [DbContext(typeof(TehnicharcheDbContext))]
-    [Migration("20260214143340_SeedData")]
+    [Migration("20260216193809_SeedData")]
     partial class SeedData
     {
         /// <inheritdoc />
@@ -229,99 +229,71 @@ namespace Tehnicharche.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b1a7f9d6-4e3c-4a1b-9a2b-111111111111",
+                            Id = "00000000-0000-0000-0000-000000000001",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d72ed1e0-8dd5-4594-b9c9-07b01016b9fc",
-                            Email = "ivan.petrov@example.com",
+                            ConcurrencyStamp = "CONCURRENCY_STAMP_1",
+                            Email = "ivan@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "IVAN.PETROV@EXAMPLE.COM",
-                            NormalizedUserName = "IVAN_PETROV",
-                            PhoneNumber = "+359887123001",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "753ac267-fabc-4565-8a86-0834cbc6a5fd",
+                            NormalizedEmail = "IVAN@EXAMPLE.COM",
+                            NormalizedUserName = "IVAN.TECH",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMockHashValueForDevOnlyUser1==",
+                            PhoneNumber = "+359888123001",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "SECURITY_STAMP_1",
                             TwoFactorEnabled = false,
-                            UserName = "ivan_petrov"
+                            UserName = "ivan.tech"
                         },
                         new
                         {
-                            Id = "c2b8e0a7-5f4d-4b2c-8b3c-222222222222",
+                            Id = "00000000-0000-0000-0000-000000000002",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ce002fc3-0f9f-47ac-830b-f7017c25fb12",
-                            Email = "maria.georgieva@example.com",
+                            ConcurrencyStamp = "CONCURRENCY_STAMP_2",
+                            Email = "maria@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "MARIA.GEORGIEVA@EXAMPLE.COM",
-                            NormalizedUserName = "MARIA_GEORGIEVA",
-                            PhoneNumber = "+359888234567",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "c1ac5fa4-d732-4e8f-99e8-aa8c5a2f0557",
+                            NormalizedEmail = "MARIA@EXAMPLE.COM",
+                            NormalizedUserName = "MARIA.REPAIRS",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMockHashValueForDevOnlyUser2==",
+                            PhoneNumber = "+359888456002",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "SECURITY_STAMP_2",
                             TwoFactorEnabled = false,
-                            UserName = "maria_georgieva"
+                            UserName = "maria.repairs"
                         },
                         new
                         {
-                            Id = "d3c9f1b8-6a5e-4c3d-9c4d-333333333333",
+                            Id = "00000000-0000-0000-0000-000000000003",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4ba121e5-5342-4988-87f4-3bce9787e353",
-                            Email = "stoyan.tech@example.com",
+                            ConcurrencyStamp = "CONCURRENCY_STAMP_3",
+                            Email = "plovdiv@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "STOYAN.TECH@EXAMPLE.COM",
-                            NormalizedUserName = "STOYAN_TECH",
-                            PhoneNumber = "+359878345678",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "dad00c05-a154-412d-bcbf-d9e3c33ea397",
+                            NormalizedEmail = "PLOVDIV@EXAMPLE.COM",
+                            NormalizedUserName = "PLOVDIV.FIXIT",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMockHashValueForDevOnlyUser3==",
+                            PhoneNumber = "+359888789003",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "SECURITY_STAMP_3",
                             TwoFactorEnabled = false,
-                            UserName = "stoyan_tech"
+                            UserName = "plovdiv.fixit"
                         },
                         new
                         {
-                            Id = "e4d0a2c9-7b6f-4d4e-0d5e-444444444444",
+                            Id = "00000000-0000-0000-0000-000000000004",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bfbce724-16e8-4852-b5a9-ac3581adec79",
-                            Email = "elena.service@example.com",
+                            ConcurrencyStamp = "CONCURRENCY_STAMP_4",
+                            Email = "stz@example.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
-                            NormalizedEmail = "ELENA.SERVICE@EXAMPLE.COM",
-                            NormalizedUserName = "ELENASERVICE",
-                            PhoneNumber = "+359889456789",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "00efec15-ad3a-4d50-8945-f22542a13201",
+                            NormalizedEmail = "STZ@EXAMPLE.COM",
+                            NormalizedUserName = "STZ.ELECTRIC",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMockHashValueForDevOnlyUser4==",
+                            PhoneNumber = "+359888321004",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "SECURITY_STAMP_4",
                             TwoFactorEnabled = false,
-                            UserName = "elenaservice"
-                        },
-                        new
-                        {
-                            Id = "f5e1b3da-8c7g-4e5f-1e6f-555555555555",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6181928c-f1b3-4322-b782-7bf7b8258bb0",
-                            Email = "petar.fix@example.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "PETAR.FIX@EXAMPLE.COM",
-                            NormalizedUserName = "PETAR_FIX",
-                            PhoneNumber = "+359886567890",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "5a21b14b-64ec-4bb7-9588-8cc4590cfd65",
-                            TwoFactorEnabled = false,
-                            UserName = "petar_fix"
-                        },
-                        new
-                        {
-                            Id = "a6f2c4eb-9d8h-4f6g-2f7g-666666666666",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "34c20ba7-7b21-4208-85dc-703cc15bee2a",
-                            Email = "radostin.electro@example.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "RADOSTIN.ELECTRO@EXAMPLE.COM",
-                            NormalizedUserName = "RADOSTIN_ELECTRO",
-                            PhoneNumber = "+359882678901",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "99a72d3d-acf2-4821-b920-7b5cde3926c9",
-                            TwoFactorEnabled = false,
-                            UserName = "radostin_electro"
+                            UserName = "stz.electric"
                         });
                 });
 
@@ -346,32 +318,47 @@ namespace Tehnicharche.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Електроника и запояване"
+                            Name = "Electronics Repair"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Ремонт на домакински уреди"
+                            Name = "Appliance Repair"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Електротехника и окабеляване"
+                            Name = "Soldering & PCB Assembly"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Ремонт на телефони и таблети"
+                            Name = "Computer Repair"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Монтаж и сглобяване"
+                            Name = "Mobile Phone Repair"
                         },
                         new
                         {
                             Id = 6,
-                            Name = "Диагностика и сервиз"
+                            Name = "TV & Audio Repair"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Home Wiring & Electrical"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Handyman (general technical)"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "3D Printing & Prototyping"
                         });
                 });
 
@@ -401,44 +388,224 @@ namespace Tehnicharche.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "София",
+                            Name = "Blagoevgrad",
                             RegionId = 1
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Младост",
+                            Name = "Bansko",
                             RegionId = 1
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Пловдив",
-                            RegionId = 2
+                            Name = "Sandanski",
+                            RegionId = 1
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Карлово",
+                            Name = "Burgas",
                             RegionId = 2
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Варна",
-                            RegionId = 3
+                            Name = "Nesebar",
+                            RegionId = 2
                         },
                         new
                         {
                             Id = 6,
-                            Name = "Бургас",
-                            RegionId = 4
+                            Name = "Sozopol",
+                            RegionId = 2
                         },
                         new
                         {
                             Id = 7,
-                            Name = "Русе",
+                            Name = "Varna",
+                            RegionId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Provadiya",
+                            RegionId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Veliko Tarnovo",
+                            RegionId = 4
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Gorna Oryahovitsa",
+                            RegionId = 4
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Vidin",
                             RegionId = 5
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Vratsa",
+                            RegionId = 6
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Gabrovo",
+                            RegionId = 7
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Dobrich",
+                            RegionId = 8
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Balchik",
+                            RegionId = 8
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Kardzhali",
+                            RegionId = 9
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Kyustendil",
+                            RegionId = 10
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "Lovech",
+                            RegionId = 11
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "Montana",
+                            RegionId = 12
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "Pazardzhik",
+                            RegionId = 13
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Name = "Pernik",
+                            RegionId = 14
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Name = "Pleven",
+                            RegionId = 15
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Name = "Plovdiv",
+                            RegionId = 16
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Name = "Asenovgrad",
+                            RegionId = 16
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Name = "Razgrad",
+                            RegionId = 17
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Name = "Ruse",
+                            RegionId = 18
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Name = "Shumen",
+                            RegionId = 19
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Name = "Silistra",
+                            RegionId = 20
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Name = "Sliven",
+                            RegionId = 21
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Name = "Smolyan",
+                            RegionId = 22
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Name = "Sofia",
+                            RegionId = 23
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Name = "Kostinbrod",
+                            RegionId = 24
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Name = "Pirdop",
+                            RegionId = 24
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Name = "Stara Zagora",
+                            RegionId = 25
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Name = "Targovishte",
+                            RegionId = 26
+                        },
+                        new
+                        {
+                            Id = 36,
+                            Name = "Haskovo",
+                            RegionId = 27
+                        },
+                        new
+                        {
+                            Id = 37,
+                            Name = "Yambol",
+                            RegionId = 28
                         });
                 });
 
@@ -482,8 +649,8 @@ namespace Tehnicharche.Data.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -504,142 +671,72 @@ namespace Tehnicharche.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryId = 1,
-                            CityId = 1,
-                            CreatedAt = new DateTime(2025, 1, 10, 11, 0, 0, 0, DateTimeKind.Local),
-                            CreatorId = "b1a7f9d6-4e3c-4a1b-9a2b-111111111111",
-                            Description = "Запояване на SMD/TH components, подмяна на чипове, ремонт на дистанционни и малки платки. Работя с стационарна станция за запояване и горещ въздух.",
-                            ImageUrl = "https://source.unsplash.com/800x450/?soldering,electronics",
+                            CategoryId = 3,
+                            CityId = 31,
+                            CreatedAt = new DateTime(2025, 11, 1, 11, 30, 0, 0, DateTimeKind.Local),
+                            CreatorId = "00000000-0000-0000-0000-000000000001",
+                            Description = "Micro-soldering, component replacement, BGA rework (where feasible). 5+ years experience with consumer and industrial PCBs.",
+                            ImageUrl = "https://cdn.pixabay.com/photo/2017/06/06/16/35/cyber-2377718_1280.jpg",
                             IsDeleted = false,
-                            Price = 35.00m,
-                            RegionId = 1,
-                            Title = "Запояване на платки и ремонт на дребна електроника"
+                            Price = 45.00m,
+                            RegionId = 23,
+                            Title = "Surface-mount soldering & PCB repair (small boards)"
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 2,
-                            CityId = 2,
-                            CreatedAt = new DateTime(2025, 1, 21, 16, 30, 0, 0, DateTimeKind.Local),
-                            CreatorId = "c2b8e0a7-5f4d-4b2c-8b3c-222222222222",
-                            Description = "Диагностика за 20 лв, ремонт на помпи, лагер и електроника. Извършвам и монтаж/демонтаж.",
-                            ImageUrl = "https://source.unsplash.com/800x450/?washing-machine,repair",
+                            CityId = 4,
+                            CreatedAt = new DateTime(2025, 10, 20, 17, 0, 0, 0, DateTimeKind.Local),
+                            CreatorId = "00000000-0000-0000-0000-000000000002",
+                            Description = "Fault codes, pump & heater replacement, drum/shaft repair, water inlet and electronic control fixes. Parts quoted separately.",
+                            ImageUrl = "https://cdn.pixabay.com/photo/2014/03/06/11/30/washing-machine-280752_1280.jpg",
                             IsDeleted = false,
-                            Price = 70.00m,
-                            RegionId = 1,
-                            Title = "Ремонт и диагностика на перални"
+                            Price = 80.00m,
+                            RegionId = 2,
+                            Title = "Washing machine diagnostics & repair"
                         },
                         new
                         {
                             Id = 3,
-                            CategoryId = 3,
-                            CityId = 3,
-                            CreatedAt = new DateTime(2025, 2, 1, 10, 15, 0, 0, DateTimeKind.Local),
-                            CreatorId = "d3c9f1b8-6a5e-4c3d-9c4d-333333333333",
-                            Description = "Монтаж на контакти, ключове и осветление. Гаранция 12 месеца за извършената работа.",
-                            ImageUrl = "https://source.unsplash.com/800x450/?electrician,tools",
+                            CategoryId = 4,
+                            CityId = 23,
+                            CreatedAt = new DateTime(2025, 12, 5, 13, 15, 0, 0, DateTimeKind.Local),
+                            CreatorId = "00000000-0000-0000-0000-000000000003",
+                            Description = "Power rails, damaged connectors, short diagnosis. I repair DC jack, blown MOSFETs, burnt traces and do BGA reballing referrals.",
+                            ImageUrl = "https://cdn.pixabay.com/photo/2014/05/06/16/09/imac-338988_1280.jpg",
                             IsDeleted = false,
-                            Price = 45.00m,
-                            RegionId = 2,
-                            Title = "Инсталация и окабеляване за нови контакти"
+                            Price = 120.00m,
+                            RegionId = 16,
+                            Title = "Laptop motherboard repair — diagnostics + component level"
                         },
                         new
                         {
                             Id = 4,
-                            CategoryId = 4,
-                            CityId = 5,
-                            CreatedAt = new DateTime(2025, 1, 18, 13, 45, 0, 0, DateTimeKind.Local),
-                            CreatorId = "e4d0a2c9-7b6f-4d4e-0d5e-444444444444",
-                            Description = "Бърза смяна на дисплей и батерия на повечето марки. Оригинални/следпазарни части по избор.",
-                            ImageUrl = "https://source.unsplash.com/800x450/?phone-repair,smartphone",
+                            CategoryId = 5,
+                            CityId = 7,
+                            CreatedAt = new DateTime(2025, 9, 30, 11, 45, 0, 0, DateTimeKind.Local),
+                            CreatorId = "00000000-0000-0000-0000-000000000001",
+                            Description = "Original and high-quality aftermarket screens; installation and calibration. Data-safe service — backup recommended before service.",
+                            ImageUrl = "https://cdn.pixabay.com/photo/2023/10/19/12/01/technician-8326389_1280.jpg",
                             IsDeleted = false,
                             Price = 60.00m,
                             RegionId = 3,
-                            Title = "Смяна на дисплей и батерия за смартфони"
+                            Title = "Mobile phone screen replacement (all makes)"
                         },
                         new
                         {
                             Id = 5,
-                            CategoryId = 2,
-                            CityId = 6,
-                            CreatedAt = new DateTime(2025, 1, 5, 12, 0, 0, 0, DateTimeKind.Local),
-                            CreatorId = "f5e1b3da-8c7g-4e5f-1e6f-555555555555",
-                            Description = "Проверка, смяна на нагревател и термостат. Монтаж и обезвъздушаване.",
-                            ImageUrl = "https://source.unsplash.com/800x450/?water-heater,repair",
+                            CategoryId = 7,
+                            CityId = 34,
+                            CreatedAt = new DateTime(2025, 8, 10, 13, 0, 0, 0, DateTimeKind.Local),
+                            CreatorId = "00000000-0000-0000-0000-000000000004",
+                            Description = "Safe, certified wiring repairs, new socket installs, LED lighting installation and troubleshooting. I follow local electrical codes.",
+                            ImageUrl = "https://cdn.pixabay.com/photo/2015/12/07/10/49/electrician-1080554_1280.jpg",
                             IsDeleted = false,
-                            Price = 50.00m,
-                            RegionId = 4,
-                            Title = "Сервиз и монтаж на бойлери"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CategoryId = 6,
-                            CityId = 7,
-                            CreatedAt = new DateTime(2025, 2, 3, 18, 20, 0, 0, DateTimeKind.Local),
-                            CreatorId = "a6f2c4eb-9d8h-4f6g-2f7g-666666666666",
-                            Description = "Пълен тест и ремонт на контролни платки за битова и индустриална техника.",
-                            ImageUrl = "https://source.unsplash.com/800x450/?circuit-board,repair",
-                            IsDeleted = false,
-                            Price = 95.00m,
-                            RegionId = 5,
-                            Title = "Диагностика на електронни табла и управление"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CategoryId = 2,
-                            CityId = 1,
-                            CreatedAt = new DateTime(2025, 1, 29, 11, 50, 0, 0, DateTimeKind.Local),
-                            CreatorId = "c2b8e0a7-5f4d-4b2c-8b3c-222222222222",
-                            Description = "Излизане на адрес в рамките на деня за малки ремонти на кухни, печки, хладилници.",
-                            ImageUrl = "https://source.unsplash.com/800x450/?home-appliance,repair",
-                            IsDeleted = false,
-                            Price = 40.00m,
-                            RegionId = 1,
-                            Title = "Спешен техник за битови уреди (на място)"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CategoryId = 3,
-                            CityId = 4,
-                            CreatedAt = new DateTime(2025, 1, 12, 15, 5, 0, 0, DateTimeKind.Local),
-                            CreatorId = "d3c9f1b8-6a5e-4c3d-9c4d-333333333333",
-                            Description = "Професионален монтаж на електрически табла, автомати и защити. Сертифициран електротехник.",
-                            ImageUrl = "https://source.unsplash.com/800x450/?electrical-panel,installation",
-                            IsDeleted = false,
-                            Price = 120.00m,
-                            RegionId = 2,
-                            Title = "Електрически табла и защити - монтаж"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CategoryId = 1,
-                            CityId = 5,
-                            CreatedAt = new DateTime(2025, 2, 5, 14, 0, 0, 0, DateTimeKind.Local),
-                            CreatorId = "b1a7f9d6-4e3c-4a1b-9a2b-111111111111",
-                            Description = "Ремонт на дънни платки и BGA преинсталации (по договаряне).",
-                            ImageUrl = "https://source.unsplash.com/800x450/?bga,soldering",
-                            IsDeleted = false,
-                            Price = 180.00m,
-                            RegionId = 3,
-                            Title = "Запояване на BGA/микропоколения (усложнена електроника)"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CategoryId = 5,
-                            CityId = 6,
-                            CreatedAt = new DateTime(2025, 1, 8, 17, 40, 0, 0, DateTimeKind.Local),
-                            CreatorId = "e4d0a2c9-7b6f-4d4e-0d5e-444444444444",
-                            Description = "Сглобяване на мебели, монтиране на осветителни тела, окабеляване за уреди.",
-                            ImageUrl = "https://source.unsplash.com/800x450/?assembly,tools",
-                            IsDeleted = false,
-                            Price = 30.00m,
-                            RegionId = 4,
-                            Title = "Монтаж на мебели и електрически елементи"
+                            Price = 35.00m,
+                            RegionId = 25,
+                            Title = "Home electrical — small jobs, sockets, switches, lighting"
                         });
                 });
 
@@ -664,27 +761,142 @@ namespace Tehnicharche.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "София-град"
+                            Name = "Blagoevgrad"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Пловдив"
+                            Name = "Burgas"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Варна"
+                            Name = "Varna"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Бургас"
+                            Name = "Veliko Tarnovo"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Русе"
+                            Name = "Vidin"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Vratsa"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Gabrovo"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Dobrich"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Kardzhali"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Kyustendil"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Name = "Lovech"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Name = "Montana"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Name = "Pazardzhik"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Name = "Pernik"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Name = "Pleven"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Name = "Plovdiv"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Name = "Razgrad"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Name = "Ruse"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Name = "Shumen"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Name = "Silistra"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Name = "Sliven"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Name = "Smolyan"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Name = "Sofia City"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Name = "Sofia Province"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Name = "Stara Zagora"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Name = "Targovishte"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Name = "Haskovo"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Name = "Yambol"
                         });
                 });
 
