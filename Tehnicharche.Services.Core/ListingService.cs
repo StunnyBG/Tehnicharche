@@ -21,6 +21,7 @@ namespace Tehnicharche.Services.Core
         public async Task<IEnumerable<ListingIndexViewModel>> GetAllListingsAsync(string? userId)
         {
             return await context.Listings
+                .AsNoTracking()
                 .Where(l => !l.IsDeleted)
                 .Select(l => new ListingIndexViewModel
                 {
@@ -37,7 +38,10 @@ namespace Tehnicharche.Services.Core
        
         public async Task<ListingIndexViewModel?> GetListingByIdAsync(int id)
         {
-            var listing = await context.Listings.Where(l => !l.IsDeleted).FirstOrDefaultAsync(l => l.Id == id);
+            var listing = await context.Listings
+                .AsNoTracking()
+                .Where(l => !l.IsDeleted)
+                .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null)
             {
@@ -61,6 +65,7 @@ namespace Tehnicharche.Services.Core
         public async Task<IEnumerable<ListingIndexViewModel>> GetListingsByUserAsync(string userId)
         {
             return await context.Listings
+                .AsNoTracking()
                 .Where(l => !l.IsDeleted && l.CreatorId == userId)
                 .Select(l => new ListingIndexViewModel
                 {
@@ -79,6 +84,7 @@ namespace Tehnicharche.Services.Core
         public async Task<ListingDetailsViewModel> GetListingDetailsByIdAsync(int id)
         {
             var listing = await context.Listings
+                .AsNoTracking()
                 .Include(l => l.Category)
                 .Include(l => l.Region)
                 .Include(l => l.City)
@@ -156,7 +162,10 @@ namespace Tehnicharche.Services.Core
 
             if (model.CityId != null)
             {
-                var city = await context.Cities.Include(c => c.Region).FirstOrDefaultAsync(c => c.Id == model.CityId);
+                var city = await context.Cities
+                    .AsNoTracking()
+                    .Include(c => c.Region)
+                    .FirstOrDefaultAsync(c => c.Id == model.CityId);
                 
                 if (city == null)
                 {
@@ -181,13 +190,14 @@ namespace Tehnicharche.Services.Core
                 CreatedAt = DateTime.UtcNow
             };
 
-            context.Listings.Add(listing);
+            await context.Listings.AddAsync(listing);
             await context.SaveChangesAsync();
         }
      
         public async Task<ListingEditViewModel> GetListingEditAsync(int id, string userId)
         {
             var listing = await context.Listings
+                            .AsNoTracking()
                             .Include(l => l.Category)
                             .Include(l => l.Region)
                             .Include(l => l.City)
@@ -229,7 +239,9 @@ namespace Tehnicharche.Services.Core
       
         public async Task EditListingAsync(ListingEditViewModel model, string userId)
         {
-            var listing = await context.Listings.Where(l => !l.IsDeleted).FirstOrDefaultAsync(l => l.Id == model.Id);
+            var listing = await context.Listings
+                .Where(l => !l.IsDeleted)
+                .FirstOrDefaultAsync(l => l.Id == model.Id);
 
             if (listing == null)
             {
@@ -267,10 +279,18 @@ namespace Tehnicharche.Services.Core
 
             if (model.CityId != null)
             {
-                bool cityExists = await context.Cities.AnyAsync(c => c.Id == model.CityId);
-                if (!cityExists)
+                var city = await context.Cities
+                    .AsNoTracking()
+                    .Include(c => c.Region)
+                    .FirstOrDefaultAsync(c => c.Id == model.CityId);
+
+                if (city == null)
                 {
                     throw new InvalidOperationException("Invalid city id");
+                }
+                if (city.Region.Id != model.RegionId)
+                {
+                    throw new InvalidOperationException("City is not from this region");
                 }
             }
 
@@ -288,7 +308,9 @@ namespace Tehnicharche.Services.Core
       
         public async Task DeleteListingAsync(int id, string userId)
         {
-            var listing = await context.Listings.Where(l => !l.IsDeleted).FirstOrDefaultAsync(l => l.Id == id);
+            var listing = await context.Listings
+                .Where(l => !l.IsDeleted)
+                .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null)
             {
@@ -306,7 +328,10 @@ namespace Tehnicharche.Services.Core
       
         public async Task<ListingDeleteViewModel> GetListingDeleteDetailsAsync(int id, string userId)
         {
-            var listing = await context.Listings.Where(l => !l.IsDeleted).FirstOrDefaultAsync(l => l.Id == id);
+            var listing = await context.Listings
+                .AsNoTracking()
+                .Where(l => !l.IsDeleted)
+                .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null)
             {
@@ -330,6 +355,7 @@ namespace Tehnicharche.Services.Core
         public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
         {
             return await context.Categories
+                .AsNoTracking()
                 .Select(c => new CategoryViewModel
                 {
                     Id = c.Id,
@@ -341,6 +367,7 @@ namespace Tehnicharche.Services.Core
         public async Task<IEnumerable<CityViewModel>> GetAllCitiesAsync()
         {
             return await context.Cities
+                .AsNoTracking()
                 .Select(c => new CityViewModel
                 {
                     Id = c.Id,
@@ -353,6 +380,7 @@ namespace Tehnicharche.Services.Core
         public async Task<IEnumerable<RegionViewModel>> GetAllRegionsAsync()
         {
             return await context.Regions
+                .AsNoTracking()
                 .Select(r => new RegionViewModel
                 {
                     Id = r.Id,
