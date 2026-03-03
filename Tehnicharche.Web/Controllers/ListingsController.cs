@@ -111,7 +111,7 @@ namespace Tehnicharche.Web.Controllers
             }
             catch (UnauthorizedAccessException)
             {
-                return Unauthorized();
+                return Forbid();
             }
             catch (InvalidOperationException)
             {
@@ -142,7 +142,7 @@ namespace Tehnicharche.Web.Controllers
             }
             catch (UnauthorizedAccessException)
             {
-                return Unauthorized();
+                return Forbid();
             }
             catch (InvalidOperationException ex)
             {
@@ -173,7 +173,7 @@ namespace Tehnicharche.Web.Controllers
             }
             catch (UnauthorizedAccessException)
             {
-                return Unauthorized();
+                return Forbid();
             }
             catch (InvalidOperationException)
             {
@@ -194,7 +194,7 @@ namespace Tehnicharche.Web.Controllers
             }
             catch (UnauthorizedAccessException)
             {
-                return Unauthorized();
+                return Forbid();
             }
             catch (ArgumentException)
             {

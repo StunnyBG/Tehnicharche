@@ -44,6 +44,8 @@ namespace Tehnicharche.Web
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
