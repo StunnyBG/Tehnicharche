@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using Tehnicharche.GCommon;
 using static Tehnicharche.GCommon.ValidationConstants.Listing;
 
 namespace Tehnicharche.ViewModels
@@ -15,7 +16,8 @@ namespace Tehnicharche.ViewModels
         public string? Description { get; set; }
 
         [Required]
-        public string Price { get; set; } = null!;
+        [Price(PriceMinValue, PriceMaxValue)]
+        public decimal Price { get; set; }
 
         [Required]
         public int? CategoryId { get; set; }

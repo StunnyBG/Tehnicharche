@@ -80,17 +80,8 @@ namespace Tehnicharche.Web.Controllers
 
             try
             {
-                
                 await listingService.AddListingAsync(model, UserId);
                 return RedirectToAction(nameof(Index));
-            }
-            catch (FormatException ex)
-            {
-                ModelState.AddModelError(nameof(model.Price), ex.Message);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                ModelState.AddModelError(nameof(model.Price), ex.Message);
             }
             catch (InvalidOperationException ex)
             {
@@ -146,7 +137,6 @@ namespace Tehnicharche.Web.Controllers
 
             try
             {
-                
                 await listingService.EditListingAsync(model, UserId);
                 return RedirectToAction(nameof(Details), new { id = model.Id });
             }
@@ -157,14 +147,6 @@ namespace Tehnicharche.Web.Controllers
             catch (InvalidOperationException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
-            }
-            catch (FormatException ex)
-            {
-                ModelState.AddModelError(nameof(model.Price), ex.Message);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                ModelState.AddModelError(nameof(model.Price), ex.Message);
             }
             catch (Exception)
             {

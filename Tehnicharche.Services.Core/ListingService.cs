@@ -136,16 +136,6 @@ namespace Tehnicharche.Services.Core
       
         public async Task AddListingAsync(ListingCreateViewModel model, string creatorId)
         {
-            if (!decimal.TryParse(model.Price, out decimal price))
-            {
-                throw new FormatException("Price is not a valid decimal.");
-            }
-
-            if (price < PriceMinValue || price > PriceMaxValue)
-            {
-                throw new ArgumentOutOfRangeException($"Price must be between {PriceMaxValue} and {PriceMaxValue}.");
-            }
-
             bool categoryExists = await context.Categories.AnyAsync(c => c.Id == model.CategoryId);
 
             if (!categoryExists)
@@ -181,7 +171,7 @@ namespace Tehnicharche.Services.Core
             {
                 Title = model.Title,
                 Description = model.Description,
-                Price = price,
+                Price = model.Price,
                 CategoryId = (int)model.CategoryId!,
                 RegionId = (int)model.RegionId!,
                 CityId = model.CityId,
@@ -224,7 +214,7 @@ namespace Tehnicharche.Services.Core
                 Id = listing.Id,
                 Title = listing.Title,
                 Description = listing.Description,
-                Price = listing.Price.ToString(),
+                Price = listing.Price,
                 CategoryId = listing.Category.Id,
                 RegionId = listing.Region.Id,
                 CityId = listing.CityId,
@@ -251,16 +241,6 @@ namespace Tehnicharche.Services.Core
             if (listing.CreatorId != userId)
             {
                 throw new UnauthorizedAccessException("You are not authorized to make this action.");
-            }
-
-            if (!decimal.TryParse(model.Price, out decimal price))
-            {
-                throw new FormatException("Price is not a valid decimal.");
-            }
-
-            if (price < PriceMinValue || price > PriceMaxValue)
-            {
-                throw new ArgumentOutOfRangeException($"Price must be between {PriceMinValue} and {PriceMaxValue}.");
             }
 
             bool categoryExists = await context.Categories.AnyAsync(c => c.Id == model.CategoryId);
@@ -296,7 +276,7 @@ namespace Tehnicharche.Services.Core
 
             listing.Title = model.Title;
             listing.Description = model.Description;
-            listing.Price = price;
+            listing.Price = model.Price;
             listing.CategoryId = (int)model.CategoryId!;
             listing.RegionId = (int)model.RegionId!;
             listing.CityId = model.CityId;

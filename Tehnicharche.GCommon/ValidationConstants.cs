@@ -29,8 +29,8 @@ namespace Tehnicharche.GCommon
 
             // Price
             public const string PriceColumnType = "decimal(9,2)";
-            public const decimal PriceMinValue = 0.01m;
-            public const decimal PriceMaxValue = 9999999.99m;
+            public const double PriceMinValue = 0.01;
+            public const double PriceMaxValue = 9999999.99;
 
             // Image URL
             public const int ImageUrlMaxLength = 2048;
