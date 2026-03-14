@@ -24,10 +24,16 @@ namespace Tehnicharche.Web.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] ListingQueryModel query)
         {
-            var model = await listingService.GetAllListingsAsync(UserId);
-            return View(model);
+            query = await listingService.GetIndexListingsAsync(query);
+
+            if (!ModelState.IsValid)
+            {
+                query.Listings = Enumerable.Empty<ListingIndexViewModel>();
+            }
+
+            return View(query);
         }
 
         [AllowAnonymous]

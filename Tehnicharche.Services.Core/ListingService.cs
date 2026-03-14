@@ -4,7 +4,6 @@ using Tehnicharche.Data;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Services.Core.Interfaces;
 using Tehnicharche.ViewModels;
-using static Tehnicharche.GCommon.ValidationConstants.Listing;
 using static Tehnicharche.GCommon.ApplicationConstants;
 
 namespace Tehnicharche.Services.Core
@@ -17,12 +16,52 @@ namespace Tehnicharche.Services.Core
         {
             this.context = context;
         }
-        
-        public async Task<IEnumerable<ListingIndexViewModel>> GetAllListingsAsync(string? userId)
+
+        public async Task<ListingQueryModel> GetIndexListingsAsync(ListingQueryModel query)
         {
-            return await context.Listings
+            query.Page = query.Page <= 0 ? DefaultPage : query.Page;
+
+            var listingsQuery = context.Listings
                 .AsNoTracking()
-                .Where(l => !l.IsDeleted)
+                .Include(l => l.Category)
+                .Include(l => l.Region)
+                .Include(l => l.City)
+                .AsQueryable();
+
+            if (query.CategoryId.HasValue)
+                listingsQuery = listingsQuery.Where(l => l.CategoryId == query.CategoryId.Value);
+
+            if (query.RegionId.HasValue)
+                listingsQuery = listingsQuery.Where(l => l.RegionId == query.RegionId.Value);
+
+            if (query.CityId.HasValue)
+                listingsQuery = listingsQuery.Where(l => l.CityId == query.CityId.Value);
+
+            if (query.MinPrice.HasValue)
+                listingsQuery = listingsQuery.Where(l => l.Price >= query.MinPrice.Value);
+
+            if (query.MaxPrice.HasValue)
+                listingsQuery = listingsQuery.Where(l => l.Price <= query.MaxPrice.Value);
+
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                var words = query.SearchTerm.Trim().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var word in words)
+                {
+                    var temp = word;
+                    listingsQuery = listingsQuery.Where(l =>
+                        l.Title.Contains(temp) ||
+                        (l.Description ?? "").Contains(temp));
+                }
+            }
+
+            query.TotalListings = await listingsQuery.CountAsync();
+
+            query.Listings = await listingsQuery
+                .OrderBy(l => l.Id)
+                .Skip((query.Page - 1) * PageSize)
+                .Take(PageSize)
                 .Select(l => new ListingIndexViewModel
                 {
                     Id = l.Id,
@@ -34,13 +73,18 @@ namespace Tehnicharche.Services.Core
                     ImageUrl = l.ImageUrl
                 })
                 .ToListAsync();
+
+            query.Categories = await GetAllCategoriesAsync();
+            query.Regions = await GetAllRegionsAsync();
+            query.Cities = await GetAllCitiesAsync();
+
+            return query;
         }
-       
+
         public async Task<ListingIndexViewModel?> GetListingByIdAsync(int id)
         {
             var listing = await context.Listings
                 .AsNoTracking()
-                .Where(l => !l.IsDeleted)
                 .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null)
@@ -66,7 +110,7 @@ namespace Tehnicharche.Services.Core
         {
             return await context.Listings
                 .AsNoTracking()
-                .Where(l => !l.IsDeleted && l.CreatorId == userId)
+                .Where(l => l.CreatorId == userId)
                 .Select(l => new ListingIndexViewModel
                 {
                     Id = l.Id,
@@ -89,7 +133,6 @@ namespace Tehnicharche.Services.Core
                 .Include(l => l.Region)
                 .Include(l => l.City)
                 .Include(l => l.Creator)
-                .Where(l => !l.IsDeleted)
                 .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null)
@@ -150,18 +193,17 @@ namespace Tehnicharche.Services.Core
                 throw new InvalidOperationException("Invalid region id");
             }
 
-            if (model.CityId != null)
+            if (model.CityId.HasValue)
             {
                 var city = await context.Cities
                     .AsNoTracking()
-                    .Include(c => c.Region)
                     .FirstOrDefaultAsync(c => c.Id == model.CityId);
                 
                 if (city == null)
                 {
                     throw new InvalidOperationException("Invalid city id");
                 }
-                if (city.Region.Id != model.RegionId)
+                if (city.RegionId != model.RegionId)
                 {
                     throw new InvalidOperationException("City is not from this region");
                 }
@@ -172,8 +214,8 @@ namespace Tehnicharche.Services.Core
                 Title = model.Title,
                 Description = model.Description,
                 Price = model.Price,
-                CategoryId = (int)model.CategoryId!,
-                RegionId = (int)model.RegionId!,
+                CategoryId = model.CategoryId!.Value,
+                RegionId = model.RegionId!.Value,
                 CityId = model.CityId,
                 ImageUrl = model.ImageUrl,
                 CreatorId = creatorId,
@@ -188,11 +230,6 @@ namespace Tehnicharche.Services.Core
         {
             var listing = await context.Listings
                             .AsNoTracking()
-                            .Include(l => l.Category)
-                            .Include(l => l.Region)
-                            .Include(l => l.City)
-                            .Include(l => l.Creator)
-                            .Where(l => !l.IsDeleted)
                             .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null)
@@ -215,8 +252,8 @@ namespace Tehnicharche.Services.Core
                 Title = listing.Title,
                 Description = listing.Description,
                 Price = listing.Price,
-                CategoryId = listing.Category.Id,
-                RegionId = listing.Region.Id,
+                CategoryId = listing.CategoryId,
+                RegionId = listing.RegionId,
                 CityId = listing.CityId,
                 ImageUrl = listing.ImageUrl,
                 Categories = categories,
@@ -230,7 +267,6 @@ namespace Tehnicharche.Services.Core
         public async Task EditListingAsync(ListingEditViewModel model, string userId)
         {
             var listing = await context.Listings
-                .Where(l => !l.IsDeleted)
                 .FirstOrDefaultAsync(l => l.Id == model.Id);
 
             if (listing == null)
@@ -257,18 +293,17 @@ namespace Tehnicharche.Services.Core
                 throw new InvalidOperationException("Invalid region id");
             }
 
-            if (model.CityId != null)
+            if (model.CityId.HasValue)
             {
                 var city = await context.Cities
                     .AsNoTracking()
-                    .Include(c => c.Region)
                     .FirstOrDefaultAsync(c => c.Id == model.CityId);
 
                 if (city == null)
                 {
                     throw new InvalidOperationException("Invalid city id");
                 }
-                if (city.Region.Id != model.RegionId)
+                if (city.RegionId != model.RegionId)
                 {
                     throw new InvalidOperationException("City is not from this region");
                 }
@@ -277,8 +312,8 @@ namespace Tehnicharche.Services.Core
             listing.Title = model.Title;
             listing.Description = model.Description;
             listing.Price = model.Price;
-            listing.CategoryId = (int)model.CategoryId!;
-            listing.RegionId = (int)model.RegionId!;
+            listing.CategoryId = model.CategoryId!.Value;
+            listing.RegionId = model.RegionId!.Value;
             listing.CityId = model.CityId;
             listing.ImageUrl = model.ImageUrl;
             listing.UpdatedAt = DateTime.UtcNow;
@@ -289,7 +324,6 @@ namespace Tehnicharche.Services.Core
         public async Task DeleteListingAsync(int id, string userId)
         {
             var listing = await context.Listings
-                .Where(l => !l.IsDeleted)
                 .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null)
@@ -310,7 +344,6 @@ namespace Tehnicharche.Services.Core
         {
             var listing = await context.Listings
                 .AsNoTracking()
-                .Where(l => !l.IsDeleted)
                 .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null)

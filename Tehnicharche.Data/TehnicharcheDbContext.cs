@@ -21,6 +21,9 @@ namespace Tehnicharche.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Listing>()
+                .HasQueryFilter(l => !l.IsDeleted);
+
             modelBuilder.Entity<Region>().HasData(
                 new Region { Id = 1, Name = "Blagoevgrad" },
                 new Region { Id = 2, Name = "Burgas" },

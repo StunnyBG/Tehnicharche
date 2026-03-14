@@ -5,7 +5,7 @@ namespace Tehnicharche.Services.Core.Interfaces
 {
     public interface IListingService
     {
-        Task<IEnumerable<ListingIndexViewModel>> GetAllListingsAsync(string? userId);
+        Task<ListingQueryModel> GetIndexListingsAsync(ListingQueryModel query);
 
         Task<ListingIndexViewModel?> GetListingByIdAsync(int id);
 
