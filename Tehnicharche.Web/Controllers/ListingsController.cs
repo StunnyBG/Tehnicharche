@@ -95,9 +95,9 @@ namespace Tehnicharche.Web.Controllers
                 await listingService.AddListingAsync(model, UserId);
                 return RedirectToAction("MyListings");
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                return BadRequest();
             }
             catch (Exception)
             {
@@ -156,9 +156,9 @@ namespace Tehnicharche.Web.Controllers
             {
                 return Forbid();
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                return BadRequest();
             }
             catch (Exception)
             {
