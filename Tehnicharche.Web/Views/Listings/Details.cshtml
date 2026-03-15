@@ -20,6 +20,8 @@
                 @Model.Price €
             </p>
 
+            <hr />
+
             <p>
                 <strong>Category:</strong> @Model.CategoryName
             </p>
@@ -32,6 +34,11 @@
                     <span> - @Model.CityName</span>
                 }
             </p>
+
+            <div class="text-muted small">
+                <div><strong>Created:</strong> @Model.CreatedAt</div>
+                <div><strong>Last Updated:</strong> @Model.UpdatedAt</div>
+            </div>
 
             <hr />
 

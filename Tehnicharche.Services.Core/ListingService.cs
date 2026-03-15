@@ -59,7 +59,7 @@ namespace Tehnicharche.Services.Core
             query.TotalListings = await listingsQuery.CountAsync();
 
             query.Listings = await listingsQuery
-                .OrderBy(l => l.Id)
+                .OrderBy(l => l.UpdatedAt)
                 .Skip((query.Page - 1) * IndexPageSize)
                 .Take(IndexPageSize)
                 .Select(l => new ListingIndexViewModel
@@ -131,7 +131,7 @@ namespace Tehnicharche.Services.Core
             query.TotalListings = await listingsQuery.CountAsync();
 
             query.Listings = await listingsQuery
-                .OrderByDescending(l => l.Id)
+                .OrderBy(l => l.UpdatedAt)
                 .Skip((query.Page - 1) * MyListingsPageSize)
                 .Take(MyListingsPageSize)
                 .Select(l => new ListingIndexViewModel
@@ -180,7 +180,7 @@ namespace Tehnicharche.Services.Core
                 CreatorPhoneNumber = listing.Creator?.PhoneNumber,
                 CreatorId = listing.CreatorId!,
                 CreatedAt = listing.CreatedAt.ToString(DateFormat),
-                UpdatedAt = listing.UpdatedAt?.ToString(DateFormat) ?? listing.CreatedAt.ToString(DateFormat)
+                UpdatedAt = listing.UpdatedAt.ToString(DateFormat)
             };
 
             return model;
@@ -243,8 +243,7 @@ namespace Tehnicharche.Services.Core
                 RegionId = model.RegionId!.Value,
                 CityId = model.CityId,
                 ImageUrl = model.ImageUrl,
-                CreatorId = creatorId,
-                CreatedAt = DateTime.UtcNow
+                CreatorId = creatorId
             };
 
             await context.Listings.AddAsync(listing);
