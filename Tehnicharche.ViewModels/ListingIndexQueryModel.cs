@@ -6,7 +6,7 @@ using static Tehnicharche.GCommon.ValidationConstants.Listing;
 namespace Tehnicharche.ViewModels
 {
     [PriceRange(PriceMinValue, PriceMaxValue)]
-    public class ListingQueryModel
+    public class ListingIndexQueryModel
     {
         public int Page { get; set; } = DefaultPage;
 
@@ -25,7 +25,7 @@ namespace Tehnicharche.ViewModels
         public int TotalListings { get; set; }
 
         public int TotalPages =>
-            (int)Math.Ceiling((double)TotalListings / PageSize);
+            (int)Math.Ceiling((double)TotalListings / IndexPageSize);
 
         public IEnumerable<ListingIndexViewModel> Listings { get; set; }
             = new List<ListingIndexViewModel>();

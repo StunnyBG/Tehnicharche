@@ -24,7 +24,7 @@ namespace Tehnicharche.Web.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Index([FromQuery] ListingQueryModel query)
+        public async Task<IActionResult> Index([FromQuery] ListingIndexQueryModel query)
         {
             query = await listingService.GetIndexListingsAsync(query);
 
@@ -52,15 +52,21 @@ namespace Tehnicharche.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> MyListings()
+        public async Task<IActionResult> MyListings([FromQuery] MyListingsQueryModel query)
         {
             if (string.IsNullOrEmpty(UserId))
             {
                 return RedirectToAction("Login", "Account");
             }
 
-            var listings = await listingService.GetListingsByUserAsync(UserId);
-            return View("MyListings", listings);
+            query = await listingService.GetMyListingsAsync(query, UserId);
+
+            if (!ModelState.IsValid)
+            {
+                query.Listings = Enumerable.Empty<ListingIndexViewModel>();
+            }
+
+            return View(query);
         }
 
         [HttpGet]
@@ -87,7 +93,7 @@ namespace Tehnicharche.Web.Controllers
             try
             {
                 await listingService.AddListingAsync(model, UserId);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("MyListings");
             }
             catch (InvalidOperationException ex)
             {

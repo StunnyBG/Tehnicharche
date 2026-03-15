@@ -17,7 +17,7 @@ namespace Tehnicharche.Services.Core
             this.context = context;
         }
 
-        public async Task<ListingQueryModel> GetIndexListingsAsync(ListingQueryModel query)
+        public async Task<ListingIndexQueryModel> GetIndexListingsAsync(ListingIndexQueryModel query)
         {
             query.Page = query.Page <= 0 ? DefaultPage : query.Page;
 
@@ -60,8 +60,8 @@ namespace Tehnicharche.Services.Core
 
             query.Listings = await listingsQuery
                 .OrderBy(l => l.Id)
-                .Skip((query.Page - 1) * PageSize)
-                .Take(PageSize)
+                .Skip((query.Page - 1) * IndexPageSize)
+                .Take(IndexPageSize)
                 .Select(l => new ListingIndexViewModel
                 {
                     Id = l.Id,
@@ -106,11 +106,34 @@ namespace Tehnicharche.Services.Core
             return model;
         }
 
-        public async Task<IEnumerable<ListingIndexViewModel>> GetListingsByUserAsync(string userId)
+        public async Task<MyListingsQueryModel> GetMyListingsAsync(MyListingsQueryModel query, string creatorId)
         {
-            return await context.Listings
+            query.Page = query.Page <= 0 ? DefaultPage : query.Page;
+
+            var listingsQuery = context.Listings
                 .AsNoTracking()
-                .Where(l => l.CreatorId == userId)
+                .AsQueryable()
+                .Where(l => l.CreatorId == creatorId);
+
+            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            {
+                var words = query.SearchTerm.Trim().Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var word in words)
+                {
+                    var temp = word;
+                    listingsQuery = listingsQuery.Where(l =>
+                        l.Title.Contains(temp) ||
+                        (l.Description ?? "").Contains(temp));
+                }
+            }
+
+            query.TotalListings = await listingsQuery.CountAsync();
+
+            query.Listings = await listingsQuery
+                .OrderByDescending(l => l.Id)
+                .Skip((query.Page - 1) * MyListingsPageSize)
+                .Take(MyListingsPageSize)
                 .Select(l => new ListingIndexViewModel
                 {
                     Id = l.Id,
@@ -122,6 +145,8 @@ namespace Tehnicharche.Services.Core
                     ImageUrl = l.ImageUrl
                 })
                 .ToListAsync();
+
+            return query;
         }
 
 

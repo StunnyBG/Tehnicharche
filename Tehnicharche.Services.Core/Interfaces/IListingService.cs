@@ -5,12 +5,12 @@ namespace Tehnicharche.Services.Core.Interfaces
 {
     public interface IListingService
     {
-        Task<ListingQueryModel> GetIndexListingsAsync(ListingQueryModel query);
+        Task<ListingIndexQueryModel> GetIndexListingsAsync(ListingIndexQueryModel query);
 
         Task<ListingIndexViewModel?> GetListingByIdAsync(int id);
 
-        Task<IEnumerable<ListingIndexViewModel>> GetListingsByUserAsync(string userId);
-
+        Task<MyListingsQueryModel> GetMyListingsAsync(MyListingsQueryModel query, string creatorId);
+        
         Task<ListingDetailsViewModel> GetListingDetailsByIdAsync(int id);
 
         Task<ListingCreateViewModel> GetListingCreateViewModelAsync();
