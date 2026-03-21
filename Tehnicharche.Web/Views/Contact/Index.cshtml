@@ -1,0 +1,172 @@
+@model Tehnicharche.ViewModels.ContactFormViewModel
+
+@{
+    ViewData["Title"] = "Contact";
+}
+
+<div class="container py-4">
+
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="fw-bold mb-2">Contact Us</h1>
+            <p class="text-muted lead">
+                Have a question, suggestion, or issue to report? We'd love to hear from you.
+            </p>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="row mb-4">
+            <div class="col-lg-8 mx-auto">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Message sent!</strong> @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="row g-4">
+
+        <!-- Contact Info -->
+        <div class="col-lg-4">
+
+            <div class="card border-0 shadow-sm h-100 p-4">
+                <h4 class="fw-bold mb-4">Get in Touch</h4>
+
+                <div class="d-flex gap-3 mb-4">
+                    <div class="fs-4">📧</div>
+                    <div>
+                        <div class="fw-semibold">Email</div>
+                        <div class="text-muted small">support@tehnicharche.bg</div>
+                        <div class="text-muted small">(placeholder)</div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 mb-4">
+                    <div class="fs-4">💬</div>
+                    <div>
+                        <div class="fw-semibold">GitHub Issues</div>
+                        <div class="text-muted small">
+                            For bugs and feature requests, open an issue on our
+                            <a href="https://github.com/StunnyBG/Tehnicharche" target="_blank">GitHub repository</a>.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 mb-4">
+                    <div class="fs-4">⏱️</div>
+                    <div>
+                        <div class="fw-semibold">Response Time</div>
+                        <div class="text-muted small">We aim to respond within 1–2 business days.</div>
+                    </div>
+                </div>
+
+                <hr />
+
+                <h6 class="fw-bold mb-3">Frequently Asked Questions</h6>
+
+                <div class="mb-3">
+                    <p class="fw-semibold mb-1 small">Is the platform free to use?</p>
+                    <p class="text-muted small">Yes — Tehnicharche is completely free for both service providers and customers.</p>
+                </div>
+
+                <div class="mb-3">
+                    <p class="fw-semibold mb-1 small">How do I create a listing?</p>
+                    <p class="text-muted small">Register an account, log in, and click "Create Listing" from the Listings page.</p>
+                </div>
+
+                <div>
+                    <p class="fw-semibold mb-1 small">Can I edit or delete my listing?</p>
+                    <p class="text-muted small">Yes. Visit "My Listings" from the navigation menu to manage all your listings.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm p-4">
+                <h4 class="fw-bold mb-1">Send a Message</h4>
+                <p class="text-muted small mb-4">
+                    This form is a placeholder — submissions are not currently processed or stored.
+                </p>
+
+                <form asp-action="Index" method="post">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" placeholder="John Doe" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" placeholder="you@example.com" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="PhoneNumber" class="form-label">
+                                Phone Number <span class="text-muted">(optional)</span>
+                            </label>
+                            <input asp-for="PhoneNumber" class="form-control" placeholder="+359 88 123 4567" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Subject" class="form-label"></label>
+                            <select asp-for="Subject" class="form-select">
+                                <option value="">-- Select a subject --</option>
+                                <option value="General Inquiry">General Inquiry</option>
+                                <option value="Report a Bug">Report a Bug</option>
+                                <option value="Feature Request">Feature Request</option>
+                                <option value="Account Issue">Account Issue</option>
+                                <option value="Listing Issue">Listing Issue</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span asp-validation-for="Subject" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="Message" class="form-label"></label>
+                            <textarea asp-for="Message"
+                                      class="form-control"
+                                      rows="6"
+                                      placeholder="Describe your question or issue in detail..."></textarea>
+                            <div class="d-flex justify-content-between">
+                                <span asp-validation-for="Message" class="text-danger small"></span>
+                                <span class="text-muted small mt-1">Max 2000 characters</span>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="alert alert-info small mb-0" role="alert">
+                                ℹ️ <strong>Note:</strong> This is a demo form. Your message will not be sent or stored anywhere.
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success px-4">
+                                Send Message
+                            </button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary ms-2">
+                                Cancel
+                            </a>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

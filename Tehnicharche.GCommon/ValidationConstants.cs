@@ -36,5 +36,24 @@ namespace Tehnicharche.GCommon
             public const int ImageUrlMaxLength = 2048;
 
         }
+
+        public static class ContactForm
+        {
+            // Name
+            public const int NameMaxLength = 100;
+
+            // Email
+            public const int EmailMaxLength = 256;
+
+            // Phone number
+            public const int PhoneNumberMaxLength = 20;
+
+            // Subject
+            public const int SubjectMaxLength = 150;
+
+            // Message
+            public const int MessageMaxLength = 2000;
+            public const int MessageMinLength = 10;
+        }
     }
 }
