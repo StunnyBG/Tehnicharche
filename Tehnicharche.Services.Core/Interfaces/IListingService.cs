@@ -7,8 +7,6 @@ namespace Tehnicharche.Services.Core.Interfaces
     {
         Task<ListingIndexQueryModel> GetIndexListingsAsync(ListingIndexQueryModel query);
 
-        Task<ListingIndexViewModel?> GetListingByIdAsync(int id);
-
         Task<MyListingsQueryModel> GetMyListingsAsync(MyListingsQueryModel query, string creatorId);
         
         Task<ListingDetailsViewModel> GetListingDetailsByIdAsync(int id);

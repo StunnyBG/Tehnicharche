@@ -81,31 +81,6 @@ namespace Tehnicharche.Services.Core
             return query;
         }
 
-        public async Task<ListingIndexViewModel?> GetListingByIdAsync(int id)
-        {
-            var listing = await context.Listings
-                .AsNoTracking()
-                .FirstOrDefaultAsync(l => l.Id == id);
-
-            if (listing == null)
-            {
-                throw new InvalidOperationException("Listing not found.");
-            }
-
-            ListingIndexViewModel model = new ListingIndexViewModel
-            {
-                Id = listing.Id,
-                Title = listing.Title,
-                Price = listing.Price.ToString(),
-                CategoryName = listing.Category.Name,
-                RegionName = listing.Region.Name,
-                CityName = listing.City.Name,
-                ImageUrl = listing.ImageUrl
-            };
-
-            return model;
-        }
-
         public async Task<MyListingsQueryModel> GetMyListingsAsync(MyListingsQueryModel query, string creatorId)
         {
             query.Page = query.Page <= 0 ? DefaultPage : query.Page;

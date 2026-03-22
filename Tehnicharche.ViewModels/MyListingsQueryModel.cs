@@ -12,7 +12,7 @@ namespace Tehnicharche.ViewModels
         public int TotalListings { get; set; }
 
         public int TotalPages =>
-            (int)Math.Ceiling((double)TotalListings / IndexPageSize);
+            (int)Math.Ceiling((double)TotalListings / MyListingsPageSize);
 
         public IEnumerable<ListingIndexViewModel> Listings { get; set; }
             = new List<ListingIndexViewModel>();
