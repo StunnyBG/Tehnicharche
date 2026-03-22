@@ -26,6 +26,8 @@ namespace Tehnicharche.Web
                 })
                 .AddEntityFrameworkStores<TehnicharcheDbContext>();
 
+            builder.Services.AddMemoryCache();
+
             builder.Services.AddScoped<IListingService, ListingService>();
 
             builder.Services.AddControllersWithViews();

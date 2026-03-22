@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Tehnicharche.Data;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Services.Core.Interfaces;
@@ -11,10 +12,15 @@ namespace Tehnicharche.Services.Core
     public class ListingService : IListingService
     {
         private readonly TehnicharcheDbContext context;
+        private readonly IMemoryCache cache;
+        private const string CategoriesCacheKey = "Categories:All";
+        private const string RegionsCacheKey = "Regions:All";
+        private const string CitiesCacheKey = "Cities:All";
 
-        public ListingService(TehnicharcheDbContext context)
+        public ListingService(TehnicharcheDbContext context, IMemoryCache cache)
         {
             this.context = context;
+            this.cache = cache;
         }
 
         public async Task<ListingIndexQueryModel> GetIndexListingsAsync(ListingIndexQueryModel query)
@@ -358,7 +364,12 @@ namespace Tehnicharche.Services.Core
 
         public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
         {
-            return await context.Categories
+            if (cache.TryGetValue(CategoriesCacheKey, out IEnumerable<CategoryViewModel>? cachedCategories))
+            {
+                return cachedCategories!;
+            }
+
+            var categories = await context.Categories
                 .AsNoTracking()
                 .Select(c => new CategoryViewModel
                 {
@@ -366,11 +377,39 @@ namespace Tehnicharche.Services.Core
                     Name = c.Name
                 })
                 .ToListAsync();
+
+            cache.Set(CategoriesCacheKey, categories, TimeSpan.FromHours(6));
+            return categories;
+        }
+
+        public async Task<IEnumerable<RegionViewModel>> GetAllRegionsAsync()
+        {
+            if (cache.TryGetValue(RegionsCacheKey, out IEnumerable<RegionViewModel>? cachedRegions))
+            {
+                return cachedRegions!;
+            }
+
+            var regions = await context.Regions
+                .AsNoTracking()
+                .Select(r => new RegionViewModel
+                {
+                    Id = r.Id,
+                    Name = r.Name
+                })
+                .ToListAsync();
+
+            cache.Set(RegionsCacheKey, regions, TimeSpan.FromHours(6));
+            return regions;
         }
 
         public async Task<IEnumerable<CityViewModel>> GetAllCitiesAsync()
         {
-            return await context.Cities
+            if (cache.TryGetValue(CitiesCacheKey, out IEnumerable<CityViewModel>? cachedCities))
+            {
+                return cachedCities!;
+            }
+
+            var cities = await context.Cities
                 .AsNoTracking()
                 .Select(c => new CityViewModel
                 {
@@ -379,18 +418,9 @@ namespace Tehnicharche.Services.Core
                     RegionId = c.RegionId
                 })
                 .ToListAsync();
-        }
 
-        public async Task<IEnumerable<RegionViewModel>> GetAllRegionsAsync()
-        {
-            return await context.Regions
-                .AsNoTracking()
-                .Select(r => new RegionViewModel
-                {
-                    Id = r.Id,
-                    Name = r.Name
-                })
-                .ToListAsync();
+            cache.Set(CitiesCacheKey, cities, TimeSpan.FromHours(6));
+            return cities;
         }
     }
 }
