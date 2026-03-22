@@ -45,15 +45,11 @@ namespace Tehnicharche.Services.Core
 
             if (!string.IsNullOrWhiteSpace(query.SearchTerm))
             {
-                var words = query.SearchTerm.Trim().Split(" ", StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var word in words)
-                {
-                    var temp = word;
-                    listingsQuery = listingsQuery.Where(l =>
-                        l.Title.Contains(temp) ||
-                        (l.Description ?? "").Contains(temp));
-                }
+                var searchTerm = query.SearchTerm.Trim().ToLower();
+                listingsQuery = listingsQuery.Where(l =>
+                    EF.Functions.Like(l.Title.ToLower(), $"%{searchTerm}%") ||
+                    EF.Functions.Like((l.Description ?? "").ToLower(), $"%{searchTerm}%") ||
+                    EF.Functions.Like(l.Category.Name.ToLower(), $"%{searchTerm}%"));
             }
 
             query.TotalListings = await listingsQuery.CountAsync();
@@ -92,15 +88,11 @@ namespace Tehnicharche.Services.Core
 
             if (!string.IsNullOrWhiteSpace(query.SearchTerm))
             {
-                var words = query.SearchTerm.Trim().Split(" ", StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (var word in words)
-                {
-                    var temp = word;
-                    listingsQuery = listingsQuery.Where(l =>
-                        l.Title.Contains(temp) ||
-                        (l.Description ?? "").Contains(temp));
-                }
+                var searchTerm = query.SearchTerm.Trim().ToLower();
+                listingsQuery = listingsQuery.Where(l =>
+                    EF.Functions.Like(l.Title.ToLower(), $"%{searchTerm}%") ||
+                    EF.Functions.Like((l.Description ?? "").ToLower(), $"%{searchTerm}%") ||
+                    EF.Functions.Like(l.Category.Name.ToLower(), $"%{searchTerm}%"));
             }
 
             query.TotalListings = await listingsQuery.CountAsync();
