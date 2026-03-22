@@ -7,18 +7,14 @@ using Tehnicharche.ViewModels;
 
 namespace Tehnicharche.Web.Controllers
 {
-    [Authorize]
-    public class ListingsController : Controller
+    public class ListingsController : AuthorizedController
     {
         private readonly IListingService listingService;
-        private readonly UserManager<ApplicationUser> userManager;
-
-        private string? UserId => userManager.GetUserId(User);
 
         public ListingsController(IListingService listingService, UserManager<ApplicationUser> userManager)
+            : base(userManager)
         {
             this.listingService = listingService;
-            this.userManager = userManager;
         }
 
 
@@ -54,11 +50,6 @@ namespace Tehnicharche.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> MyListings([FromQuery] MyListingsQueryModel query)
         {
-            if (string.IsNullOrEmpty(UserId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             query = await listingService.GetMyListingsAsync(query, UserId);
 
             if (!ModelState.IsValid)
@@ -79,11 +70,6 @@ namespace Tehnicharche.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ListingCreateViewModel model)
         {
-            if (string.IsNullOrEmpty(UserId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             if (!ModelState.IsValid)
             {
                 model = await listingService.GetListingCreateViewModelAsync();
@@ -93,7 +79,7 @@ namespace Tehnicharche.Web.Controllers
             try
             {
                 await listingService.AddListingAsync(model, UserId);
-                return RedirectToAction("MyListings");
+                return RedirectToAction(nameof(MyListings));
             }
             catch (InvalidOperationException)
             {
@@ -111,11 +97,6 @@ namespace Tehnicharche.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            if (string.IsNullOrEmpty(UserId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             try
             {
                 var model = await listingService.GetListingEditAsync(id, UserId);
@@ -134,11 +115,6 @@ namespace Tehnicharche.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(ListingEditViewModel model)
         {
-            if (string.IsNullOrEmpty(UserId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             if (!ModelState.IsValid)
             {
                 model.Categories = await listingService.GetAllCategoriesAsync();
@@ -168,16 +144,13 @@ namespace Tehnicharche.Web.Controllers
             model.Categories = await listingService.GetAllCategoriesAsync();
             model.Regions = await listingService.GetAllRegionsAsync();
             model.Cities = await listingService.GetAllCitiesAsync();
+
             return View(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            if (string.IsNullOrEmpty(UserId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
             try
             {
                 var model = await listingService.GetListingDeleteDetailsAsync(id, UserId);
@@ -193,13 +166,9 @@ namespace Tehnicharche.Web.Controllers
             }
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName(nameof(Delete))]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(UserId))
-            {
-                return RedirectToAction("Login", "Account");
-            }
             try
             {
                 await listingService.DeleteListingAsync(id, UserId);
@@ -213,7 +182,7 @@ namespace Tehnicharche.Web.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(Index));
         }
     }
 }
