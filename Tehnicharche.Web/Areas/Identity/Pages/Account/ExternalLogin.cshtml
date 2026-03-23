@@ -1,0 +1,41 @@
+@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Continue with " + Model.ProviderDisplayName;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow p-4">
+            <h3 class="text-center mb-2 text-success">@ViewData["Title"]</h3>
+            <p class="text-center text-muted mb-4 small">
+                You're signing in via <strong>@Model.ProviderDisplayName</strong>.
+                Please confirm or update the details below to finish creating your account.
+            </p>
+
+            <form asp-page-handler="Confirmation" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" class="form-control" autocomplete="email" />
+                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Input.Username"></label>
+                    <input asp-for="Input.Username" class="form-control" autocomplete="username" />
+                    <span asp-validation-for="Input.Username" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">
+                    Complete Registration
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

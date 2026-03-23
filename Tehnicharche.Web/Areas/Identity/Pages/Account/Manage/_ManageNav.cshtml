@@ -1,0 +1,20 @@
+@{
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? string.Empty;
+    bool IsActive(string page) =>
+        currentPage.EndsWith(page, StringComparison.OrdinalIgnoreCase);
+}
+
+<div class="list-group list-group-flush shadow-sm rounded">
+    <a asp-page="./Index"
+       class="list-group-item list-group-item-action @(IsActive("Index") ? "active" : "")">
+        Profile
+    </a>
+    <a asp-page="./ChangePassword"
+       class="list-group-item list-group-item-action @(IsActive("ChangePassword") ? "active" : "")">
+        Change Password
+    </a>
+    <a asp-page="./TwoFactorAuthentication"
+       class="list-group-item list-group-item-action @(IsActive("TwoFactorAuthentication") ? "active" : "")">
+        Two-Factor Auth
+    </a>
+</div>

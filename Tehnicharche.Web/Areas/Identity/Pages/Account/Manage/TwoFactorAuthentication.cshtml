@@ -1,0 +1,66 @@
+@page
+@model TwoFactorAuthenticationModel
+@{
+    ViewData["Title"] = "Two-Factor Authentication";
+}
+
+<h4 class="mb-4">Two-Factor Authentication</h4>
+<partial name="_StatusMessage" model="@Model.StatusMessage" />
+
+@if (Model.Is2faEnabled)
+{
+    <div class="card shadow-sm border-success p-4 mb-3">
+        <h6 class="fw-semibold text-success mb-2">2FA is enabled</h6>
+        <p class="text-muted small mb-3">
+            Your account is protected with a time-based one-time password (TOTP) authenticator app.
+        </p>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a asp-page="./EnableAuthenticator" class="btn btn-outline-secondary btn-sm">
+                Re-configure authenticator
+            </a>
+            <a asp-page="./Disable2fa" class="btn btn-outline-danger btn-sm">
+                Disable 2FA
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm p-4">
+        <h6 class="fw-semibold mb-2">Recovery Codes</h6>
+        <p class="text-muted small mb-3">
+            Recovery codes let you sign in if you lose access to your authenticator app.
+            You have <strong>@Model.RecoveryCodesLeft</strong> unused code(s) remaining.
+        </p>
+
+        @if (Model.RecoveryCodesLeft == 0)
+        {
+            <div class="alert alert-danger small py-2">
+                <strong>No recovery codes left.</strong>
+                Generate new ones below before you lose access to your account.
+            </div>
+        }
+        else if (Model.RecoveryCodesLeft <= 3)
+        {
+            <div class="alert alert-warning small py-2">
+                Running low on recovery codes. Consider generating new ones soon.
+            </div>
+        }
+
+        <a asp-page="./GenerateRecoveryCodes" class="btn btn-outline-secondary btn-sm">
+            Generate New Recovery Codes
+        </a>
+    </div>
+}
+else
+{
+    <div class="card shadow-sm p-4">
+        <h6 class="fw-semibold text-muted mb-2">2FA is not enabled</h6>
+        <p class="text-muted small mb-4">
+            Add an extra layer of security by linking an authenticator app such as Google Authenticator,
+            Authy, or any TOTP-compatible app. Once enabled, you will need a code from the app each time you sign in.
+        </p>
+        <a asp-page="./EnableAuthenticator" class="btn btn-success">
+            Enable Authenticator App
+        </a>
+    </div>
+}

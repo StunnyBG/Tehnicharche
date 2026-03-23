@@ -1,0 +1,70 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<h4 class="mb-4">My Profile</h4>
+<partial name="_StatusMessage" model="@Model.StatusMessage" />
+
+@* ── Phone number ──────────────────────────────────────────────────── *@
+<div class="card shadow-sm p-4 mb-4">
+    <h6 class="fw-semibold mb-3">📞 Phone Number</h6>
+    <form method="post" asp-page-handler="Phone">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+        <div class="mb-3">
+            <label asp-for="PhoneInput.PhoneNumber" class="form-label"></label>
+            <input asp-for="PhoneInput.PhoneNumber"
+                   class="form-control"
+                   placeholder="+359 88 123 4567"
+                   autocomplete="tel" />
+            <span asp-validation-for="PhoneInput.PhoneNumber" class="text-danger small"></span>
+            <small class="form-text text-muted">Shown to other users on your listings.</small>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-sm">Save Phone Number</button>
+    </form>
+</div>
+
+@* ── Change username ───────────────────────────────────────────────── *@
+<div class="card shadow-sm p-4 mb-4">
+    <h6 class="fw-semibold mb-3">👤 Change Username</h6>
+    <form method="post" asp-page-handler="Username">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+        <div class="mb-3">
+            <label asp-for="UsernameInput.NewUsername" class="form-label"></label>
+            <input asp-for="UsernameInput.NewUsername"
+                   class="form-control"
+                   autocomplete="username" />
+            <span asp-validation-for="UsernameInput.NewUsername" class="text-danger small"></span>
+            <small class="form-text text-muted">
+                Current username: <strong>@Model.CurrentUsername</strong>
+            </small>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-sm">Save Username</button>
+    </form>
+</div>
+
+@* ── Change email ──────────────────────────────────────────────────── *@
+<div class="card shadow-sm p-4 mb-4">
+    <h6 class="fw-semibold mb-3">✉️ Change Email</h6>
+    <form method="post" asp-page-handler="Email">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+        <div class="mb-3">
+            <label asp-for="EmailInput.NewEmail" class="form-label"></label>
+            <input asp-for="EmailInput.NewEmail"
+                   class="form-control"
+                   autocomplete="email" />
+            <span asp-validation-for="EmailInput.NewEmail" class="text-danger small"></span>
+            <small class="form-text text-muted">
+                Current email: <strong>@Model.CurrentEmail</strong>
+            </small>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-sm">Save Email</button>
+    </form>
+</div>

@@ -1,0 +1,71 @@
+@page
+@model ExternalLoginsModel
+@{
+    ViewData["Title"] = "External Logins";
+}
+
+<h4 class="mb-4">External Logins</h4>
+<partial name="_StatusMessage" model="@Model.StatusMessage" />
+
+@if (Model.CurrentLogins?.Count > 0)
+{
+    <div class="card shadow-sm p-4 mb-4">
+        <h6 class="fw-semibold mb-3">Linked Accounts</h6>
+
+        <table class="table table-sm align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Provider</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var login in Model.CurrentLogins)
+                {
+                    <tr>
+                        <td>@login.ProviderDisplayName</td>
+                        <td class="text-end">
+                            @if (Model.ShowRemoveButton)
+                            {
+                                <form method="post" asp-page-handler="RemoveLogin">
+                                    <input type="hidden" name="loginProvider" value="@login.LoginProvider" />
+                                    <input type="hidden" name="providerKey"   value="@login.ProviderKey" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Unlink</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="text-muted small">(only login — set a password first)</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (Model.OtherLogins?.Count > 0)
+{
+    <div class="card shadow-sm p-4">
+        <h6 class="fw-semibold mb-3">Add Another Account</h6>
+        <form method="post" asp-page-handler="LinkLogin">
+            <div class="d-flex gap-2 flex-wrap">
+                @foreach (var provider in Model.OtherLogins)
+                {
+                    <button type="submit" class="btn btn-outline-secondary"
+                            name="provider" value="@provider.Name">
+                        Link @provider.DisplayName
+                    </button>
+                }
+            </div>
+        </form>
+    </div>
+}
+
+@if (Model.CurrentLogins?.Count == 0 && Model.OtherLogins?.Count == 0)
+{
+    <div class="card shadow-sm p-4 text-muted">
+        No external authentication providers are configured for this site.
+    </div>
+}

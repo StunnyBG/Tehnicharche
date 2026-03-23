@@ -1,0 +1,77 @@
+@page
+@model EnableAuthenticatorModel
+@{
+    ViewData["Title"] = "Set Up Authenticator App";
+}
+
+<h4 class="mb-4">Set Up Authenticator App</h4>
+<partial name="_StatusMessage" model="@Model.StatusMessage" />
+
+<div class="card shadow-sm p-4">
+
+    <h6 class="fw-semibold mb-1">Step 1 — Download an authenticator app</h6>
+    <p class="text-muted small mb-3">
+        Use any TOTP-compatible app such as
+        <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank">Google Authenticator</a>,
+        <a href="https://authy.com/download/" target="_blank">Authy</a>, or
+        <a href="https://www.microsoft.com/en-us/security/mobile-authenticator-app" target="_blank">Microsoft Authenticator</a>.
+    </p>
+
+    <h6 class="fw-semibold mb-1">Step 2 — Scan the QR code or enter the key manually</h6>
+    <p class="text-muted small mb-2">
+        Scan the QR code, or manually enter this key into your authenticator app:
+    </p>
+
+    <div class="alert alert-secondary d-flex align-items-center gap-3 mb-3">
+        <code class="fs-6 user-select-all">@Model.SharedKey</code>
+        <button type="button"
+                class="btn btn-sm btn-outline-secondary ms-auto"
+                onclick="navigator.clipboard.writeText('@Model.SharedKey').then(()=>this.textContent='Copied!').catch(()=>{})">
+            Copy
+        </button>
+    </div>
+
+    <div class="mb-4 text-center">
+        <div id="qrCode" class="d-inline-block p-2 bg-white border rounded"></div>
+    </div>
+
+    <h6 class="fw-semibold mb-1">Step 3 — Verify the code</h6>
+    <p class="text-muted small mb-3">
+        Your app will show a 6-digit code. Enter it below to confirm setup.
+    </p>
+
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+        <div class="mb-4" style="max-width: 240px;">
+            <label asp-for="Input.Code" class="form-label fw-semibold"></label>
+            <input asp-for="Input.Code"
+                   class="form-control form-control-lg text-center"
+                   autocomplete="one-time-code"
+                   inputmode="numeric"
+                   placeholder="000 000"
+                   maxlength="7" />
+            <span asp-validation-for="Input.Code" class="text-danger small"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">Verify and Enable</button>
+        <a asp-page="./TwoFactorAuthentication" class="btn btn-outline-secondary ms-2">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+            integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        new QRCode(document.getElementById('qrCode'), {
+            text: "@Html.Raw(Model.AuthenticatorUri)",
+            width: 180,
+            height: 180,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.M
+        });
+    </script>
+}

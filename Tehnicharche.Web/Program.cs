@@ -13,28 +13,32 @@ namespace Tehnicharche.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
             builder.Services.AddDbContext<TehnicharcheDbContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<ApplicationUser>(options => 
-                {
-                    options.User.RequireUniqueEmail = true;
-                    options.SignIn.RequireConfirmedAccount = true;
-                })
-                .AddEntityFrameworkStores<TehnicharcheDbContext>();
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                // Set to false — no email sender is configured; confirm emails automatically on register
+                options.SignIn.RequireConfirmedAccount = false;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 6;
+            })
+            .AddEntityFrameworkStores<TehnicharcheDbContext>();
 
             builder.Services.AddMemoryCache();
-
             builder.Services.AddScoped<IListingService, ListingService>();
-
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -42,17 +46,13 @@ namespace Tehnicharche.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
