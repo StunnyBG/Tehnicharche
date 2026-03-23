@@ -74,7 +74,6 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            // Support login by email or username
             var user = await _userManager.FindByEmailAsync(Input.EmailOrUsername)
                     ?? await _userManager.FindByNameAsync(Input.EmailOrUsername);
 
@@ -84,7 +83,6 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account
                 return Page();
             }
 
-            // Use PasswordSignInAsync so that 2FA and lockout are handled automatically
             var result = await _signInManager.PasswordSignInAsync(
                 user.UserName!,
                 Input.Password,

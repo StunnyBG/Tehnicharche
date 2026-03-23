@@ -22,19 +22,11 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account
             _logger        = logger;
         }
 
-        // GET — just render the "you've been signed out" page
         public IActionResult OnGet()
         {
-            // If someone navigates here directly while already signed out, send them home
-            if (!User.Identity!.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home", new { area = "" });
-            }
-
-            return Page();
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
-        // POST — called by the navbar logout button; signs out then redirects to home
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
