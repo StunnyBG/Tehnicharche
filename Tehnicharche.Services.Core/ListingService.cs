@@ -1,8 +1,6 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
-using Tehnicharche.Data;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Tehnicharche.Data.Models;
+using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.Services.Core.Interfaces;
 using Tehnicharche.ViewModels;
 using static Tehnicharche.GCommon.ApplicationConstants;
@@ -11,70 +9,57 @@ namespace Tehnicharche.Services.Core
 {
     public class ListingService : IListingService
     {
-        private readonly TehnicharcheDbContext context;
+        private readonly IListingRepository listingRepository;
+        private readonly IGenericRepository<Category> categoryRepository;
+        private readonly IGenericRepository<Region> regionRepository;
+        private readonly IGenericRepository<City> cityRepository;
         private readonly IMemoryCache cache;
+
         private const string CategoriesCacheKey = "Categories:All";
         private const string RegionsCacheKey = "Regions:All";
         private const string CitiesCacheKey = "Cities:All";
 
-        public ListingService(TehnicharcheDbContext context, IMemoryCache cache)
+        public ListingService(
+            IListingRepository listingRepository,
+            IGenericRepository<Category> categoryRepository,
+            IGenericRepository<Region> regionRepository,
+            IGenericRepository<City> cityRepository,
+            IMemoryCache cache)
         {
-            this.context = context;
+            this.listingRepository = listingRepository;
+            this.categoryRepository = categoryRepository;
+            this.regionRepository = regionRepository;
+            this.cityRepository = cityRepository;
             this.cache = cache;
         }
+
 
         public async Task<ListingIndexQueryModel> GetIndexListingsAsync(ListingIndexQueryModel query)
         {
             query.Page = query.Page <= 0 ? DefaultPage : query.Page;
 
-            var listingsQuery = context.Listings
-                .AsNoTracking()
-                .Include(l => l.Category)
-                .Include(l => l.Region)
-                .Include(l => l.City)
-                .AsQueryable();
+            var (items, total) = await listingRepository.GetFilteredPagedAsync(
+                query.Page, 
+                IndexPageSize,
+                query.CategoryId, 
+                query.RegionId, 
+                query.CityId,
+                query.MinPrice, 
+                query.MaxPrice,
+                query.SearchTerm);
 
-            if (query.CategoryId.HasValue)
-                listingsQuery = listingsQuery.Where(l => l.CategoryId == query.CategoryId.Value);
+            query.TotalListings = total;
 
-            if (query.RegionId.HasValue)
-                listingsQuery = listingsQuery.Where(l => l.RegionId == query.RegionId.Value);
-
-            if (query.CityId.HasValue)
-                listingsQuery = listingsQuery.Where(l => l.CityId == query.CityId.Value);
-
-            if (query.MinPrice.HasValue)
-                listingsQuery = listingsQuery.Where(l => l.Price >= query.MinPrice.Value);
-
-            if (query.MaxPrice.HasValue)
-                listingsQuery = listingsQuery.Where(l => l.Price <= query.MaxPrice.Value);
-
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            query.Listings = items.Select(l => new ListingIndexViewModel
             {
-                var searchTerm = query.SearchTerm.Trim().ToLower();
-                listingsQuery = listingsQuery.Where(l =>
-                    EF.Functions.Like(l.Title.ToLower(), $"%{searchTerm}%") ||
-                    EF.Functions.Like((l.Description ?? "").ToLower(), $"%{searchTerm}%") ||
-                    EF.Functions.Like(l.Category.Name.ToLower(), $"%{searchTerm}%"));
-            }
-
-            query.TotalListings = await listingsQuery.CountAsync();
-
-            query.Listings = await listingsQuery
-                .OrderBy(l => l.UpdatedAt)
-                .Skip((query.Page - 1) * IndexPageSize)
-                .Take(IndexPageSize)
-                .Select(l => new ListingIndexViewModel
-                {
-                    Id = l.Id,
-                    Title = l.Title,
-                    Price = l.Price.ToString(),
-                    CategoryName = l.Category.Name,
-                    RegionName = l.Region.Name,
-                    CityName = l.City.Name,
-                    ImageUrl = l.ImageUrl
-                })
-                .ToListAsync();
+                Id = l.Id,
+                Title = l.Title,
+                Price = l.Price.ToString(),
+                CategoryName = l.Category.Name,
+                RegionName = l.Region.Name,
+                CityName = l.City?.Name,
+                ImageUrl = l.ImageUrl
+            }).ToList();
 
             query.Categories = await GetAllCategoriesAsync();
             query.Regions = await GetAllRegionsAsync();
@@ -83,41 +68,29 @@ namespace Tehnicharche.Services.Core
             return query;
         }
 
+
         public async Task<MyListingsQueryModel> GetMyListingsAsync(MyListingsQueryModel query, string creatorId)
         {
             query.Page = query.Page <= 0 ? DefaultPage : query.Page;
 
-            var listingsQuery = context.Listings
-                .AsNoTracking()
-                .AsQueryable()
-                .Where(l => l.CreatorId == creatorId);
+            var (items, total) = await listingRepository.GetByCreatorPagedAsync(
+                creatorId,
+                query.Page,
+                MyListingsPageSize,
+                query.SearchTerm);
 
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
+            query.TotalListings = total;
+
+            query.Listings = items.Select(l => new ListingIndexViewModel
             {
-                var searchTerm = query.SearchTerm.Trim().ToLower();
-                listingsQuery = listingsQuery.Where(l =>
-                    EF.Functions.Like(l.Title.ToLower(), $"%{searchTerm}%") ||
-                    EF.Functions.Like((l.Description ?? "").ToLower(), $"%{searchTerm}%") ||
-                    EF.Functions.Like(l.Category.Name.ToLower(), $"%{searchTerm}%"));
-            }
-
-            query.TotalListings = await listingsQuery.CountAsync();
-
-            query.Listings = await listingsQuery
-                .OrderBy(l => l.UpdatedAt)
-                .Skip((query.Page - 1) * MyListingsPageSize)
-                .Take(MyListingsPageSize)
-                .Select(l => new ListingIndexViewModel
-                {
-                    Id = l.Id,
-                    Title = l.Title,
-                    Price = l.Price.ToString(),
-                    CategoryName = l.Category.Name,
-                    RegionName = l.Region.Name,
-                    CityName = l.City.Name,
-                    ImageUrl = l.ImageUrl
-                })
-                .ToListAsync();
+                Id = l.Id,
+                Title = l.Title,
+                Price = l.Price.ToString(),
+                CategoryName = l.Category.Name,
+                RegionName = l.Region.Name,
+                CityName = l.City?.Name,
+                ImageUrl = l.ImageUrl
+            }).ToList();
 
             return query;
         }
@@ -125,20 +98,10 @@ namespace Tehnicharche.Services.Core
 
         public async Task<ListingDetailsViewModel> GetListingDetailsByIdAsync(int id)
         {
-            var listing = await context.Listings
-                .AsNoTracking()
-                .Include(l => l.Category)
-                .Include(l => l.Region)
-                .Include(l => l.City)
-                .Include(l => l.Creator)
-                .FirstOrDefaultAsync(l => l.Id == id);
+            var listing = await listingRepository.GetByIdWithDetailsAsync(id)
+                ?? throw new InvalidOperationException("Listing not found.");
 
-            if (listing == null)
-            {
-                throw new InvalidOperationException("Listing not found.");
-            }
-
-            ListingDetailsViewModel model = new ListingDetailsViewModel
+            return new ListingDetailsViewModel
             {
                 Id = listing.Id,
                 Title = listing.Title,
@@ -150,64 +113,29 @@ namespace Tehnicharche.Services.Core
                 ImageUrl = listing.ImageUrl,
                 CreatorName = listing.Creator.UserName!,
                 CreatorEmail = listing.Creator.Email!,
-                CreatorPhoneNumber = listing.Creator?.PhoneNumber,
-                CreatorId = listing.CreatorId!,
+                CreatorPhoneNumber = listing.Creator.PhoneNumber,
+                CreatorId = listing.CreatorId,
                 CreatedAt = listing.CreatedAt.ToString(DateFormat),
                 UpdatedAt = listing.UpdatedAt.ToString(DateFormat)
             };
-
-            return model;
         }
-       
+
+
         public async Task<ListingCreateViewModel> GetListingCreateViewModelAsync()
         {
-            IEnumerable<CategoryViewModel> categories = await GetAllCategoriesAsync();
-            IEnumerable<RegionViewModel> regions = await GetAllRegionsAsync();
-            IEnumerable<CityViewModel> cities = await GetAllCitiesAsync();
-
-            ListingCreateViewModel model = new ListingCreateViewModel
+            return new ListingCreateViewModel
             {
-                Categories = categories,
-                Regions = regions,
-                Cities = cities
+                Categories = await GetAllCategoriesAsync(),
+                Regions = await GetAllRegionsAsync(),
+                Cities = await GetAllCitiesAsync()
             };
-
-            return model;
         }
-      
+
         public async Task AddListingAsync(ListingCreateViewModel model, string creatorId)
         {
-            bool categoryExists = await context.Categories.AnyAsync(c => c.Id == model.CategoryId);
+            await ValidateCategoryRegionCityAsync(model.CategoryId, model.RegionId, model.CityId);
 
-            if (!categoryExists)
-            {
-                throw new InvalidOperationException("Invalid category id");
-            }
-
-            bool regionExists = await context.Regions.AnyAsync(r => r.Id == model.RegionId);
-            
-            if (!regionExists)
-            {
-                throw new InvalidOperationException("Invalid region id");
-            }
-
-            if (model.CityId.HasValue)
-            {
-                var city = await context.Cities
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(c => c.Id == model.CityId);
-                
-                if (city == null)
-                {
-                    throw new InvalidOperationException("Invalid city id");
-                }
-                if (city.RegionId != model.RegionId)
-                {
-                    throw new InvalidOperationException("City is not from this region");
-                }
-            }
-
-            var listing = new Listing()
+            var listing = new Listing
             {
                 Title = model.Title,
                 Description = model.Description,
@@ -219,31 +147,20 @@ namespace Tehnicharche.Services.Core
                 CreatorId = creatorId
             };
 
-            await context.Listings.AddAsync(listing);
-            await context.SaveChangesAsync();
+            await listingRepository.AddAsync(listing);
+            await listingRepository.SaveChangesAsync();
         }
-     
+
+
         public async Task<ListingEditViewModel> GetListingEditAsync(int id, string userId)
         {
-            var listing = await context.Listings
-                            .AsNoTracking()
-                            .FirstOrDefaultAsync(l => l.Id == id);
-
-            if (listing == null)
-            {
-                throw new InvalidOperationException("Listing not found.");
-            }
+            var listing = await listingRepository.GetByIdAsync(id)
+                ?? throw new InvalidOperationException("Listing not found.");
 
             if (listing.CreatorId != userId)
-            {
                 throw new UnauthorizedAccessException("You are not authorized to make this action.");
-            }
 
-            IEnumerable<CategoryViewModel> categories = await GetAllCategoriesAsync();
-            IEnumerable<RegionViewModel> regions = await GetAllRegionsAsync();
-            IEnumerable<CityViewModel> cities = await GetAllCitiesAsync();
-
-            ListingEditViewModel model = new ListingEditViewModel
+            return new ListingEditViewModel
             {
                 Id = listing.Id,
                 Title = listing.Title,
@@ -253,58 +170,21 @@ namespace Tehnicharche.Services.Core
                 RegionId = listing.RegionId,
                 CityId = listing.CityId,
                 ImageUrl = listing.ImageUrl,
-                Categories = categories,
-                Regions = regions,
-                Cities = cities
+                Categories = await GetAllCategoriesAsync(),
+                Regions = await GetAllRegionsAsync(),
+                Cities = await GetAllCitiesAsync()
             };
-
-            return model;
         }
-      
+
         public async Task EditListingAsync(ListingEditViewModel model, string userId)
         {
-            var listing = await context.Listings
-                .FirstOrDefaultAsync(l => l.Id == model.Id);
-
-            if (listing == null)
-            {
-                throw new InvalidOperationException("Listing not found.");
-            }
+            var listing = await listingRepository.GetByIdTrackedAsync(model.Id)
+                ?? throw new InvalidOperationException("Listing not found.");
 
             if (listing.CreatorId != userId)
-            {
                 throw new UnauthorizedAccessException("You are not authorized to make this action.");
-            }
 
-            bool categoryExists = await context.Categories.AnyAsync(c => c.Id == model.CategoryId);
-
-            if (!categoryExists)
-            {
-                throw new InvalidOperationException("Invalid category id");
-            }
-
-            bool regionExists = await context.Regions.AnyAsync(r => r.Id == model.RegionId);
-
-            if (!regionExists)
-            {
-                throw new InvalidOperationException("Invalid region id");
-            }
-
-            if (model.CityId.HasValue)
-            {
-                var city = await context.Cities
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync(c => c.Id == model.CityId);
-
-                if (city == null)
-                {
-                    throw new InvalidOperationException("Invalid city id");
-                }
-                if (city.RegionId != model.RegionId)
-                {
-                    throw new InvalidOperationException("City is not from this region");
-                }
-            }
+            await ValidateCategoryRegionCityAsync(model.CategoryId, model.RegionId, model.CityId);
 
             listing.Title = model.Title;
             listing.Description = model.Description;
@@ -315,112 +195,105 @@ namespace Tehnicharche.Services.Core
             listing.ImageUrl = model.ImageUrl;
             listing.UpdatedAt = DateTime.UtcNow;
 
-            await context.SaveChangesAsync();
+            await listingRepository.SaveChangesAsync();
         }
-      
-        public async Task DeleteListingAsync(int id, string userId)
-        {
-            var listing = await context.Listings
-                .FirstOrDefaultAsync(l => l.Id == id);
 
-            if (listing == null)
-            {
-                throw new InvalidOperationException("Listing not found.");
-            }
 
-            if (listing.CreatorId != userId)
-            {
-                throw new UnauthorizedAccessException("You are not authorized to make this action.");
-            }
-
-            listing.IsDeleted = true;
-            await context.SaveChangesAsync();
-        }
-      
         public async Task<ListingDeleteViewModel> GetListingDeleteDetailsAsync(int id, string userId)
         {
-            var listing = await context.Listings
-                .AsNoTracking()
-                .FirstOrDefaultAsync(l => l.Id == id);
-
-            if (listing == null)
-            {
-                throw new InvalidOperationException("Listing not found.");
-            }
+            var listing = await listingRepository.GetByIdAsync(id)
+                ?? throw new InvalidOperationException("Listing not found.");
 
             if (listing.CreatorId != userId)
-            {
                 throw new UnauthorizedAccessException("You are not authorized to make this action.");
-            }
 
-            ListingDeleteViewModel model = new ListingDeleteViewModel
+            return new ListingDeleteViewModel
             {
                 Id = listing.Id,
                 Title = listing.Title
             };
-
-            return model;
         }
+
+        public async Task DeleteListingAsync(int id, string userId)
+        {
+            var listing = await listingRepository.GetByIdTrackedAsync(id)
+                ?? throw new InvalidOperationException("Listing not found.");
+
+            if (listing.CreatorId != userId)
+                throw new UnauthorizedAccessException("You are not authorized to make this action.");
+
+            await listingRepository.SoftDeleteAsync(listing);
+        }
+
 
         public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
         {
-            if (cache.TryGetValue(CategoriesCacheKey, out IEnumerable<CategoryViewModel>? cachedCategories))
-            {
-                return cachedCategories!;
-            }
+            if (cache.TryGetValue(CategoriesCacheKey, out IEnumerable<CategoryViewModel>? cached) && cached is not null)
+                return cached;
 
-            var categories = await context.Categories
-                .AsNoTracking()
-                .Select(c => new CategoryViewModel
-                {
-                    Id = c.Id,
-                    Name = c.Name
-                })
-                .ToListAsync();
+            var categories = await categoryRepository.GetAllAsync();
 
-            cache.Set(CategoriesCacheKey, categories, TimeSpan.FromHours(6));
-            return categories;
+            var categoryViewModels = categories
+                .Select(c => new CategoryViewModel { Id = c.Id, Name = c.Name })
+                .ToList();
+
+            cache.Set(CategoriesCacheKey, categoryViewModels, TimeSpan.FromHours(6));
+            return categoryViewModels;
         }
 
         public async Task<IEnumerable<RegionViewModel>> GetAllRegionsAsync()
         {
-            if (cache.TryGetValue(RegionsCacheKey, out IEnumerable<RegionViewModel>? cachedRegions))
-            {
-                return cachedRegions!;
-            }
+            if (cache.TryGetValue(RegionsCacheKey, out IEnumerable<RegionViewModel>? cached) && cached is not null)
+                return cached;
 
-            var regions = await context.Regions
-                .AsNoTracking()
-                .Select(r => new RegionViewModel
-                {
-                    Id = r.Id,
-                    Name = r.Name
-                })
-                .ToListAsync();
+            var regions = await regionRepository.GetAllAsync();
+            
+            var regionViewModels = regions
+                .Select(r => new RegionViewModel { Id = r.Id, Name = r.Name })
+                .ToList();
 
-            cache.Set(RegionsCacheKey, regions, TimeSpan.FromHours(6));
-            return regions;
+            cache.Set(RegionsCacheKey, regionViewModels, TimeSpan.FromHours(6));
+            return regionViewModels;
         }
 
         public async Task<IEnumerable<CityViewModel>> GetAllCitiesAsync()
         {
-            if (cache.TryGetValue(CitiesCacheKey, out IEnumerable<CityViewModel>? cachedCities))
-            {
-                return cachedCities!;
-            }
+            if (cache.TryGetValue(CitiesCacheKey, out IEnumerable<CityViewModel>? cached) && cached is not null)
+                return cached;
 
-            var cities = await context.Cities
-                .AsNoTracking()
+            var cities = await cityRepository.GetAllAsync();
+
+            var cityViewModels = cities
                 .Select(c => new CityViewModel
                 {
                     Id = c.Id,
                     Name = c.Name,
                     RegionId = c.RegionId
                 })
-                .ToListAsync();
+                .ToList();
 
-            cache.Set(CitiesCacheKey, cities, TimeSpan.FromHours(6));
-            return cities;
+            cache.Set(CitiesCacheKey, cityViewModels, TimeSpan.FromHours(6));
+            return cityViewModels;
+        }
+
+
+        // helper method
+        private async Task ValidateCategoryRegionCityAsync(int? categoryId, int? regionId, int? cityId)
+        {
+            if (!await categoryRepository.ExistsAsync(c => c.Id == categoryId))
+                throw new InvalidOperationException("Invalid category id.");
+
+            if (!await regionRepository.ExistsAsync(r => r.Id == regionId))
+                throw new InvalidOperationException("Invalid region id.");
+
+            if (cityId.HasValue)
+            {
+                var city = await cityRepository.GetByIdAsync(cityId.Value)
+                    ?? throw new InvalidOperationException("Invalid city id.");
+
+                if (city.RegionId != regionId)
+                    throw new InvalidOperationException("City does not belong to the selected region.");
+            }
         }
     }
 }

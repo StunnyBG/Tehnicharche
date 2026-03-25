@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Tehnicharche.Data;
 using Tehnicharche.Data.Models;
+using Tehnicharche.Data.Repositories;
+using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.Services.Core;
 using Tehnicharche.Services.Core.Interfaces;
 
@@ -33,6 +35,13 @@ namespace Tehnicharche.Web
             .AddEntityFrameworkStores<TehnicharcheDbContext>();
 
             builder.Services.AddMemoryCache();
+
+            // Repositories
+            builder.Services.AddScoped<IListingRepository, ListingRepository>();
+            builder.Services.AddScoped<IGenericRepository<Category>, GenericRepository<Category>>();
+            builder.Services.AddScoped<IGenericRepository<Region>, GenericRepository<Region>>();
+            builder.Services.AddScoped<IGenericRepository<City>, GenericRepository<City>>();
+
             builder.Services.AddScoped<IListingService, ListingService>();
             builder.Services.AddControllersWithViews();
 
