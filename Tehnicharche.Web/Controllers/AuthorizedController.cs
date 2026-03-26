@@ -6,6 +6,7 @@ using Tehnicharche.Data.Models;
 namespace Tehnicharche.Web.Controllers
 {
     [Authorize]
+    [AutoValidateAntiforgeryToken]
     public abstract class AuthorizedController : Controller
     {
         protected readonly UserManager<ApplicationUser> UserManager;
