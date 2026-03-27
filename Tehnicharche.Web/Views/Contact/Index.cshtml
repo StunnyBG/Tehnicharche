@@ -89,9 +89,6 @@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm p-4">
                 <h4 class="fw-bold mb-1">Send a Message</h4>
-                <p class="text-muted small mb-4">
-                    This form is a placeholder — submissions are not currently processed or stored.
-                </p>
 
                 <form asp-action="Index" method="post">
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
@@ -141,12 +138,6 @@
                             <div class="d-flex justify-content-between">
                                 <span asp-validation-for="Message" class="text-danger small"></span>
                                 <span class="text-muted small mt-1">Max 2000 characters</span>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="alert alert-info small mb-0" role="alert">
-                                ℹ️ <strong>Note:</strong> This is a demo form. Your message will not be sent or stored anywhere.
                             </div>
                         </div>
 

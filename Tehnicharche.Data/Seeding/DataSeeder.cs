@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
-using Tehnicharche.Data.Migrations;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Seeding.DTOs;
 
