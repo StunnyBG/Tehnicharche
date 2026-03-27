@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "Surface-mount soldering & PCB repair (small boards)",
+    "description": "Micro-soldering, component replacement, BGA rework (where feasible). 5+ years experience with consumer and industrial PCBs.",
+    "price": 45.00,
+    "categoryId": 3,
+    "regionId": 23,
+    "cityId": 31,
+    "imageUrl": "https://cdn.pixabay.com/photo/2017/06/06/16/35/cyber-2377718_1280.jpg",
+    "creatorId": "00000000-0000-0000-0000-000000000001",
+    "createdAt": "2025-11-01T09:30:00Z"
+  },
+  {
+    "id": 2,
+    "title": "Washing machine diagnostics & repair",
+    "description": "Fault codes, pump & heater replacement, drum/shaft repair, water inlet and electronic control fixes. Parts quoted separately.",
+    "price": 80.00,
+    "categoryId": 2,
+    "regionId": 2,
+    "cityId": 4,
+    "imageUrl": "https://cdn.pixabay.com/photo/2014/03/06/11/30/washing-machine-280752_1280.jpg",
+    "creatorId": "00000000-0000-0000-0000-000000000002",
+    "createdAt": "2025-10-20T14:00:00Z"
+  },
+  {
+    "id": 3,
+    "title": "Laptop motherboard repair — diagnostics + component level",
+    "description": "Power rails, damaged connectors, short diagnosis. I repair DC jack, blown MOSFETs, burnt traces and do BGA reballing referrals.",
+    "price": 120.00,
+    "categoryId": 4,
+    "regionId": 16,
+    "cityId": 23,
+    "imageUrl": "https://cdn.pixabay.com/photo/2014/05/06/16/09/imac-338988_1280.jpg",
+    "creatorId": "00000000-0000-0000-0000-000000000003",
+    "createdAt": "2025-12-05T11:15:00Z"
+  },
+  {
+    "id": 4,
+    "title": "Mobile phone screen replacement (all makes)",
+    "description": "Original and high-quality aftermarket screens; installation and calibration. Data-safe service — backup recommended before service.",
+    "price": 60.00,
+    "categoryId": 5,
+    "regionId": 3,
+    "cityId": 7,
+    "imageUrl": "https://cdn.pixabay.com/photo/2023/10/19/12/01/technician-8326389_1280.jpg",
+    "creatorId": "00000000-0000-0000-0000-000000000001",
+    "createdAt": "2025-09-30T08:45:00Z"
+  },
+  {
+    "id": 5,
+    "title": "Home electrical — small jobs, sockets, switches, lighting",
+    "description": "Safe, certified wiring repairs, new socket installs, LED lighting installation and troubleshooting. I follow local electrical codes.",
+    "price": 35.00,
+    "categoryId": 7,
+    "regionId": 25,
+    "cityId": 34,
+    "imageUrl": "https://cdn.pixabay.com/photo/2015/12/07/10/49/electrician-1080554_1280.jpg",
+    "creatorId": "00000000-0000-0000-0000-000000000004",
+    "createdAt": "2025-08-10T10:00:00Z"
+  }
+]

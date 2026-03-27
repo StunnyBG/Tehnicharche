@@ -1,0 +1,114 @@
+[
+  {
+    "id": 1,
+    "name": "Blagoevgrad"
+  },
+  {
+    "id": 2,
+    "name": "Burgas"
+  },
+  {
+    "id": 3,
+    "name": "Varna"
+  },
+  {
+    "id": 4,
+    "name": "Veliko Tarnovo"
+  },
+  {
+    "id": 5,
+    "name": "Vidin"
+  },
+  {
+    "id": 6,
+    "name": "Vratsa"
+  },
+  {
+    "id": 7,
+    "name": "Gabrovo"
+  },
+  {
+    "id": 8,
+    "name": "Dobrich"
+  },
+  {
+    "id": 9,
+    "name": "Kardzhali"
+  },
+  {
+    "id": 10,
+    "name": "Kyustendil"
+  },
+  {
+    "id": 11,
+    "name": "Lovech"
+  },
+  {
+    "id": 12,
+    "name": "Montana"
+  },
+  {
+    "id": 13,
+    "name": "Pazardzhik"
+  },
+  {
+    "id": 14,
+    "name": "Pernik"
+  },
+  {
+    "id": 15,
+    "name": "Pleven"
+  },
+  {
+    "id": 16,
+    "name": "Plovdiv"
+  },
+  {
+    "id": 17,
+    "name": "Razgrad"
+  },
+  {
+    "id": 18,
+    "name": "Ruse"
+  },
+  {
+    "id": 19,
+    "name": "Shumen"
+  },
+  {
+    "id": 20,
+    "name": "Silistra"
+  },
+  {
+    "id": 21,
+    "name": "Sliven"
+  },
+  {
+    "id": 22,
+    "name": "Smolyan"
+  },
+  {
+    "id": 23,
+    "name": "Sofia City"
+  },
+  {
+    "id": 24,
+    "name": "Sofia Province"
+  },
+  {
+    "id": 25,
+    "name": "Stara Zagora"
+  },
+  {
+    "id": 26,
+    "name": "Targovishte"
+  },
+  {
+    "id": 27,
+    "name": "Haskovo"
+  },
+  {
+    "id": 28,
+    "name": "Yambol"
+  }
+]

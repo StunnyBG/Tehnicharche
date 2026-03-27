@@ -1,0 +1,187 @@
+[
+  {
+    "id": 1,
+    "name": "Blagoevgrad",
+    "regionId": 1
+  },
+  {
+    "id": 2,
+    "name": "Bansko",
+    "regionId": 1
+  },
+  {
+    "id": 3,
+    "name": "Sandanski",
+    "regionId": 1
+  },
+  {
+    "id": 4,
+    "name": "Burgas",
+    "regionId": 2
+  },
+  {
+    "id": 5,
+    "name": "Nesebar",
+    "regionId": 2
+  },
+  {
+    "id": 6,
+    "name": "Sozopol",
+    "regionId": 2
+  },
+  {
+    "id": 7,
+    "name": "Varna",
+    "regionId": 3
+  },
+  {
+    "id": 8,
+    "name": "Provadiya",
+    "regionId": 3
+  },
+  {
+    "id": 9,
+    "name": "Veliko Tarnovo",
+    "regionId": 4
+  },
+  {
+    "id": 10,
+    "name": "Gorna Oryahovitsa",
+    "regionId": 4
+  },
+  {
+    "id": 11,
+    "name": "Vidin",
+    "regionId": 5
+  },
+  {
+    "id": 12,
+    "name": "Vratsa",
+    "regionId": 6
+  },
+  {
+    "id": 13,
+    "name": "Gabrovo",
+    "regionId": 7
+  },
+  {
+    "id": 14,
+    "name": "Dobrich",
+    "regionId": 8
+  },
+  {
+    "id": 15,
+    "name": "Balchik",
+    "regionId": 8
+  },
+  {
+    "id": 16,
+    "name": "Kardzhali",
+    "regionId": 9
+  },
+  {
+    "id": 17,
+    "name": "Kyustendil",
+    "regionId": 10
+  },
+  {
+    "id": 18,
+    "name": "Lovech",
+    "regionId": 11
+  },
+  {
+    "id": 19,
+    "name": "Montana",
+    "regionId": 12
+  },
+  {
+    "id": 20,
+    "name": "Pazardzhik",
+    "regionId": 13
+  },
+  {
+    "id": 21,
+    "name": "Pernik",
+    "regionId": 14
+  },
+  {
+    "id": 22,
+    "name": "Pleven",
+    "regionId": 15
+  },
+  {
+    "id": 23,
+    "name": "Plovdiv",
+    "regionId": 16
+  },
+  {
+    "id": 24,
+    "name": "Asenovgrad",
+    "regionId": 16
+  },
+  {
+    "id": 25,
+    "name": "Razgrad",
+    "regionId": 17
+  },
+  {
+    "id": 26,
+    "name": "Ruse",
+    "regionId": 18
+  },
+  {
+    "id": 27,
+    "name": "Shumen",
+    "regionId": 19
+  },
+  {
+    "id": 28,
+    "name": "Silistra",
+    "regionId": 20
+  },
+  {
+    "id": 29,
+    "name": "Sliven",
+    "regionId": 21
+  },
+  {
+    "id": 30,
+    "name": "Smolyan",
+    "regionId": 22
+  },
+  {
+    "id": 31,
+    "name": "Sofia",
+    "regionId": 23
+  },
+  {
+    "id": 32,
+    "name": "Kostinbrod",
+    "regionId": 24
+  },
+  {
+    "id": 33,
+    "name": "Pirdop",
+    "regionId": 24
+  },
+  {
+    "id": 34,
+    "name": "Stara Zagora",
+    "regionId": 25
+  },
+  {
+    "id": 35,
+    "name": "Targovishte",
+    "regionId": 26
+  },
+  {
+    "id": 36,
+    "name": "Haskovo",
+    "regionId": 27
+  },
+  {
+    "id": 37,
+    "name": "Yambol",
+    "regionId": 28
+  }
+]

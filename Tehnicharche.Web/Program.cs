@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tehnicharche.Data;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Repositories;
 using Tehnicharche.Data.Repositories.Interfaces;
+using Tehnicharche.Data.Seeding;
 using Tehnicharche.Services.Core;
 using Tehnicharche.Services.Core.Interfaces;
 
@@ -10,7 +12,7 @@ namespace Tehnicharche.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +34,7 @@ namespace Tehnicharche.Web
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 6;
             })
+            .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<TehnicharcheDbContext>();
 
             builder.Services.AddMemoryCache();
@@ -43,9 +46,18 @@ namespace Tehnicharche.Web
             builder.Services.AddScoped<IGenericRepository<City>, GenericRepository<City>>();
 
             builder.Services.AddScoped<IListingService, ListingService>();
+
+            builder.Services.AddScoped<DataSeeder>();
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+                await seeder.SeedAsync();
+            }
 
             if (app.Environment.IsDevelopment())
             {

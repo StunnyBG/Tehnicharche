@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Electronics Repair"
+  },
+  {
+    "id": 2,
+    "name": "Appliance Repair"
+  },
+  {
+    "id": 3,
+    "name": "Soldering & PCB Assembly"
+  },
+  {
+    "id": 4,
+    "name": "Computer Repair"
+  },
+  {
+    "id": 5,
+    "name": "Mobile Phone Repair"
+  },
+  {
+    "id": 6,
+    "name": "TV & Audio Repair"
+  },
+  {
+    "id": 7,
+    "name": "Home Wiring & Electrical"
+  },
+  {
+    "id": 8,
+    "name": "Handyman (general technical)"
+  },
+  {
+    "id": 9,
+    "name": "3D Printing & Prototyping"
+  }
+]

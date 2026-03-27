@@ -1,0 +1,42 @@
+[
+  {
+    "id": "00000000-0000-0000-0000-000000000001",
+    "userName": "ivan.tech",
+    "email": "ivan@example.com",
+    "phoneNumber": "+359888123001",
+    "password": "DevUser_1!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000002",
+    "userName": "maria.repairs",
+    "email": "maria@example.com",
+    "phoneNumber": "+359888456002",
+    "password": "DevUser_2!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000003",
+    "userName": "plovdiv.fixit",
+    "email": "plovdiv@example.com",
+    "phoneNumber": "+359888789003",
+    "password": "DevUser_3!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000004",
+    "userName": "stz.electric",
+    "email": "stz@example.com",
+    "phoneNumber": "+359888321004",
+    "password": "DevUser_4!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000099",
+    "userName": "admin",
+    "email": "admin@tehnicharche.bg",
+    "phoneNumber": null,
+    "password": "Admin_1!",
+    "roles": [ "Admin", "User" ]
+  }
+]
