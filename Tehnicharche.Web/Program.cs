@@ -41,11 +41,16 @@ namespace Tehnicharche.Web
 
             // Repositories
             builder.Services.AddScoped<IListingRepository, ListingRepository>();
+            builder.Services.AddScoped<IAdminListingRepository, AdminListingRepository>();
+            builder.Services.AddScoped<IContactMessageRepository, ContactMessageRepository>();
             builder.Services.AddScoped<IGenericRepository<Category>, GenericRepository<Category>>();
             builder.Services.AddScoped<IGenericRepository<Region>, GenericRepository<Region>>();
             builder.Services.AddScoped<IGenericRepository<City>, GenericRepository<City>>();
 
             builder.Services.AddScoped<IListingService, ListingService>();
+            builder.Services.AddScoped<IAdminListingService, AdminListingService>();
+            builder.Services.AddScoped<IAdminMessageService, AdminMessageService>();
+            builder.Services.AddScoped<IAdminUserService, AdminUserService>();
 
             builder.Services.AddScoped<DataSeeder>();
 
@@ -75,6 +80,10 @@ namespace Tehnicharche.Web
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapControllerRoute(
+               name: "areas",
+               pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",

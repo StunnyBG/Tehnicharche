@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Repositories.Interfaces;
 
@@ -123,12 +123,6 @@ namespace Tehnicharche.Data.Repositories
         public async Task SoftDeleteAsync(Listing listing)
         {
             listing.IsDeleted = true;
-            await context.SaveChangesAsync();
-        }
-
-        public async Task HardDeleteAsync(Listing listing)
-        {
-            context.Listings.Remove(listing);
             await context.SaveChangesAsync();
         }
 

@@ -1,4 +1,4 @@
-﻿using Tehnicharche.Data.Models;
+using Tehnicharche.Data.Models;
 
 namespace Tehnicharche.Data.Repositories.Interfaces
 {
@@ -29,8 +29,6 @@ namespace Tehnicharche.Data.Repositories.Interfaces
         Task AddAsync(Listing listing);
 
         Task SoftDeleteAsync(Listing listing);
-
-        Task HardDeleteAsync(Listing listing);
 
         Task SaveChangesAsync();
     }
