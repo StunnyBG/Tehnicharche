@@ -1,0 +1,145 @@
+@model Tehnicharche.ViewModels.Admin.AdminUsersViewModel
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div style="margin-bottom:20px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+    <span style="color:var(--text-muted); font-size:0.85rem;">
+        @Model.TotalCount registered user@(Model.TotalCount == 1 ? "" : "s")
+    </span>
+    @if (Model.BannedCount > 0)
+    {
+        <span class="badge-del" style="font-size:0.78rem; padding:3px 10px;">
+            <i class="bi bi-slash-circle"></i> @Model.BannedCount banned
+        </span>
+    }
+</div>
+
+<div class="a-card">
+    <div class="a-card-header">
+        <span class="a-card-title"><i class="bi bi-people-fill me-2"></i>All Users</span>
+    </div>
+
+    @if (!Model.Users.Any())
+    {
+        <div class="a-card-body" style="text-align:center; color:var(--text-muted); padding:48px 20px;">
+            No users found.
+        </div>
+    }
+    else
+    {
+        <table class="a-table">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Listings</th>
+                    <th>Roles</th>
+                    <th>Status</th>
+                    <th style="width:280px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in Model.Users)
+                {
+                    <tr style="@(u.IsBanned ? "opacity:.6;" : "")">
+                        <td>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div style="width:30px; height:30px;
+                                            background:@(u.IsBanned ? "rgba(239,68,68,.12)" : "var(--accent-dim)");
+                                            border:1px solid @(u.IsBanned ? "rgba(239,68,68,.3)" : "rgba(34,197,94,.3)");
+                                            border-radius:50%;
+                                            display:flex; align-items:center; justify-content:center;
+                                            font-size:0.75rem; font-weight:700;
+                                            color:@(u.IsBanned ? "#f87171" : "var(--accent)");
+                                            flex-shrink:0;">
+                                    @u.UserName.Substring(0,1).ToUpper()
+                                </div>
+                                <span style="font-weight:500;">@u.UserName</span>
+                            </div>
+                        </td>
+                        <td style="color:var(--text-muted); font-size:0.82rem;">
+                            <a href="mailto:@u.Email" style="color:var(--text-muted);">@u.Email</a>
+                        </td>
+                        <td style="color:var(--text-muted); font-size:0.82rem;">@(u.PhoneNumber ?? "—")</td>
+                        <td>
+                            @if (u.ListingCount > 0)
+                            {
+                                <span class="badge-info">@u.ListingCount</span>
+                            }
+                            else
+                            {
+                                <span style="color:var(--text-muted);">0</span>
+                            }
+                        </td>
+                        <td>
+                            <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                                @foreach (var role in u.Roles)
+                                {
+                                    <span class="@(role == "Admin" ? "badge-del" : "badge-ok")">@role</span>
+                                }
+                                @if (!u.Roles.Any())
+                                {
+                                    <span style="color:var(--text-muted); font-size:0.78rem;">—</span>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            @if (u.IsBanned)
+                            {
+                                <span class="badge-del"><i class="bi bi-slash-circle"></i> Banned</span>
+                            }
+                            else
+                            {
+                                <span class="badge-ok"><i class="bi bi-check-circle"></i> Active</span>
+                            }
+                        </td>
+                        <td>
+                            <div style="display:flex; gap:5px; flex-wrap:wrap;">
+
+                                @* ── Ban / Unban ── *@
+                                @if (u.IsBanned)
+                                {
+                                    <form asp-area="Admin" asp-controller="Users" asp-action="Unban"
+                                          method="post" style="display:inline;"
+                                          onsubmit="return confirm('Unban @u.UserName?');">
+                                        <input type="hidden" name="userId" value="@u.Id" />
+                                        <button type="submit" class="btn-a btn-a-success">
+                                            <i class="bi bi-person-check"></i> Unban
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-area="Admin" asp-controller="Users" asp-action="Ban"
+                                          method="post" style="display:inline;"
+                                          onsubmit="return confirm('Ban @u.UserName? All their listings will be removed.');">
+                                        <input type="hidden" name="userId" value="@u.Id" />
+                                        <button type="submit" class="btn-a btn-a-danger">
+                                            <i class="bi bi-slash-circle"></i> Ban
+                                        </button>
+                                    </form>
+                                }
+
+                                @* ── Toggle Admin ── *@
+                                <form asp-area="Admin" asp-controller="Users" asp-action="ToggleRole"
+                                      method="post" style="display:inline;"
+                                      onsubmit="return confirm('@(u.Roles.Contains("Admin") ? "Revoke Admin from" : "Grant Admin to") @u.UserName?');">
+                                    <input type="hidden" name="userId" value="@u.Id" />
+                                    <input type="hidden" name="role"   value="Admin" />
+                                    <button type="submit"
+                                            class="btn-a @(u.Roles.Contains("Admin") ? "btn-a-warn" : "btn-a-ghost")">
+                                        <i class="bi bi-shield-@(u.Roles.Contains("Admin") ? "x" : "plus")"></i>
+                                        @(u.Roles.Contains("Admin") ? "Revoke Admin" : "Make Admin")
+                                    </button>
+                                </form>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

@@ -1,0 +1,171 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<!-- ── Stat cards ──────────────────────────────────── -->
+<div class="stat-grid">
+
+    <div class="stat-card green">
+        <div class="stat-icon"><i class="bi bi-card-list"></i></div>
+        <div class="stat-value">@Model.TotalActiveListings</div>
+        <div class="stat-label">Active Listings</div>
+    </div>
+
+    <div class="stat-card red">
+        <div class="stat-icon"><i class="bi bi-trash3-fill"></i></div>
+        <div class="stat-value">@Model.TotalDeletedListings</div>
+        <div class="stat-label">Deleted Listings</div>
+    </div>
+
+    <div class="stat-card blue">
+        <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+        <div class="stat-value">@Model.TotalUsers</div>
+        <div class="stat-label">Registered Users</div>
+    </div>
+
+    <div class="stat-card @(Model.UnreadMessages > 0 ? "yellow" : "green")">
+        <div class="stat-icon"><i class="bi bi-envelope-fill"></i></div>
+        <div class="stat-value">@Model.UnreadMessages</div>
+        <div class="stat-label">Unread Messages</div>
+    </div>
+
+    <div class="stat-card blue">
+        <div class="stat-icon"><i class="bi bi-tag-fill"></i></div>
+        <div class="stat-value">@Model.TotalCategories</div>
+        <div class="stat-label">Categories</div>
+    </div>
+
+    <div class="stat-card green">
+        <div class="stat-icon"><i class="bi bi-chat-left-text-fill"></i></div>
+        <div class="stat-value">@Model.TotalMessages</div>
+        <div class="stat-label">Total Messages</div>
+    </div>
+
+</div>
+
+<!-- ── Bottom two-column grid ─────────────────────── -->
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+
+    <!-- Recent Listings -->
+    <div class="a-card">
+        <div class="a-card-header">
+            <span class="a-card-title"><i class="bi bi-card-list me-2"></i>Recent Listings</span>
+            <a asp-area="Admin" asp-controller="Listings" asp-action="Index"
+               class="btn-a btn-a-ghost" style="font-size:0.72rem;">
+                View all
+            </a>
+        </div>
+
+        @if (!Model.RecentListings.Any())
+        {
+            <div class="a-card-body" style="color:var(--text-muted); text-align:center; padding:32px;">
+                No listings yet.
+            </div>
+        }
+        else
+        {
+            <table class="a-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var l in Model.RecentListings)
+                    {
+                        <tr>
+                            <td style="color:var(--text-muted);">@l.Id</td>
+                            <td>
+                                <div class="trunc" style="max-width:200px;" title="@l.Title">@l.Title</div>
+                                <div style="font-size:0.72rem; color:var(--text-muted);">@l.CreatorName</div>
+                            </td>
+                            <td style="color:var(--text-muted);">@l.CategoryName</td>
+                            <td style="font-variant-numeric: tabular-nums;">@l.Price.ToString("0.00") €</td>
+                            <td>
+                                @if (l.IsDeleted)
+                                {
+                                    <span class="badge-del">Deleted</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-ok">Active</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+    <!-- Recent Messages -->
+    <div class="a-card">
+        <div class="a-card-header">
+            <span class="a-card-title">
+                <i class="bi bi-envelope-fill me-2"></i>Recent Messages
+                @if (Model.UnreadMessages > 0)
+                {
+                    <span class="a-badge" style="margin-left:8px;">@Model.UnreadMessages</span>
+                }
+            </span>
+            <a asp-area="Admin" asp-controller="Messages" asp-action="Index"
+               class="btn-a btn-a-ghost" style="font-size:0.72rem;">
+                View all
+            </a>
+        </div>
+
+        @if (!Model.RecentMessages.Any())
+        {
+            <div class="a-card-body" style="color:var(--text-muted); text-align:center; padding:32px;">
+                No messages yet.
+            </div>
+        }
+        else
+        {
+            <table class="a-table">
+                <thead>
+                    <tr>
+                        <th>From</th>
+                        <th>Subject</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model.RecentMessages)
+                    {
+                        <tr>
+                            <td>
+                                <div style="font-weight: @(m.IsRead ? "400" : "600");">@m.Name</div>
+                                <div style="font-size:0.72rem; color:var(--text-muted);">@m.Email</div>
+                            </td>
+                            <td>
+                                <div class="trunc" style="max-width:160px;" title="@m.Subject">
+                                    @if (!m.IsRead) { <span style="color:var(--accent);">●</span> }
+                                    @m.Subject
+                                </div>
+                            </td>
+                            <td style="color:var(--text-muted); font-size:0.78rem; white-space:nowrap;">@m.SentAt</td>
+                            <td>
+                                @if (!m.IsRead)
+                                {
+                                    <span class="badge-warn">Unread</span>
+                                }
+                                else
+                                {
+                                    <span style="color:var(--text-muted); font-size:0.72rem;">Read</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+</div>

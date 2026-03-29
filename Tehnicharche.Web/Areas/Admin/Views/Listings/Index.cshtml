@@ -1,0 +1,153 @@
+@model AdminListingsViewModel
+@{
+    ViewData["Title"] = "Listings";
+}
+
+<!-- Header row -->
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+
+    <!-- Filter tabs -->
+    <div class="filter-tabs">
+        <a href="?filter=all@(Model.SearchTerm != null ? "&search=" + Uri.EscapeDataString(Model.SearchTerm) : "")"
+           class="filter-tab @(Model.Filter == "all" ? "active" : "")">
+            All <span style="color:var(--text-muted);">(@Model.TotalCount)</span>
+        </a>
+        <a href="?filter=active@(Model.SearchTerm != null ? "&search=" + Uri.EscapeDataString(Model.SearchTerm) : "")"
+           class="filter-tab @(Model.Filter == "active" ? "active" : "")">
+            Active <span style="color:var(--text-muted);">(@Model.ActiveCount)</span>
+        </a>
+        <a href="?filter=deleted@(Model.SearchTerm != null ? "&search=" + Uri.EscapeDataString(Model.SearchTerm) : "")"
+           class="filter-tab @(Model.Filter == "deleted" ? "active" : "")">
+            Deleted <span style="color:var(--text-muted);">(@Model.DeletedCount)</span>
+        </a>
+    </div>
+
+    <!-- Search -->
+    <form method="get" style="display:flex; gap:8px; align-items:center;">
+        <input type="hidden" name="filter" value="@Model.Filter" />
+        <input class="a-input"
+               name="search"
+               value="@Model.SearchTerm"
+               placeholder="Search title, user, category…"
+               style="width:240px;" />
+        <button type="submit" class="btn-a btn-a-success">
+            <i class="bi bi-search"></i> Search
+        </button>
+        @if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
+        {
+            <a href="?filter=@Model.Filter" class="btn-a btn-a-ghost">Clear</a>
+        }
+    </form>
+
+</div>
+
+<!-- Table card -->
+<div class="a-card">
+    <div class="a-card-header">
+        <span class="a-card-title">
+            <i class="bi bi-card-list me-2"></i>
+            @Model.Listings.Count() result@(Model.Listings.Count() == 1 ? "" : "s")
+        </span>
+    </div>
+
+    @if (!Model.Listings.Any())
+    {
+        <div class="a-card-body" style="text-align:center; color:var(--text-muted); padding:48px 20px;">
+            <i class="bi bi-inbox" style="font-size:2rem; display:block; margin-bottom:10px;"></i>
+            No listings match your criteria.
+        </div>
+    }
+    else
+    {
+        <table class="a-table">
+            <thead>
+                <tr>
+                    <th style="width:50px;">#</th>
+                    <th>Title</th>
+                    <th>Creator</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Created</th>
+                    <th>Status</th>
+                    <th style="width:180px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var l in Model.Listings)
+                {
+                    <tr>
+                        <td style="color:var(--text-muted);">@l.Id</td>
+                        <td>
+                            <div class="trunc" title="@l.Title">@l.Title</div>
+                        </td>
+                        <td style="color:var(--text-muted);">@l.CreatorName</td>
+                        <td style="color:var(--text-muted);">@l.CategoryName</td>
+                        <td style="font-variant-numeric:tabular-nums; white-space:nowrap;">@l.Price.ToString("0.00") €</td>
+                        <td style="color:var(--text-muted); white-space:nowrap; font-size:0.8rem;">@l.CreatedAt</td>
+                        <td>
+                            @if (l.IsDeleted)
+                            {
+                                <span class="badge-del">Deleted</span>
+                            }
+                            else
+                            {
+                                <span class="badge-ok">Active</span>
+                            }
+                        </td>
+                        <td>
+                            <div style="display:flex; gap:5px; flex-wrap:wrap;">
+
+                                <!-- View on site -->
+                                <a asp-area="" asp-controller="Listings" asp-action="Details"
+                                   asp-route-id="@l.Id"
+                                   class="btn-a btn-a-ghost"
+                                   title="View listing"
+                                   target="_blank">
+                                    <i class="bi bi-box-arrow-up-right"></i>
+                                </a>
+
+                                @if (l.IsDeleted)
+                                {
+                                    <!-- Restore -->
+                                    <form asp-area="Admin" asp-controller="Listings" asp-action="Restore" method="post"
+                                          style="display:inline;">
+                                        <input type="hidden" name="id"     value="@l.Id" />
+                                        <input type="hidden" name="filter" value="@Model.Filter" />
+                                        <button type="submit" class="btn-a btn-a-success" title="Restore">
+                                            <i class="bi bi-arrow-counterclockwise"></i> Restore
+                                        </button>
+                                    </form>
+
+                                    <!-- Hard delete -->
+                                    <form asp-area="Admin" asp-controller="Listings" asp-action="HardDelete" method="post"
+                                          style="display:inline;"
+                                          onsubmit="return confirm('Permanently delete this listing? This cannot be undone.');">
+                                        <input type="hidden" name="id"     value="@l.Id" />
+                                        <input type="hidden" name="filter" value="@Model.Filter" />
+                                        <button type="submit" class="btn-a btn-a-danger" title="Delete permanently">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <!-- Soft delete -->
+                                    <form asp-area="Admin" asp-controller="Listings" asp-action="SoftDelete" method="post"
+                                          style="display:inline;"
+                                          onsubmit="return confirm('Move this listing to trash?');">
+                                        <input type="hidden" name="id"     value="@l.Id" />
+                                        <input type="hidden" name="filter" value="@Model.Filter" />
+                                        <button type="submit" class="btn-a btn-a-warn" title="Soft delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                }
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

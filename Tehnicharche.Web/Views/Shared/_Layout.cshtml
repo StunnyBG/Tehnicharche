@@ -56,6 +56,22 @@
                                     @User.Identity!.Name
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">
+
+                                    @* ?? Admin Panel link (only for Admins) ?? *@
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item fw-semibold"
+                                               asp-area="Admin"
+                                               asp-controller="Dashboard"
+                                               asp-action="Index"
+                                               style="color: #16a34a;">
+                                                <i class="bi bi-shield-fill-check me-1"></i> Admin Panel
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider" /></li>
+                                    }
+
                                     <li>
                                         <a class="dropdown-item"
                                            asp-area="Identity" asp-page="/Account/Manage/Index">
@@ -71,6 +87,7 @@
                                             </button>
                                         </form>
                                     </li>
+
                                 </ul>
                             </li>
                         }
