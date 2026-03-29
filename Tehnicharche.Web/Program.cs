@@ -51,6 +51,7 @@ namespace Tehnicharche.Web
             builder.Services.AddScoped<IAdminListingService, AdminListingService>();
             builder.Services.AddScoped<IAdminMessageService, AdminMessageService>();
             builder.Services.AddScoped<IAdminUserService, AdminUserService>();
+            builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
 
             builder.Services.AddScoped<DataSeeder>();
 
@@ -79,6 +80,7 @@ namespace Tehnicharche.Web
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
+            app.UseMiddleware<BanMiddleware>();
             app.UseAuthorization();
 
             app.MapControllerRoute(
