@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
-using Tehnicharche.Data;
 using Tehnicharche.Data.Models;
+using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.ViewModels;
 
 namespace Tehnicharche.Web.Controllers
 {
     public class ContactController : Controller
     {
-        private readonly TehnicharcheDbContext context;
+        private readonly IContactMessageRepository messageRepository;
 
-        public ContactController(TehnicharcheDbContext context)
+        public ContactController(IContactMessageRepository messageRepository)
         {
-            this.context = context;
+            this.messageRepository = messageRepository;
         }
 
         [HttpGet]
@@ -25,9 +25,7 @@ namespace Tehnicharche.Web.Controllers
         public async Task<IActionResult> Index(ContactFormViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
 
             var message = new ContactMessage
             {
@@ -40,8 +38,8 @@ namespace Tehnicharche.Web.Controllers
                 IsRead = false
             };
 
-            await context.ContactMessages.AddAsync(message);
-            await context.SaveChangesAsync();
+            await messageRepository.AddAsync(message);
+            await messageRepository.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Thank you for reaching out! We'll get back to you as soon as possible.";
             return RedirectToAction(nameof(Index));

@@ -22,7 +22,7 @@ public class BanMiddleware
                 context.Response.StatusCode = StatusCodes.Status403Forbidden;
                 context.Response.ContentType = "text/html";
 
-                // the banned page is rendered directly in the middleware insted of redirecting because there were issues with redirect loops and 404 errors
+                // the banned page is rendered directly in the middleware instead of redirecting because there were issues with redirect loops and 404 errors
                 await context.Response.WriteAsync(@"
                     <div style=""text-align:center; margin-top:50px; font-family:Arial, sans-serif;"">
                     <h1 style=""color:#d32f2f;"">Your Account Has Been Banned</h1>

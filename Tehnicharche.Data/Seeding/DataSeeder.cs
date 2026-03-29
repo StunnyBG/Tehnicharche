@@ -235,7 +235,7 @@ namespace Tehnicharche.Data.Seeding
         // NOTE: this must run on the same open db connection as SaveChanges(),
         // otherwise IDENTITY_INSERT can still be treated as OFF (scope issue)
 
-        // SQL injection isn't possible here because the methods are only used internely
+        // SQL injection isn't possible here because the methods are only used internally
         private async Task SetIdentityInsertOnAsync(string tableName)
         {
             await context.Database.ExecuteSqlRawAsync($"SET IDENTITY_INSERT [{tableName}] ON");
