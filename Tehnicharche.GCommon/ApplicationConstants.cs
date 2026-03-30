@@ -10,5 +10,6 @@ namespace Tehnicharche.GCommon
         public const int DefaultPage = 1;
         public const int IndexPageSize = 6;
         public const int MyListingsPageSize = 3;
+        public const int AdminPageSize = 10;
     }
 }

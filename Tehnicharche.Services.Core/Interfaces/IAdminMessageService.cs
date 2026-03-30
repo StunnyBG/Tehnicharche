@@ -4,7 +4,7 @@ namespace Tehnicharche.Services.Core.Interfaces
 {
     public interface IAdminMessageService
     {
-        Task<AdminMessagesViewModel> GetMessagesAsync(string filter);
+        Task<AdminMessagesViewModel> GetMessagesAsync(string filter, int page);
 
         Task<AdminMessageRowViewModel> GetByIdAsync(int id);
 

@@ -4,7 +4,8 @@ namespace Tehnicharche.Data.Repositories.Interfaces
 {
     public interface IContactMessageRepository
     {
-        Task<IEnumerable<ContactMessage>> GetAllAsync(string filter = "all");
+        Task<(IEnumerable<ContactMessage> Items, int TotalCount)> GetAllAsync(
+            string filter, int page, int pageSize);
 
         Task<ContactMessage?> GetByIdAsync(int id);
 

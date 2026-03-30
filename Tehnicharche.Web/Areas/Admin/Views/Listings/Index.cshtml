@@ -1,6 +1,23 @@
 @model AdminListingsViewModel
 @{
     ViewData["Title"] = "Listings";
+
+    // helper: build URL preserving filter + search, changing only page
+    string PageUrl(int p)
+    {
+        var qs = $"filter={Uri.EscapeDataString(Model.Filter)}&page={p}";
+        if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
+            qs += $"&search={Uri.EscapeDataString(Model.SearchTerm!)}";
+        return "?" + qs;
+    }
+
+    string FilterUrl(string f)
+    {
+        var qs = $"filter={Uri.EscapeDataString(f)}&page=1";
+        if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
+            qs += $"&search={Uri.EscapeDataString(Model.SearchTerm!)}";
+        return "?" + qs;
+    }
 }
 
 <!-- Header row -->
@@ -8,16 +25,13 @@
 
     <!-- Filter tabs -->
     <div class="filter-tabs">
-        <a href="?filter=all@(Model.SearchTerm != null ? "&search=" + Uri.EscapeDataString(Model.SearchTerm) : "")"
-           class="filter-tab @(Model.Filter == "all" ? "active" : "")">
+        <a href="@FilterUrl("all")" class="filter-tab @(Model.Filter == "all" ? "active" : "")">
             All <span style="color:var(--text-muted);">(@Model.TotalCount)</span>
         </a>
-        <a href="?filter=active@(Model.SearchTerm != null ? "&search=" + Uri.EscapeDataString(Model.SearchTerm) : "")"
-           class="filter-tab @(Model.Filter == "active" ? "active" : "")">
+        <a href="@FilterUrl("active")" class="filter-tab @(Model.Filter == "active" ? "active" : "")">
             Active <span style="color:var(--text-muted);">(@Model.ActiveCount)</span>
         </a>
-        <a href="?filter=deleted@(Model.SearchTerm != null ? "&search=" + Uri.EscapeDataString(Model.SearchTerm) : "")"
-           class="filter-tab @(Model.Filter == "deleted" ? "active" : "")">
+        <a href="@FilterUrl("deleted")" class="filter-tab @(Model.Filter == "deleted" ? "active" : "")">
             Deleted <span style="color:var(--text-muted);">(@Model.DeletedCount)</span>
         </a>
     </div>
@@ -25,6 +39,7 @@
     <!-- Search -->
     <form method="get" style="display:flex; gap:8px; align-items:center;">
         <input type="hidden" name="filter" value="@Model.Filter" />
+        <input type="hidden" name="page"   value="1" />
         <input class="a-input"
                name="search"
                value="@Model.SearchTerm"
@@ -35,7 +50,7 @@
         </button>
         @if (!string.IsNullOrWhiteSpace(Model.SearchTerm))
         {
-            <a href="?filter=@Model.Filter" class="btn-a btn-a-ghost">Clear</a>
+            <a href="@FilterUrl(Model.Filter)" class="btn-a btn-a-ghost">Clear</a>
         }
     </form>
 
@@ -47,6 +62,9 @@
         <span class="a-card-title">
             <i class="bi bi-card-list me-2"></i>
             @Model.Listings.Count() result@(Model.Listings.Count() == 1 ? "" : "s")
+            <span style="color:var(--text-muted); font-weight:400; font-size:0.78rem; margin-left:8px;">
+                — page @Model.Page of @Model.TotalPages
+            </span>
         </span>
     </div>
 
@@ -149,5 +167,74 @@
                 }
             </tbody>
         </table>
+
+        @* ── Pagination ── *@
+        @if (Model.TotalPages > 1)
+        {
+            <div style="padding:16px 20px; border-top:1px solid var(--border);
+                        display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+
+                <span style="font-size:0.78rem; color:var(--text-muted);">
+                    Page <strong style="color:var(--text);">@Model.Page</strong> of
+                    <strong style="color:var(--text);">@Model.TotalPages</strong>
+                </span>
+
+                <div style="display:flex; gap:4px; flex-wrap:wrap;">
+
+                    @* First *@
+                    @if (Model.Page > 1)
+                    {
+                        <a href="@PageUrl(1)" class="btn-a btn-a-ghost" title="First">«</a>
+                        <a href="@PageUrl(Model.Page - 1)" class="btn-a btn-a-ghost" title="Previous">‹</a>
+                    }
+
+                    @* Window *@
+                    @{
+                        int window = 5;
+                        int half   = window / 2;
+                        int start  = Math.Max(1, Model.Page - half);
+                        int end    = Math.Min(Model.TotalPages, start + window - 1);
+                        if (end - start + 1 < window)
+                            start = Math.Max(1, end - window + 1);
+                    }
+
+                    @if (start > 1)
+                    {
+                        <a href="@PageUrl(1)" class="btn-a btn-a-ghost">1</a>
+                        @if (start > 2)
+                        {
+                            <span style="display:inline-flex; align-items:center; padding:5px 6px;
+                                         color:var(--text-muted); font-size:0.78rem;">…</span>
+                        }
+                    }
+
+                    @for (int p = start; p <= end; p++)
+                    {
+                        <a href="@PageUrl(p)"
+                           class="btn-a @(p == Model.Page ? "btn-a-success" : "btn-a-ghost")">
+                            @p
+                        </a>
+                    }
+
+                    @if (end < Model.TotalPages)
+                    {
+                        @if (end < Model.TotalPages - 1)
+                        {
+                            <span style="display:inline-flex; align-items:center; padding:5px 6px;
+                                         color:var(--text-muted); font-size:0.78rem;">…</span>
+                        }
+                        <a href="@PageUrl(Model.TotalPages)" class="btn-a btn-a-ghost">@Model.TotalPages</a>
+                    }
+
+                    @* Next / Last *@
+                    @if (Model.Page < Model.TotalPages)
+                    {
+                        <a href="@PageUrl(Model.Page + 1)" class="btn-a btn-a-ghost" title="Next">›</a>
+                        <a href="@PageUrl(Model.TotalPages)" class="btn-a btn-a-ghost" title="Last">»</a>
+                    }
+
+                </div>
+            </div>
+        }
     }
 </div>

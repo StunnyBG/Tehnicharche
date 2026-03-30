@@ -1,3 +1,6 @@
+
+using static Tehnicharche.GCommon.ApplicationConstants;
+
 namespace Tehnicharche.ViewModels.Admin
 {
     public class AdminMessagesViewModel
@@ -5,7 +8,10 @@ namespace Tehnicharche.ViewModels.Admin
         public int UnreadCount { get; set; }
         public int TotalCount { get; set; }
 
-        public IEnumerable<AdminMessageRowViewModel> Messages { get; set; } 
+        public int Page { get; set; } = DefaultPage;
+        public int TotalPages { get; set; }
+
+        public IEnumerable<AdminMessageRowViewModel> Messages { get; set; }
             = new List<AdminMessageRowViewModel>();
     }
 }

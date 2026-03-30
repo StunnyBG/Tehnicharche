@@ -121,6 +121,10 @@ namespace Tehnicharche.Services.Core
         public async Task BanAsync(string userId)
         {
             var user = await FindOrThrowAsync(userId);
+
+            if (await userManager.IsInRoleAsync(user, "Admin"))
+                throw new InvalidOperationException("Administrators cannot be banned. Revoke the Admin role first.");
+
             user.IsBanned = true;
             await userManager.UpdateAsync(user);
             await userManager.UpdateSecurityStampAsync(user);

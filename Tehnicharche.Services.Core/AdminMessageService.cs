@@ -15,17 +15,25 @@ namespace Tehnicharche.Services.Core
             this.messageRepository = messageRepository;
         }
 
-        public async Task<AdminMessagesViewModel> GetMessagesAsync(string filter)
+        public async Task<AdminMessagesViewModel> GetMessagesAsync(string filter, int page)
         {
-            var messages = await messageRepository.GetAllAsync(filter);
+            page = page <= 0 ? 1 : page;
+
+            var (items, filteredTotal) = await messageRepository.GetAllAsync(filter, page, AdminPageSize);
+
             int unreadCount = await messageRepository.GetUnreadCountAsync();
             int totalCount = await messageRepository.GetTotalCountAsync();
+
+            int totalPages = (int)Math.Ceiling((double)filteredTotal / AdminPageSize);
+            if (totalPages < 1) totalPages = 1;
 
             return new AdminMessagesViewModel
             {
                 UnreadCount = unreadCount,
                 TotalCount = totalCount,
-                Messages = messages.Select(MapToRow)
+                Page = page,
+                TotalPages = totalPages,
+                Messages = items.Select(MapToRow)
             };
         }
 

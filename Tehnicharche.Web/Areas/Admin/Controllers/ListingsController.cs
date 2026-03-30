@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Tehnicharche.Services.Core.Interfaces;
 
+using static Tehnicharche.GCommon.ApplicationConstants;
+
 namespace Tehnicharche.Web.Areas.Admin.Controllers
 {
     public class ListingsController : AdminBaseController
@@ -13,9 +15,9 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string filter = "all", string? search = null)
+        public async Task<IActionResult> Index(string filter = "all", string? search = null, int page = DefaultPage)
         {
-            var model = await listingService.GetListingsAsync(filter, search);
+            var model = await listingService.GetListingsAsync(filter, search, page);
             return View(model);
         }
 

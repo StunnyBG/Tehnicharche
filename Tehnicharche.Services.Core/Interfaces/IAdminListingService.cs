@@ -4,7 +4,7 @@ namespace Tehnicharche.Services.Core.Interfaces
 {
     public interface IAdminListingService
     {
-        Task<AdminListingsViewModel> GetListingsAsync(string filter, string? searchTerm);
+        Task<AdminListingsViewModel> GetListingsAsync(string filter, string? searchTerm, int page);
 
         Task<IEnumerable<AdminListingRowViewModel>> GetRecentAsync(int count);
 

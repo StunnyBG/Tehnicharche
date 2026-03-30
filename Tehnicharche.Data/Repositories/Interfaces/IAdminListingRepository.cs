@@ -1,10 +1,11 @@
-﻿using Tehnicharche.Data.Models;
+using Tehnicharche.Data.Models;
 
 namespace Tehnicharche.Data.Repositories.Interfaces
 {
     public interface IAdminListingRepository
     {
-        Task<IEnumerable<Listing>> GetAdminFilteredAsync(string filter, string? searchTerm);
+        Task<(IEnumerable<Listing> Items, int TotalCount)> GetAdminFilteredAsync(
+            string filter, string? searchTerm, int page, int pageSize);
 
         Task<IEnumerable<Listing>> GetRecentAdminAsync(int count);
 

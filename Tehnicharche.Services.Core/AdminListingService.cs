@@ -15,11 +15,18 @@ namespace Tehnicharche.Services.Core
             this.listingRepository = listingRepository;
         }
 
-        public async Task<AdminListingsViewModel> GetListingsAsync(string filter, string? searchTerm)
+        public async Task<AdminListingsViewModel> GetListingsAsync(string filter, string? searchTerm, int page)
         {
-            var listings = await listingRepository.GetAdminFilteredAsync(filter, searchTerm);
+            page = page <= 0 ? 1 : page;
+
+            var (items, filteredTotal) = await listingRepository.GetAdminFilteredAsync(
+                filter, searchTerm, page, AdminPageSize);
+
             int activeCount = await listingRepository.GetActiveCountAsync();
             int deletedCount = await listingRepository.GetDeletedCountAsync();
+
+            int totalPages = (int)Math.Ceiling((double)filteredTotal / AdminPageSize);
+            if (totalPages < 1) totalPages = 1;
 
             return new AdminListingsViewModel
             {
@@ -28,7 +35,9 @@ namespace Tehnicharche.Services.Core
                 ActiveCount = activeCount,
                 DeletedCount = deletedCount,
                 TotalCount = activeCount + deletedCount,
-                Listings = listings.Select(l => new AdminListingRowViewModel
+                Page = page,
+                TotalPages = totalPages,
+                Listings = items.Select(l => new AdminListingRowViewModel
                 {
                     Id = l.Id,
                     Title = l.Title,

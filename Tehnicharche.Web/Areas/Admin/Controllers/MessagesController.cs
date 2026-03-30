@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Tehnicharche.Services.Core.Interfaces;
+using static Tehnicharche.GCommon.ApplicationConstants;
 
 namespace Tehnicharche.Web.Areas.Admin.Controllers
 {
@@ -13,9 +14,9 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string filter = "all")
+        public async Task<IActionResult> Index(string filter = "all", int page = DefaultPage)
         {
-            var model = await messageService.GetMessagesAsync(filter);
+            var model = await messageService.GetMessagesAsync(filter, page);
             ViewBag.Filter = filter;
             return View(model);
         }

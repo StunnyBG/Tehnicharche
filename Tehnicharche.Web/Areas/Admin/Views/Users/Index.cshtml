@@ -37,12 +37,14 @@
                     <th>Listings</th>
                     <th>Roles</th>
                     <th>Status</th>
-                    <th style="width:280px;">Actions</th>
+                    <th style="width:140px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var u in Model.Users)
                 {
+                    var isAdmin = u.Roles.Contains("Admin");
+
                     <tr style="@(u.IsBanned ? "opacity:.6;" : "")">
                         <td>
                             <div style="display:flex; align-items:center; gap:10px;">
@@ -54,7 +56,7 @@
                                             font-size:0.75rem; font-weight:700;
                                             color:@(u.IsBanned ? "#f87171" : "var(--accent)");
                                             flex-shrink:0;">
-                                    @u.UserName.Substring(0,1).ToUpper()
+                                    @u.UserName.Substring(0, 1).ToUpper()
                                 </div>
                                 <span style="font-weight:500;">@u.UserName</span>
                             </div>
@@ -98,7 +100,6 @@
                         <td>
                             <div style="display:flex; gap:5px; flex-wrap:wrap;">
 
-                                @* ── Ban / Unban ── *@
                                 @if (u.IsBanned)
                                 {
                                     <form asp-area="Admin" asp-controller="Users" asp-action="Unban"
@@ -109,6 +110,18 @@
                                             <i class="bi bi-person-check"></i> Unban
                                         </button>
                                     </form>
+                                }
+                                else if (isAdmin)
+                                {
+                                    @* Admins cannot be banned *@
+                                    <span title="Admins cannot be banned"
+                                          style="display:inline-flex; align-items:center; gap:5px;
+                                                 padding:5px 11px; border-radius:6px; font-size:0.78rem;
+                                                 font-weight:600; border:1px solid var(--border);
+                                                 background:var(--hover-bg); color:var(--text-muted);
+                                                 cursor:not-allowed; opacity:.55;">
+                                        <i class="bi bi-slash-circle"></i> Ban
+                                    </span>
                                 }
                                 else
                                 {
@@ -121,19 +134,6 @@
                                         </button>
                                     </form>
                                 }
-
-                                @* ── Toggle Admin ── *@
-                                <form asp-area="Admin" asp-controller="Users" asp-action="ToggleRole"
-                                      method="post" style="display:inline;"
-                                      onsubmit="return confirm('@(u.Roles.Contains("Admin") ? "Revoke Admin from" : "Grant Admin to") @u.UserName?');">
-                                    <input type="hidden" name="userId" value="@u.Id" />
-                                    <input type="hidden" name="role"   value="Admin" />
-                                    <button type="submit"
-                                            class="btn-a @(u.Roles.Contains("Admin") ? "btn-a-warn" : "btn-a-ghost")">
-                                        <i class="bi bi-shield-@(u.Roles.Contains("Admin") ? "x" : "plus")"></i>
-                                        @(u.Roles.Contains("Admin") ? "Revoke Admin" : "Make Admin")
-                                    </button>
-                                </form>
 
                             </div>
                         </td>

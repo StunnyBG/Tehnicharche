@@ -13,18 +13,25 @@ namespace Tehnicharche.Data.Repositories
             this.context = context;
         }
 
-        public async Task<IEnumerable<ContactMessage>> GetAllAsync(string filter = "all")
+        public async Task<(IEnumerable<ContactMessage> Items, int TotalCount)> GetAllAsync(
+            string filter, int page, int pageSize)
         {
             var query = context.ContactMessages.AsQueryable();
 
             if (filter == "unread")
-                query.Where(m => !m.IsRead);
+                query = query.Where(m => !m.IsRead);
             else if (filter == "read")
-                query.Where(m => m.IsRead);
+                query = query.Where(m => m.IsRead);
 
-            return await query
+            int totalCount = await query.CountAsync();
+
+            var items = await query
                 .OrderByDescending(m => m.SentAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return (items, totalCount);
         }
 
         public async Task<ContactMessage?> GetByIdAsync(int id)

@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Repositories.Interfaces;
 
@@ -7,12 +7,14 @@ namespace Tehnicharche.Data.Repositories
     public class AdminListingRepository : IAdminListingRepository
     {
         private readonly TehnicharcheDbContext context;
-        public AdminListingRepository(TehnicharcheDbContext context) 
+
+        public AdminListingRepository(TehnicharcheDbContext context)
         {
             this.context = context;
         }
 
-        public async Task<IEnumerable<Listing>> GetAdminFilteredAsync(string filter, string? searchTerm)
+        public async Task<(IEnumerable<Listing> Items, int TotalCount)> GetAdminFilteredAsync(
+            string filter, string? searchTerm, int page, int pageSize)
         {
             var query = context.Listings
                 .IgnoreQueryFilters()
@@ -30,16 +32,20 @@ namespace Tehnicharche.Data.Repositories
                     EF.Functions.Like(l.Category.Name.ToLower(), $"%{term}%"));
             }
 
-
             if (filter == "active")
                 query = query.Where(l => !l.IsDeleted);
             else if (filter == "deleted")
                 query = query.Where(l => l.IsDeleted);
 
+            int totalCount = await query.CountAsync();
 
-            return await query
+            var items = await query
                 .OrderByDescending(l => l.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return (items, totalCount);
         }
 
         public async Task<IEnumerable<Listing>> GetRecentAdminAsync(int count)
