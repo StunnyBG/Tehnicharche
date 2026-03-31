@@ -16,6 +16,7 @@ namespace Tehnicharche.Data
         public virtual DbSet<City> Cities { get; set; } = null!;
         public virtual DbSet<Listing> Listings { get; set; } = null!;
         public virtual DbSet<ContactMessage> ContactMessages { get; set; } = null!;
+        public virtual DbSet<SavedListing> SavedListings { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -23,6 +24,21 @@ namespace Tehnicharche.Data
 
             modelBuilder.Entity<Listing>()
                 .HasQueryFilter(l => !l.IsDeleted);
+
+            modelBuilder.Entity<SavedListing>()
+                .HasKey(sl => new { sl.UserId, sl.ListingId });
+
+            modelBuilder.Entity<SavedListing>()
+                .HasOne(sl => sl.Listing)
+                .WithMany()
+                .HasForeignKey(sl => sl.ListingId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<SavedListing>()
+                .HasOne(sl => sl.User)
+                .WithMany()
+                .HasForeignKey(sl => sl.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
