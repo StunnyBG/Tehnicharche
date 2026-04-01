@@ -1,0 +1,105 @@
+@model AdminCitiesViewModel
+@{
+    ViewData["Title"] = "Cities";
+}
+
+<!-- Add form -->
+<div class="a-card" style="margin-bottom:24px;">
+    <div class="a-card-header">
+        <span class="a-card-title"><i class="bi bi-plus-circle-fill me-2"></i>Add City</span>
+    </div>
+    <div class="a-card-body">
+        <form asp-area="Admin" asp-controller="Cities" asp-action="Add"
+              method="post" style="display:flex; gap:8px; flex-wrap:wrap; max-width:680px;">
+            <input class="a-input" style="flex:2; min-width:180px;" name="name"
+                   placeholder="City name…" maxlength="50" required />
+            <select class="a-input" style="flex:1; min-width:180px;" name="regionId" required>
+                <option value="">— Select region —</option>
+                @foreach (var r in Model.AvailableRegions)
+                {
+                    <option value="@r.Id">@r.Name</option>
+                }
+            </select>
+            <button type="submit" class="btn-a btn-a-success">
+                <i class="bi bi-plus-lg"></i> Add
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="a-card">
+    <div class="a-card-header">
+        <span class="a-card-title">
+            <i class="bi bi-building me-2"></i>
+            All Cities
+            <span style="color:var(--text-muted); font-weight:400; font-size:0.78rem; margin-left:8px;">
+                (@Model.Cities.Count())
+            </span>
+        </span>
+    </div>
+
+    @if (!Model.Cities.Any())
+    {
+        <div class="a-card-body" style="text-align:center; color:var(--text-muted); padding:48px 20px;">
+            <i class="bi bi-inbox" style="font-size:2rem; display:block; margin-bottom:10px;"></i>
+            No cities yet.
+        </div>
+    }
+    else
+    {
+        <table class="a-table">
+            <thead>
+                <tr>
+                    <th style="width:60px;">#</th>
+                    <th>Name</th>
+                    <th>Region</th>
+                    <th>Listings (incl. deleted)</th>
+                    <th style="width:160px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Cities)
+                {
+                    <tr>
+                        <td style="color:var(--text-muted);">@c.Id</td>
+                        <td>@c.Name</td>
+                        <td style="color:var(--text-muted);">@c.RegionName</td>
+                        <td>
+                            @if (c.ListingCount > 0) { <span class="badge-info">@c.ListingCount</span> }
+                            else { <span style="color:var(--text-muted);">0</span> }
+                        </td>
+                        <td>
+                            <div style="display:flex; gap:5px;">
+                                <a asp-area="Admin" asp-controller="Cities" asp-action="Edit"
+                                   asp-route-id="@c.Id" class="btn-a btn-a-ghost">
+                                    <i class="bi bi-pencil-fill"></i> Edit
+                                </a>
+
+                                @if (c.ListingCount == 0)
+                                {
+                                    <form asp-area="Admin" asp-controller="Cities" asp-action="Delete"
+                                          method="post" style="display:inline;"
+                                          onsubmit="return confirm('Delete city &quot;@c.Name&quot;?');">
+                                        <input type="hidden" name="id" value="@c.Id" />
+                                        <button type="submit" class="btn-a btn-a-danger">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="btn-a btn-a-ghost"
+                                          style="opacity:.38; cursor:not-allowed;"
+                                          title="Cannot delete — in use by @c.ListingCount listing(s)">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </span>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

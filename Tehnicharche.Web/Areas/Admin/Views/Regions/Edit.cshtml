@@ -1,0 +1,48 @@
+@model EditRegionViewModel
+@{
+    ViewData["Title"] = "Edit Region";
+}
+
+<div style="margin-bottom:20px;">
+    <a asp-area="Admin" asp-controller="Regions" asp-action="Index" class="btn-a btn-a-ghost">
+        <i class="bi bi-arrow-left"></i> Back to Regions
+    </a>
+</div>
+
+<div class="a-card" style="max-width:480px;">
+    <div class="a-card-header">
+        <span class="a-card-title"><i class="bi bi-pencil-fill me-2"></i>Edit Region</span>
+    </div>
+    <div class="a-card-body">
+        <form asp-area="Admin" asp-controller="Regions" asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly"
+                 style="background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.25);
+                        color:#f87171; padding:10px 14px; border-radius:8px;
+                        margin-bottom:16px; font-size:0.85rem;"></div>
+
+            <div style="margin-bottom:16px;">
+                <label asp-for="Name"
+                       style="display:block; font-size:0.78rem; font-weight:600;
+                              color:var(--text-muted); margin-bottom:6px;">
+                    Region Name
+                </label>
+                <input asp-for="Name" class="a-input" style="width:100%;" maxlength="50" />
+                <span asp-validation-for="Name" style="font-size:0.75rem; color:#f87171;"></span>
+            </div>
+
+            <div style="display:flex; gap:8px;">
+                <button type="submit" class="btn-a btn-a-success">
+                    <i class="bi bi-check-lg"></i> Save
+                </button>
+                <a asp-area="Admin" asp-controller="Regions" asp-action="Index"
+                   class="btn-a btn-a-ghost">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

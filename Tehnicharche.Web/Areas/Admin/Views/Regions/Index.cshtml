@@ -1,0 +1,102 @@
+@model AdminRegionsViewModel
+@{
+    ViewData["Title"] = "Regions";
+}
+
+<!-- Add form -->
+<div class="a-card" style="margin-bottom:24px;">
+    <div class="a-card-header">
+        <span class="a-card-title"><i class="bi bi-plus-circle-fill me-2"></i>Add Region</span>
+    </div>
+    <div class="a-card-body">
+        <form asp-area="Admin" asp-controller="Regions" asp-action="Add"
+              method="post" style="display:flex; gap:8px; max-width:520px;">
+            <input class="a-input" style="flex:1;" name="name"
+                   placeholder="Region name…" maxlength="50" required />
+            <button type="submit" class="btn-a btn-a-success">
+                <i class="bi bi-plus-lg"></i> Add
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="a-card">
+    <div class="a-card-header">
+        <span class="a-card-title">
+            <i class="bi bi-geo-alt-fill me-2"></i>
+            All Regions
+            <span style="color:var(--text-muted); font-weight:400; font-size:0.78rem; margin-left:8px;">
+                (@Model.Regions.Count())
+            </span>
+        </span>
+    </div>
+
+    @if (!Model.Regions.Any())
+    {
+        <div class="a-card-body" style="text-align:center; color:var(--text-muted); padding:48px 20px;">
+            <i class="bi bi-inbox" style="font-size:2rem; display:block; margin-bottom:10px;"></i>
+            No regions yet.
+        </div>
+    }
+    else
+    {
+        <table class="a-table">
+            <thead>
+                <tr>
+                    <th style="width:60px;">#</th>
+                    <th>Name</th>
+                    <th>Cities</th>
+                    <th>Listings (incl. deleted)</th>
+                    <th style="width:160px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model.Regions)
+                {
+                    var inUse = r.CityCount > 0 || r.ListingCount > 0;
+                    <tr>
+                        <td style="color:var(--text-muted);">@r.Id</td>
+                        <td>@r.Name</td>
+                        <td>
+                            @if (r.CityCount > 0) { <span class="badge-info">@r.CityCount</span> }
+                            else { <span style="color:var(--text-muted);">0</span> }
+                        </td>
+                        <td>
+                            @if (r.ListingCount > 0) { <span class="badge-info">@r.ListingCount</span> }
+                            else { <span style="color:var(--text-muted);">0</span> }
+                        </td>
+                        <td>
+                            <div style="display:flex; gap:5px;">
+                                <a asp-area="Admin" asp-controller="Regions" asp-action="Edit"
+                                   asp-route-id="@r.Id" class="btn-a btn-a-ghost">
+                                    <i class="bi bi-pencil-fill"></i> Edit
+                                </a>
+
+                                @if (!inUse)
+                                {
+                                    <form asp-area="Admin" asp-controller="Regions" asp-action="Delete"
+                                          method="post" style="display:inline;"
+                                          onsubmit="return confirm('Delete region &quot;@r.Name&quot;?');">
+                                        <input type="hidden" name="id" value="@r.Id" />
+                                        <button type="submit" class="btn-a btn-a-danger">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="btn-a btn-a-ghost"
+                                          style="opacity:.38; cursor:not-allowed;"
+                                          title="Cannot delete — @r.CityCount city/cities and @r.ListingCount listing(s) reference this region">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </span>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
