@@ -26,7 +26,6 @@ namespace Tehnicharche.Web
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.User.RequireUniqueEmail = true;
-                // Set to false — no email sender is configured; confirm emails automatically on register
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = true;
                 options.Password.RequireLowercase = true;
@@ -41,20 +40,27 @@ namespace Tehnicharche.Web
 
             // Repositories
             builder.Services.AddScoped<IListingRepository, ListingRepository>();
-            builder.Services.AddScoped<IAdminListingRepository, AdminListingRepository>();
             builder.Services.AddScoped<ISavedListingRepository, SavedListingRepository>();
             builder.Services.AddScoped<IContactMessageRepository, ContactMessageRepository>();
+            builder.Services.AddScoped<IAdminListingRepository, AdminListingRepository>();
+            builder.Services.AddScoped<IAdminCategoryRepository, AdminCategoryRepository>();
+            builder.Services.AddScoped<IAdminRegionRepository, AdminRegionRepository>();
+            builder.Services.AddScoped<IAdminCityRepository, AdminCityRepository>();
             builder.Services.AddScoped<IGenericRepository<Category>, GenericRepository<Category>>();
             builder.Services.AddScoped<IGenericRepository<Region>, GenericRepository<Region>>();
             builder.Services.AddScoped<IGenericRepository<City>, GenericRepository<City>>();
 
+            // Services 
             builder.Services.AddScoped<IListingService, ListingService>();
             builder.Services.AddScoped<ISavedListingService, SavedListingService>();
             builder.Services.AddScoped<IAdminListingService, AdminListingService>();
             builder.Services.AddScoped<IAdminMessageService, AdminMessageService>();
             builder.Services.AddScoped<IAdminUserService, AdminUserService>();
-            builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
+            builder.Services.AddScoped<IAdminCategoryService, AdminCategoryService>();
+            builder.Services.AddScoped<IAdminRegionService, AdminRegionService>();
+            builder.Services.AddScoped<IAdminCityService, AdminCityService>();
 
+            builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
             builder.Services.AddScoped<DataSeeder>();
 
             builder.Services.AddControllersWithViews();

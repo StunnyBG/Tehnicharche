@@ -1,4 +1,6 @@
 ﻿
+using System.Xml.Linq;
+
 namespace Tehnicharche.GCommon
 {
     public static class ValidationConstants
@@ -6,16 +8,24 @@ namespace Tehnicharche.GCommon
         public static class Category
         {
             public const int NameMaxLength = 100;
+            public const string NameErrorMessage = "Category name cannot exceed 100 characters.";
+            public const string DisplayName = "Category Name";
         }
 
         public static class City
         {
             public const int NameMaxLength = 50;
+            public const string NameErrorMessage = "City name cannot exceed 50 characters.";
+            public const string RegionErrorMessage = "Please select a region.";
+            public const string DisplayName = "City Name";
+            public const string RegionDisplayName = "Region";
         }
 
         public static class Region
         {
             public const int NameMaxLength = 50;
+            public const string NameErrorMessage = "Region name cannot exceed 50 characters.";
+            public const string DisplayName = "Region Name";
         }
 
         public static class Listing
