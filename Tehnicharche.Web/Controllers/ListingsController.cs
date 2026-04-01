@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tehnicharche.Data.Models;
@@ -10,13 +10,17 @@ namespace Tehnicharche.Web.Controllers
     public class ListingsController : AuthorizedController
     {
         private readonly IListingService listingService;
+        private readonly ISavedListingService savedListingService;
 
-        public ListingsController(IListingService listingService, UserManager<ApplicationUser> userManager)
+        public ListingsController(
+            IListingService listingService,
+            ISavedListingService savedListingService,
+            UserManager<ApplicationUser> userManager)
             : base(userManager)
         {
             this.listingService = listingService;
+            this.savedListingService = savedListingService;
         }
-
 
         [AllowAnonymous]
         [HttpGet]
@@ -25,9 +29,7 @@ namespace Tehnicharche.Web.Controllers
             query = await listingService.GetIndexListingsAsync(query);
 
             if (!ModelState.IsValid)
-            {
                 query.Listings = Enumerable.Empty<ListingIndexViewModel>();
-            }
 
             return View(query);
         }
@@ -39,6 +41,10 @@ namespace Tehnicharche.Web.Controllers
             try
             {
                 var model = await listingService.GetListingDetailsByIdAsync(id);
+
+                if (User.Identity?.IsAuthenticated == true)
+                    model.IsSaved = await savedListingService.IsSavedAsync(UserId, id);
+
                 return View(model);
             }
             catch (InvalidOperationException)
@@ -53,11 +59,28 @@ namespace Tehnicharche.Web.Controllers
             query = await listingService.GetMyListingsAsync(query, UserId);
 
             if (!ModelState.IsValid)
-            {
                 query.Listings = Enumerable.Empty<ListingIndexViewModel>();
-            }
 
             return View(query);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SavedListings([FromQuery] SavedListingsQueryModel query)
+        {
+            query = await savedListingService.GetSavedListingsAsync(query, UserId);
+            return View(query);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleSave(int listingId, string? returnUrl = null)
+        {
+            await savedListingService.ToggleSaveAsync(UserId, listingId);
+
+            if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+
+            return RedirectToAction(nameof(Details), new { id = listingId });
         }
 
         [HttpGet]
@@ -102,12 +125,12 @@ namespace Tehnicharche.Web.Controllers
                 var model = await listingService.GetListingEditAsync(id, UserId);
                 return View(model);
             }
-            catch (UnauthorizedAccessException)
-            {
+            catch (UnauthorizedAccessException) 
+            { 
                 return Forbid();
             }
-            catch (InvalidOperationException)
-            {
+            catch (InvalidOperationException) 
+            { 
                 return NotFound();
             }
         }
@@ -128,12 +151,12 @@ namespace Tehnicharche.Web.Controllers
                 await listingService.EditListingAsync(model, UserId);
                 return RedirectToAction(nameof(Details), new { id = model.Id });
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException) 
             {
                 return Forbid();
             }
             catch (InvalidOperationException)
-            {
+            { 
                 return BadRequest();
             }
             catch (Exception)
@@ -144,7 +167,6 @@ namespace Tehnicharche.Web.Controllers
             model.Categories = await listingService.GetAllCategoriesAsync();
             model.Regions = await listingService.GetAllRegionsAsync();
             model.Cities = await listingService.GetAllCitiesAsync();
-
             return View(model);
         }
 
@@ -156,11 +178,11 @@ namespace Tehnicharche.Web.Controllers
                 var model = await listingService.GetListingDeleteDetailsAsync(id, UserId);
                 return View(model);
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException) 
             {
                 return Forbid();
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException) 
             {
                 return NotFound();
             }
@@ -173,12 +195,12 @@ namespace Tehnicharche.Web.Controllers
             {
                 await listingService.DeleteListingAsync(id, UserId);
             }
-            catch (UnauthorizedAccessException)
+            catch (UnauthorizedAccessException) 
             {
                 return Forbid();
             }
-            catch (ArgumentException)
-            {
+            catch (ArgumentException) 
+            { 
                 return NotFound();
             }
 

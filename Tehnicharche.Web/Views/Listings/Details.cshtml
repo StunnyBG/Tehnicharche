@@ -1,30 +1,25 @@
-﻿@model Tehnicharche.ViewModels.ListingDetailsViewModel
+@model Tehnicharche.ViewModels.ListingDetailsViewModel
 @using System.Security.Claims
 
 <h1 class="mb-4 text-break">@Model.Title</h1>
 
 <div class="card shadow-sm p-4">
-
     <div class="row">
 
         <div class="col-md-4 text-center">
             <img src="@Model.ImageUrl"
-                 class="w-100 h-100 rounded shadow-sm object-fit-contain"
+                 class="w-100 h-100 rounded shadow-sm"
                  style="max-height: 300px; object-fit: cover;"
                  onerror="this.onerror=null;this.src='/images/placeholder.png';" />
         </div>
 
         <div class="col-md-8">
 
-            <p class="display-6 fw-bold text-dark mb-3">
-                @Model.Price €
-            </p>
+            <p class="display-6 fw-bold text-dark mb-3">@Model.Price €</p>
 
             <hr />
 
-            <p>
-                <strong>Category:</strong> @Model.CategoryName
-            </p>
+            <p><strong>Category:</strong> @Model.CategoryName</p>
 
             <p>
                 <strong>Location:</strong>
@@ -50,47 +45,45 @@
 
             <p>
                 <strong>Email:</strong>
-                <a href="mailto:@Model.CreatorEmail">
-                    @Model.CreatorEmail
-                </a>
+                <a href="mailto:@Model.CreatorEmail">@Model.CreatorEmail</a>
             </p>
 
             @if (!string.IsNullOrWhiteSpace(Model.CreatorPhoneNumber))
             {
                 <p>
                     <strong>Phone:</strong>
-                    <a href="tel:@Model.CreatorPhoneNumber">
-                        @Model.CreatorPhoneNumber
-                    </a>
+                    <a href="tel:@Model.CreatorPhoneNumber">@Model.CreatorPhoneNumber</a>
                 </p>
             }
 
-            <div class="mt-4">
+            <div class="mt-4 d-flex flex-wrap gap-2 align-items-center">
                 @{
                     var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                     var isOwner = !string.IsNullOrEmpty(currentUserId)
-                    && currentUserId == Model.CreatorId;
+                                  && currentUserId == Model.CreatorId;
                 }
 
                 @if (isOwner)
                 {
-                    <a class="btn btn-warning me-2"
-                       asp-action="Edit"
-                       asp-route-id="@Model.Id">
-                        Edit
-                    </a>
-
-                    <a class="btn btn-danger me-2"
-                       asp-action="Delete"
-                       asp-route-id="@Model.Id">
-                        Delete
-                    </a>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                    <a class="btn btn-danger"  asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                }
+                else if (User.Identity?.IsAuthenticated == true)
+                {
+                    <form asp-action="ToggleSave" method="post">
+                        <input type="hidden" name="listingId" value="@Model.Id" />
+                        @if (Model.IsSaved)
+                        {
+                            <button type="submit" class="btn btn-warning">Saved — click to unsave</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-outline-warning">Save listing</button>
+                        }
+                    </form>
                 }
 
-                <a class="btn btn-outline-secondary"
-                   asp-action="Index">
-                    Back
-                </a>
+                <a class="btn btn-outline-secondary" asp-action="Index">Back</a>
             </div>
 
         </div>

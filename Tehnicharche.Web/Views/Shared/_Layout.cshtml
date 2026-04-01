@@ -43,12 +43,6 @@
                     <ul class="navbar-nav align-items-center">
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Listings" asp-action="MyListings">
-                                    My Listings
-                                </a>
-                            </li>
-
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle"
                                    href="#" id="accountMenu"
@@ -57,7 +51,6 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">
 
-                                    @* ?? Admin Panel link (only for Admins) ?? *@
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <li>
@@ -74,6 +67,20 @@
 
                                     <li>
                                         <a class="dropdown-item"
+                                           asp-controller="Listings"
+                                           asp-action="MyListings">
+                                            My Listings
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
+                                           asp-controller="Listings"
+                                           asp-action="SavedListings">
+                                            Saved Listings
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item"
                                            asp-area="Identity" asp-page="/Account/Manage/Index">
                                             Manage Account
                                         </a>
@@ -87,7 +94,6 @@
                                             </button>
                                         </form>
                                     </li>
-
                                 </ul>
                             </li>
                         }

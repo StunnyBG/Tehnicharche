@@ -1,4 +1,4 @@
-﻿@model Tehnicharche.ViewModels.ListingIndexQueryModel
+@model Tehnicharche.ViewModels.ListingIndexQueryModel
 
 @{
     ViewData["Title"] = "All Listings";
@@ -10,18 +10,10 @@
 
         <!-- ACTION BUTTONS -->
         <div class="row mb-4">
-
             <div class="col text-end">
-
                 @if (User.Identity!.IsAuthenticated)
                 {
-                    <a class="btn btn-outline-success me-2"
-                       asp-action="MyListings">
-                        My Listings
-                    </a>
-
-                    <a class="btn btn-success"
-                       asp-action="Create">
+                    <a class="btn btn-success" asp-action="Create">
                         Create Listing
                     </a>
                 }
@@ -29,133 +21,76 @@
                 {
                     <p>Login to create a listing</p>
                 }
-
             </div>
-
         </div>
 
         <!-- SEARCH BAR -->
         <div class="row mb-4 justify-content-end">
-
             <div class="col-lg-9">
-
                 <div class="input-group input-group-lg">
-
-                    <input asp-for="SearchTerm"
-                           class="form-control"
-                           placeholder="Search listings..." />
-
-                    <button class="btn btn-primary">
-                        Search
-                    </button>
-
+                    <input asp-for="SearchTerm" class="form-control" placeholder="Search listings..." />
+                    <button class="btn btn-primary">Search</button>
                 </div>
-
             </div>
-
         </div>
 
         <div class="row">
 
             <!-- FILTER SIDEBAR -->
             <aside class="col-lg-3">
-
                 <div class="card shadow-sm">
-
                     <div class="card-body">
 
                         <h5 class="mb-4">Filters</h5>
 
-                        <!-- CATEGORY -->
                         <div class="mb-3">
-
                             <label class="form-label">Category</label>
-
                             <select asp-for="CategoryId"
                                     asp-items="@(new SelectList(Model.Categories, "Id", "Name"))"
                                     class="form-select">
-
                                 <option value="">All categories</option>
-
                             </select>
-
                         </div>
 
-                        <!-- REGION -->
                         <div class="mb-3">
-
                             <label class="form-label">Region</label>
-
                             <select asp-for="RegionId"
                                     asp-items="@(new SelectList(Model.Regions, "Id", "Name"))"
                                     name="RegionId"
                                     class="form-select">
-
                                 <option value="">All regions</option>
-
                             </select>
-
                         </div>
 
-                        <!-- CITY -->
                         <div class="mb-3">
-
                             <label class="form-label">City</label>
-
-                            <select id="CitySelect"
-                                    name="CityId"
-                                    class="form-select">
-
+                            <select id="CitySelect" name="CityId" class="form-select">
                                 <option value="">All cities</option>
-
                                 @foreach (var city in Model.Cities)
                                 {
                                     if (Model.CityId == city.Id)
                                     {
-                                        <option value="@city.Id"
-                                                data-region="@city.RegionId"
-                                                selected>
-                                            @city.Name
-                                        </option>
+                                        <option value="@city.Id" data-region="@city.RegionId" selected>@city.Name</option>
                                     }
                                     else
                                     {
-                                        <option value="@city.Id"
-                                                data-region="@city.RegionId">
-                                            @city.Name
-                                        </option>
+                                        <option value="@city.Id" data-region="@city.RegionId">@city.Name</option>
                                     }
                                 }
-
                             </select>
-
                         </div>
 
-                        <!-- PRICE -->
                         <div class="mb-4">
-
                             <label class="form-label">Price</label>
-
                             <div class="d-flex gap-2">
-
-                                <input asp-for="MinPrice"
-                                       class="form-control"
-                                       placeholder="Min" />
-
-                                <input asp-for="MaxPrice"
-                                       class="form-control"
-                                       placeholder="Max" />
-
+                                <input asp-for="MinPrice" class="form-control" placeholder="Min" />
+                                <input asp-for="MaxPrice" class="form-control" placeholder="Max" />
                             </div>
-
                         </div>
 
-                        <button class="btn btn-primary w-100 mb-2">
-                            Apply Filters
-                        </button>
+                        <button class="btn btn-primary w-100 mb-2">Apply Filters</button>
 
-                        <a asp-action="Index"
-                           class="btn btn-outline-secondary w-100">
+                        <a asp-action="Index" class="btn btn-outline-secondary w-100">
                             Clear Filters
                         </a>
 
@@ -163,95 +98,63 @@
                             <div>Total listings: <strong>@Model.TotalListings</strong></div>
                         </div>
 
-                        <input type="hidden"
-                               id="Page"
-                               name="Page"
-                               value="@Model.Page" />
+                        <input type="hidden" id="Page" name="Page" value="@Model.Page" />
 
                     </div>
-
                 </div>
-
             </aside>
 
             <!-- LISTINGS -->
             <main class="col-lg-9">
 
                 <div class="row">
-
                     @foreach (var item in Model.Listings)
                     {
-                        <partial name="_ListingIndexCardPartial"
-                                 model="item" />
+                        <partial name="_ListingIndexCardPartial" model="item" />
                     }
-
                 </div>
 
-
-                @* ---- Pagination with windowed pager and results line ---- *@
                 @{
-                    var current = Model.Page <= 0 ? 1 : Model.Page;
+                    var current    = Model.Page <= 0 ? 1 : Model.Page;
                     var totalPages = Model.TotalPages <= 0 ? 1 : Model.TotalPages;
                     var totalItems = Model.TotalListings;
 
-                    // approximate pageSize from totals (works if TotalPages > 0)
-                    var pageSize = totalPages > 0
-                    ? (int)Math.Ceiling((double)totalItems / totalPages)
-                    : (Model.Listings?.Count() ?? 0);
-
+                    var pageSize     = totalPages > 0 ? (int)Math.Ceiling((double)totalItems / totalPages) : (Model.Listings?.Count() ?? 0);
                     var showingStart = totalItems == 0 ? 0 : ((current - 1) * pageSize) + 1;
-                    var showingEnd = showingStart == 0 ? 0 : showingStart + (Model.Listings?.Count() ?? 0) - 1;
+                    var showingEnd   = showingStart == 0 ? 0 : showingStart + (Model.Listings?.Count() ?? 0) - 1;
 
-                    // pager window (number of numeric page buttons to show)
-                    var window = 5; // you can change to 7 if you prefer
-                    var half = window / 2;
-
+                    var window    = 5;
+                    var half      = window / 2;
                     var startPage = current - half;
-                    var endPage = current + half;
+                    var endPage   = current + half;
 
-                    if (startPage < 1)
-                    {
-                        endPage += (1 - startPage);
-                        startPage = 1;
-                    }
-
-                    if (endPage > totalPages)
-                    {
-                        startPage -= (endPage - totalPages);
-                        endPage = totalPages;
-                    }
-
+                    if (startPage < 1) { endPage += (1 - startPage); startPage = 1; }
+                    if (endPage > totalPages) { startPage -= (endPage - totalPages); endPage = totalPages; }
                     if (startPage < 1) startPage = 1;
                 }
+
                 @if (totalPages > 1)
                 {
                     <nav aria-label="Listings pagination" class="mt-4">
                         <ul class="pagination justify-content-center">
-
-                            @* First *@
                             <li class="page-item @(current == 1 ? "disabled" : "")">
-                                <button class="page-link page-btn" type="button" data-page="1" aria-label="First">&lt;&lt;</button>
+                                <button class="page-link page-btn" type="button" data-page="1">&lt;&lt;</button>
+                            </li>
+                            <li class="page-item @(current == 1 ? "disabled" : "")">
+                                <button class="page-link page-btn" type="button" data-page="@(Math.Max(1, current - 1))">&lt;</button>
                             </li>
 
-                            @* Previous *@
-                            <li class="page-item @(current == 1 ? "disabled" : "")">
-                                <button class="page-link page-btn" type="button" data-page="@(Math.Max(1, current - 1))" aria-label="Previous">&lt;</button>
-                            </li>
-
-                            @* Leading first/ellipsis if needed *@
                             @if (startPage > 1)
                             {
                                 <li class="page-item">
                                     <button class="page-link page-btn" type="button" data-page="1">1</button>
                                 </li>
-
                                 @if (startPage > 2)
                                 {
                                     <li class="page-item disabled"><span class="page-link">…</span></li>
                                 }
                             }
 
-                            @* Page numbers window *@
                             @for (int p = startPage; p <= endPage; p++)
                             {
                                 <li class="page-item @(p == current ? "active" : "")">
@@ -259,27 +162,22 @@
                                 </li>
                             }
 
-                            @* Trailing ellipsis/last if needed *@
                             @if (endPage < totalPages)
                             {
-                                if (endPage < totalPages - 1)
+                                @if (endPage < totalPages - 1)
                                 {
                                     <li class="page-item disabled"><span class="page-link">…</span></li>
                                 }
-
                                 <li class="page-item">
                                     <button class="page-link page-btn" type="button" data-page="@totalPages">@totalPages</button>
                                 </li>
                             }
 
-                            @* Next *@
                             <li class="page-item @(current == totalPages ? "disabled" : "")">
-                                <button class="page-link page-btn" type="button" data-page="@(Math.Min(totalPages, current + 1))" aria-label="Next">&gt;</button>
+                                <button class="page-link page-btn" type="button" data-page="@(Math.Min(totalPages, current + 1))">&gt;</button>
                             </li>
-
-                            @* Last *@
                             <li class="page-item @(current == totalPages ? "disabled" : "")">
-                                <button class="page-link page-btn" type="button" data-page="@totalPages" aria-label="Last">&gt;&gt;</button>
+                                <button class="page-link page-btn" type="button" data-page="@totalPages">&gt;&gt;</button>
                             </li>
                         </ul>
 
@@ -297,26 +195,15 @@
                 }
 
             </main>
-
         </div>
-
     </div>
-
 </form>
 
-
 <style>
-
-    .container-wide {
-        max-width: 1700px;
-        margin: auto;
-    }
-
+    .container-wide { max-width: 1700px; margin: auto; }
 </style>
 
-
-@section Scripts
-{
+@section Scripts {
     <script src="~/js/city-filter.js"></script>
     <script src="~/js/pagination.js"></script>
 }

@@ -42,12 +42,14 @@ namespace Tehnicharche.Web
             // Repositories
             builder.Services.AddScoped<IListingRepository, ListingRepository>();
             builder.Services.AddScoped<IAdminListingRepository, AdminListingRepository>();
+            builder.Services.AddScoped<ISavedListingRepository, SavedListingRepository>();
             builder.Services.AddScoped<IContactMessageRepository, ContactMessageRepository>();
             builder.Services.AddScoped<IGenericRepository<Category>, GenericRepository<Category>>();
             builder.Services.AddScoped<IGenericRepository<Region>, GenericRepository<Region>>();
             builder.Services.AddScoped<IGenericRepository<City>, GenericRepository<City>>();
 
             builder.Services.AddScoped<IListingService, ListingService>();
+            builder.Services.AddScoped<ISavedListingService, SavedListingService>();
             builder.Services.AddScoped<IAdminListingService, AdminListingService>();
             builder.Services.AddScoped<IAdminMessageService, AdminMessageService>();
             builder.Services.AddScoped<IAdminUserService, AdminUserService>();
