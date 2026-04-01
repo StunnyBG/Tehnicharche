@@ -6,7 +6,6 @@ using Tehnicharche.Services.Core.Interfaces;
 using Tehnicharche.ViewModels.Admin;
 using static Tehnicharche.GCommon.ApplicationConstants;
 
-
 namespace Tehnicharche.Services.Core
 {
     public class AdminUserService : IAdminUserService
@@ -28,18 +27,39 @@ namespace Tehnicharche.Services.Core
             this.categoryRepository = categoryRepository;
         }
 
-        public async Task<AdminUsersViewModel> GetUsersAsync()
+        public async Task<AdminUsersViewModel> GetUsersAsync(int page = 1, string? searchTerm = null)
         {
-            var users = await userManager.Users.OrderBy(u => u.UserName).ToListAsync();
+            page = page <= 0 ? 1 : page;
+
+            var query = userManager.Users.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(searchTerm))
+            {
+                var term = searchTerm.Trim().ToLower();
+                query = query.Where(u =>
+                    u.UserName!.ToLower().Contains(term) ||
+                    u.Email!.ToLower().Contains(term));
+            }
+
+            query = query.OrderBy(u => u.UserName);
+
+            int totalCount = await query.CountAsync();
+            int bannedCount = await userManager.Users.CountAsync(u => u.IsBanned);
+            int totalPages = (int)Math.Ceiling((double)totalCount / AdminPageSize);
+            if (totalPages < 1) totalPages = 1;
+
+            var users = await query
+                .Skip((page - 1) * AdminPageSize)
+                .Take(AdminPageSize)
+                .ToListAsync();
+
             var listingCounts = await listingRepository.GetListingCountsByCreatorsAsync();
 
             var rows = new List<AdminUserRowViewModel>();
-
             foreach (var u in users)
             {
                 var roles = await userManager.GetRolesAsync(u);
                 listingCounts.TryGetValue(u.Id, out int count);
-
                 rows.Add(new AdminUserRowViewModel
                 {
                     Id = u.Id,
@@ -55,8 +75,11 @@ namespace Tehnicharche.Services.Core
             return new AdminUsersViewModel
             {
                 Users = rows,
-                TotalCount = rows.Count,
-                BannedCount = rows.Count(r => r.IsBanned)
+                TotalCount = totalCount,
+                BannedCount = bannedCount,
+                Page = page,
+                TotalPages = totalPages,
+                SearchTerm = searchTerm
             };
         }
 
@@ -123,7 +146,8 @@ namespace Tehnicharche.Services.Core
             var user = await FindOrThrowAsync(userId);
 
             if (await userManager.IsInRoleAsync(user, "Admin"))
-                throw new InvalidOperationException("Administrators cannot be banned. Revoke the Admin role first.");
+                throw new InvalidOperationException(
+                    "Administrators cannot be banned. Revoke the Admin role first.");
 
             user.IsBanned = true;
             await userManager.UpdateAsync(user);
@@ -139,8 +163,6 @@ namespace Tehnicharche.Services.Core
             await userManager.UpdateSecurityStampAsync(user);
         }
 
-
-        // helper methods
         private async Task<ApplicationUser> FindOrThrowAsync(string userId)
             => await userManager.FindByIdAsync(userId)
                ?? throw new InvalidOperationException($"User {userId} not found.");

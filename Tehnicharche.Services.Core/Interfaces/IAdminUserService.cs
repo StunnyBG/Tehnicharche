@@ -4,7 +4,7 @@ namespace Tehnicharche.Services.Core.Interfaces
 {
     public interface IAdminUserService
     {
-        Task<AdminUsersViewModel> GetUsersAsync();
+        Task<AdminUsersViewModel> GetUsersAsync(int page = 1, string? searchTerm = null);
 
         Task<AdminDashboardViewModel> GetDashboardStatsAsync();
 

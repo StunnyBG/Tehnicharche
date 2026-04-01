@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Services.Core.Interfaces;
+using static Tehnicharche.GCommon.ApplicationConstants;
 
 namespace Tehnicharche.Web.Areas.Admin.Controllers
 {
@@ -12,14 +13,14 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
 
         public UsersController(IAdminUserService userService, UserManager<ApplicationUser> userManager)
         {
-            this.userService  = userService;
-            this.userManager  = userManager;
+            this.userService = userService;
+            this.userManager = userManager;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = DefaultPage, string? search = null)
         {
-            var model = await userService.GetUsersAsync();
+            var model = await userService.GetUsersAsync(page, search);
             return View(model);
         }
 
