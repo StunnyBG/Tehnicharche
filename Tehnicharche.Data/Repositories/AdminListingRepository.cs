@@ -97,6 +97,11 @@ namespace Tehnicharche.Data.Repositories
 
         public async Task HardDeleteAsync(Listing listing)
         {
+            // Clean up SavedListings rows that reference this listing to avoid FK violations.
+            var savedEntries = context.SavedListings
+                .Where(sl => sl.ListingId == listing.Id);
+            context.SavedListings.RemoveRange(savedEntries);
+
             context.Listings.Remove(listing);
             await context.SaveChangesAsync();
         }
