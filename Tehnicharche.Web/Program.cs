@@ -59,6 +59,7 @@ namespace Tehnicharche.Web
             builder.Services.AddScoped<IAdminCategoryService, AdminCategoryService>();
             builder.Services.AddScoped<IAdminRegionService, AdminRegionService>();
             builder.Services.AddScoped<IAdminCityService, AdminCityService>();
+            builder.Services.AddScoped<IUserManagerWrapper, UserManagerWrapper>();
 
             builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
             builder.Services.AddScoped<DataSeeder>();

@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.Services.Core.Interfaces;
@@ -10,13 +8,13 @@ namespace Tehnicharche.Services.Core
 {
     public class AdminUserService : IAdminUserService
     {
-        private readonly UserManager<ApplicationUser> userManager;
+        private readonly IUserManagerWrapper userManager;
         private readonly IAdminListingRepository listingRepository;
         private readonly IContactMessageRepository messageRepository;
         private readonly IGenericRepository<Category> categoryRepository;
 
         public AdminUserService(
-            UserManager<ApplicationUser> userManager,
+            IUserManagerWrapper userManager,
             IAdminListingRepository listingRepository,
             IContactMessageRepository messageRepository,
             IGenericRepository<Category> categoryRepository)
@@ -31,27 +29,15 @@ namespace Tehnicharche.Services.Core
         {
             page = page <= 0 ? 1 : page;
 
-            var query = userManager.Users.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                var term = searchTerm.Trim().ToLower();
-                query = query.Where(u =>
-                    u.UserName!.ToLower().Contains(term) ||
-                    u.Email!.ToLower().Contains(term));
-            }
-
-            query = query.OrderBy(u => u.UserName);
-
-            int totalCount = await query.CountAsync();
-            int bannedCount = await userManager.Users.CountAsync(u => u.IsBanned);
+            int totalCount = await userManager.CountAsync(searchTerm);
+            int bannedCount = await userManager.CountBannedAsync();
             int totalPages = (int)Math.Ceiling((double)totalCount / AdminPageSize);
             if (totalPages < 1) totalPages = 1;
 
-            var users = await query
-                .Skip((page - 1) * AdminPageSize)
-                .Take(AdminPageSize)
-                .ToListAsync();
+            var users = await userManager.GetUsersAsync(
+                searchTerm,
+                skip: (page - 1) * AdminPageSize,
+                take: AdminPageSize);
 
             var listingCounts = await listingRepository.GetListingCountsByCreatorsAsync();
 
@@ -68,7 +54,7 @@ namespace Tehnicharche.Services.Core
                     PhoneNumber = u.PhoneNumber,
                     ListingCount = count,
                     IsBanned = u.IsBanned,
-                    Roles = roles
+                    Roles = roles,
                 });
             }
 
@@ -79,7 +65,7 @@ namespace Tehnicharche.Services.Core
                 BannedCount = bannedCount,
                 Page = page,
                 TotalPages = totalPages,
-                SearchTerm = searchTerm
+                SearchTerm = searchTerm,
             };
         }
 
@@ -87,7 +73,7 @@ namespace Tehnicharche.Services.Core
         {
             int activeCount = await listingRepository.GetActiveCountAsync();
             int deletedCount = await listingRepository.GetDeletedCountAsync();
-            int totalUsers = await userManager.Users.CountAsync();
+            int totalUsers = await userManager.CountAsync(null);
             int totalMsgs = await messageRepository.GetTotalCountAsync();
             int unreadMsgs = await messageRepository.GetUnreadCountAsync();
 
@@ -113,7 +99,7 @@ namespace Tehnicharche.Services.Core
                     CategoryName = l.Category.Name,
                     Price = l.Price,
                     IsDeleted = l.IsDeleted,
-                    CreatedAt = l.CreatedAt.ToString(DateFormat)
+                    CreatedAt = l.CreatedAt.ToString(DateFormat),
                 }),
                 RecentMessages = recentMessages.Select(m => new AdminMessageRowViewModel
                 {
@@ -123,8 +109,8 @@ namespace Tehnicharche.Services.Core
                     Subject = m.Subject,
                     Message = m.Message,
                     IsRead = m.IsRead,
-                    SentAt = m.SentAt.ToString(DateFormat)
-                })
+                    SentAt = m.SentAt.ToString(DateFormat),
+                }),
             };
         }
 
