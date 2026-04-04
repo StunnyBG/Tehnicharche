@@ -73,6 +73,9 @@ namespace Tehnicharche.Data.Repositories
         {
             var query = context.Listings
                 .AsNoTracking()
+                .Include(l => l.Category)
+                .Include(l => l.Region)
+                .Include(l => l.City)
                 .Where(l => l.CreatorId == creatorId)
                 .AsQueryable();
 
@@ -91,9 +94,6 @@ namespace Tehnicharche.Data.Repositories
                 .OrderBy(l => l.UpdatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Include(l => l.Category)
-                .Include(l => l.Region)
-                .Include(l => l.City)
                 .ToListAsync();
 
             return (items, totalCount);

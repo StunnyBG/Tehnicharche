@@ -1,7 +1,4 @@
-﻿
-using System.Xml.Linq;
-
-namespace Tehnicharche.GCommon
+﻿namespace Tehnicharche.GCommon
 {
     public static class ValidationConstants
     {

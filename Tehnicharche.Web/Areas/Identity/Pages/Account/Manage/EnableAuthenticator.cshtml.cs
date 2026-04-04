@@ -1,12 +1,11 @@
 #nullable disable
 
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+using System.Text.Encodings.Web;
 using Tehnicharche.Data.Models;
 
 namespace Tehnicharche.Web.Areas.Identity.Pages.Account.Manage
@@ -24,10 +23,10 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account.Manage
             UrlEncoder urlEncoder)
         {
             _userManager = userManager;
-            _urlEncoder  = urlEncoder;
+            _urlEncoder = urlEncoder;
         }
 
-        public string SharedKey       { get; set; }
+        public string SharedKey { get; set; }
         public string AuthenticatorUri { get; set; }
 
         [TempData]
@@ -66,7 +65,7 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account.Manage
             }
 
             var verificationCode = Input.Code.Replace(" ", string.Empty).Replace("-", string.Empty);
-            var is2faTokenValid  = await _userManager.VerifyTwoFactorTokenAsync(
+            var is2faTokenValid = await _userManager.VerifyTwoFactorTokenAsync(
                 user,
                 _userManager.Options.Tokens.AuthenticatorTokenProvider,
                 verificationCode);
@@ -98,7 +97,7 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account.Manage
                 unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
             }
 
-            SharedKey        = FormatKey(unformattedKey!);
+            SharedKey = FormatKey(unformattedKey!);
             AuthenticatorUri = GenerateQrCodeUri(user.Email!, unformattedKey!);
         }
 

@@ -1,12 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using Tehnicharche.Data.Models;
+using static Tehnicharche.GCommon.ApplicationConstants;
 
 public class AppClaimsPrincipalFactory : UserClaimsPrincipalFactory<ApplicationUser>
 {
-    public AppClaimsPrincipalFactory(UserManager<ApplicationUser> userManager, IOptions<IdentityOptions> optionsAccessor)
-        : base(userManager, optionsAccessor) { }
+    public AppClaimsPrincipalFactory(
+        UserManager<ApplicationUser> userManager,
+        IOptions<IdentityOptions> optionsAccessor)
+        : base(userManager, optionsAccessor)
+    {
+    }
 
     protected override async Task<ClaimsIdentity> GenerateClaimsAsync(ApplicationUser user)
     {
@@ -14,14 +19,10 @@ public class AppClaimsPrincipalFactory : UserClaimsPrincipalFactory<ApplicationU
 
         var roles = await UserManager.GetRolesAsync(user);
         foreach (var role in roles)
-        {
             identity.AddClaim(new Claim(ClaimTypes.Role, role));
-        }
 
         if (user.IsBanned)
-        {
-            identity.AddClaim(new Claim("Banned", "true"));
-        }
+            identity.AddClaim(new Claim(BannedClaimType, BannedClaimValue));
 
         return identity;
     }

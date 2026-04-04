@@ -7,10 +7,14 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
     public class CategoriesController : AdminBaseController
     {
         private readonly IAdminCategoryService categoryService;
+        private readonly ILogger<CategoriesController> logger;
 
-        public CategoriesController(IAdminCategoryService categoryService)
+        public CategoriesController(
+            IAdminCategoryService categoryService,
+            ILogger<CategoriesController> logger)
         {
             this.categoryService = categoryService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -36,6 +40,7 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(ex, "Failed to add category '{CategoryName}'.", name);
                 TempData["AdminError"] = ex.Message;
             }
 
@@ -70,6 +75,7 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(ex, "Failed to update category {CategoryId}.", model.Id);
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return View(model);
             }
@@ -85,6 +91,7 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(ex, "Failed to delete category {CategoryId}.", id);
                 TempData["AdminError"] = ex.Message;
             }
 

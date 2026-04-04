@@ -19,7 +19,7 @@ namespace Tehnicharche.ViewModels
 
         [Required]
         [Price(PriceMinValue, PriceMaxValue)]
-        public decimal Price { get; set; } 
+        public decimal Price { get; set; }
 
         [Required]
         public int? CategoryId { get; set; }

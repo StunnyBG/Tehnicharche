@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.Services.Core.Interfaces;
@@ -12,17 +13,20 @@ namespace Tehnicharche.Services.Core
         private readonly IAdminListingRepository listingRepository;
         private readonly IContactMessageRepository messageRepository;
         private readonly IGenericRepository<Category> categoryRepository;
+        private readonly ILogger<AdminUserService> logger;
 
         public AdminUserService(
             IUserManagerWrapper userManager,
             IAdminListingRepository listingRepository,
             IContactMessageRepository messageRepository,
-            IGenericRepository<Category> categoryRepository)
+            IGenericRepository<Category> categoryRepository,
+            ILogger<AdminUserService> logger)
         {
             this.userManager = userManager;
             this.listingRepository = listingRepository;
             this.messageRepository = messageRepository;
             this.categoryRepository = categoryRepository;
+            this.logger = logger;
         }
 
         public async Task<AdminUsersViewModel> GetUsersAsync(int page = 1, string? searchTerm = null)
@@ -116,22 +120,32 @@ namespace Tehnicharche.Services.Core
 
         public async Task ToggleRoleAsync(string userId, string role, string currentAdminId)
         {
-            if (userId == currentAdminId && role == "Admin")
+            if (userId == currentAdminId && role == AdminRole)
                 throw new InvalidOperationException("You cannot remove your own Admin role.");
 
             var user = await FindOrThrowAsync(userId);
 
             if (await userManager.IsInRoleAsync(user, role))
+            {
                 await userManager.RemoveFromRoleAsync(user, role);
+                logger.LogInformation(
+                    "Role '{Role}' removed from user {UserId} by admin {AdminId}.",
+                    role, userId, currentAdminId);
+            }
             else
+            {
                 await userManager.AddToRoleAsync(user, role);
+                logger.LogInformation(
+                    "Role '{Role}' added to user {UserId} by admin {AdminId}.",
+                    role, userId, currentAdminId);
+            }
         }
 
         public async Task BanAsync(string userId)
         {
             var user = await FindOrThrowAsync(userId);
 
-            if (await userManager.IsInRoleAsync(user, "Admin"))
+            if (await userManager.IsInRoleAsync(user, AdminRole))
                 throw new InvalidOperationException(
                     "Administrators cannot be banned. Revoke the Admin role first.");
 
@@ -139,6 +153,8 @@ namespace Tehnicharche.Services.Core
             await userManager.UpdateAsync(user);
             await userManager.UpdateSecurityStampAsync(user);
             await listingRepository.SoftDeleteAllByUserAsync(userId);
+
+            logger.LogWarning("User {UserId} has been banned by admin.", userId);
         }
 
         public async Task UnbanAsync(string userId)
@@ -147,8 +163,11 @@ namespace Tehnicharche.Services.Core
             user.IsBanned = false;
             await userManager.UpdateAsync(user);
             await userManager.UpdateSecurityStampAsync(user);
+
+            logger.LogInformation("User {UserId} has been unbanned by admin.", userId);
         }
 
+        // helper
         private async Task<ApplicationUser> FindOrThrowAsync(string userId)
             => await userManager.FindByIdAsync(userId)
                ?? throw new InvalidOperationException($"User {userId} not found.");

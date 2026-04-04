@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Tehnicharche.Data.Models;
@@ -11,6 +12,7 @@ namespace Tehnicharche.Tests;
 [TestFixture]
 public class AdminCategoryServiceTests
 {
+    private Mock<ILogger<AdminCategoryService>> logger;
     private Mock<IAdminCategoryRepository> repo;
     private IMemoryCache cache;
     private AdminCategoryService sut;
@@ -18,9 +20,10 @@ public class AdminCategoryServiceTests
     [SetUp]
     public void SetUp()
     {
+        logger = new Mock<ILogger<AdminCategoryService>>();
         repo = new Mock<IAdminCategoryRepository>();
         cache = new MemoryCache(new MemoryCacheOptions());
-        sut = new AdminCategoryService(repo.Object, cache);
+        sut = new AdminCategoryService(repo.Object, cache, logger.Object);
     }
 
     [TearDown]

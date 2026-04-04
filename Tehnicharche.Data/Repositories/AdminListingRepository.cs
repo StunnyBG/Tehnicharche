@@ -80,8 +80,8 @@ namespace Tehnicharche.Data.Repositories
                 .Where(l => l.CreatorId == userId && !l.IsDeleted)
                 .ToListAsync();
 
-            foreach (var l in listings)
-                l.IsDeleted = true;
+            foreach (var listing in listings)
+                listing.IsDeleted = true;
 
             await context.SaveChangesAsync();
         }
@@ -97,7 +97,7 @@ namespace Tehnicharche.Data.Repositories
 
         public async Task HardDeleteAsync(Listing listing)
         {
-            // Clean up SavedListings rows that reference this listing to avoid FK violations.
+            // Remove SavedListings rows first to avoid FK violations.
             var savedEntries = context.SavedListings
                 .Where(sl => sl.ListingId == listing.Id);
             context.SavedListings.RemoveRange(savedEntries);

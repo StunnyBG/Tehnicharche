@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using System.Linq.Expressions;
@@ -12,6 +13,7 @@ namespace Tehnicharche.Tests;
 [TestFixture]
 public class ListingServiceTests
 {
+    private Mock<ILogger<ListingService>> logger;
     private Mock<IListingRepository> listingRepo;
     private Mock<IGenericRepository<Category>> categoryRepo;
     private Mock<IGenericRepository<Region>> regionRepo;
@@ -22,12 +24,19 @@ public class ListingServiceTests
     [SetUp]
     public void SetUp()
     {
+        logger = new Mock<ILogger<ListingService>>();
         listingRepo = new Mock<IListingRepository>();
         categoryRepo = new Mock<IGenericRepository<Category>>();
         regionRepo = new Mock<IGenericRepository<Region>>();
         cityRepo = new Mock<IGenericRepository<City>>();
         cache = new MemoryCache(new MemoryCacheOptions());
-        sut = new ListingService(listingRepo.Object, categoryRepo.Object, regionRepo.Object, cityRepo.Object, cache);
+        sut = new ListingService(
+            listingRepo.Object,
+            categoryRepo.Object,
+            regionRepo.Object,
+            cityRepo.Object,
+            cache,
+            logger.Object);
     }
 
     [TearDown]

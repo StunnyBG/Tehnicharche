@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.Services.Core.Interfaces;
@@ -9,10 +10,14 @@ namespace Tehnicharche.Services.Core
     public class AdminListingService : IAdminListingService
     {
         private readonly IAdminListingRepository listingRepository;
+        private readonly ILogger<AdminListingService> logger;
 
-        public AdminListingService(IAdminListingRepository listingRepository)
+        public AdminListingService(
+            IAdminListingRepository listingRepository,
+            ILogger<AdminListingService> logger)
         {
             this.listingRepository = listingRepository;
+            this.logger = logger;
         }
 
         public async Task<AdminListingsViewModel> GetListingsAsync(string filter, string? searchTerm, int page)
@@ -68,28 +73,38 @@ namespace Tehnicharche.Services.Core
 
         public async Task SoftDeleteAsync(int id)
         {
-            var listing = await GetTrackedOrThrowAsync(id);
+            var listing = await GetActiveOrThrowAsync(id);
             await listingRepository.SoftDeleteAsync(listing);
+            logger.LogInformation("Listing {ListingId} soft-deleted by admin.", id);
         }
 
         public async Task RestoreAsync(int id)
         {
             var listing = await listingRepository.GetByIdDeletedAsync(id)
                 ?? throw new InvalidOperationException($"Listing {id} not found.");
+
             listing.IsDeleted = false;
             await listingRepository.SaveChangesAsync();
+            logger.LogInformation("Listing {ListingId} restored by admin.", id);
         }
 
         public async Task HardDeleteAsync(int id)
         {
-            var listing = await GetTrackedOrThrowAsync(id);
+            var listing = await listingRepository.GetByIdDeletedAsync(id)
+                ?? throw new InvalidOperationException($"Listing {id} not found.");
+
             await listingRepository.HardDeleteAsync(listing);
+            logger.LogInformation("Listing {ListingId} permanently deleted by admin.", id);
         }
 
         public async Task SoftDeleteAllByUserAsync(string userId)
-            => await listingRepository.SoftDeleteAllByUserAsync(userId);
+        {
+            await listingRepository.SoftDeleteAllByUserAsync(userId);
+            logger.LogInformation("All listings for user {UserId} soft-deleted by admin.", userId);
+        }
 
-        private async Task<Listing> GetTrackedOrThrowAsync(int id)
+        // helper
+        private async Task<Listing> GetActiveOrThrowAsync(int id)
             => await listingRepository.GetByIdTrackedAsync(id)
                ?? throw new InvalidOperationException($"Listing {id} not found.");
     }

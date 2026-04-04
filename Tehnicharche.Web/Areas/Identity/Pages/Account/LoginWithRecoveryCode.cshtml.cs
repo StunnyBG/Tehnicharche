@@ -1,12 +1,10 @@
 #nullable disable
 
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 using Tehnicharche.Data.Models;
 
 namespace Tehnicharche.Web.Areas.Identity.Pages.Account
@@ -22,7 +20,7 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account
             ILogger<LoginWithRecoveryCodeModel> logger)
         {
             _signInManager = signInManager;
-            _logger        = logger;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -56,7 +54,7 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account
             var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
             if (user == null) return RedirectToPage("./Login");
 
-            var code   = Input.RecoveryCode.Replace(" ", string.Empty);
+            var code = Input.RecoveryCode.Replace(" ", string.Empty);
             var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(code);
 
             if (result.Succeeded)

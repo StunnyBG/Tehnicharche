@@ -2,14 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations;
 using Tehnicharche.Data.Models;
 
 namespace Tehnicharche.Web.Areas.Identity.Pages.Account
@@ -99,7 +97,7 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account
             {
                 return RedirectToPage("./LoginWith2fa", new
                 {
-                    ReturnUrl  = returnUrl,
+                    ReturnUrl = returnUrl,
                     RememberMe = Input.RememberMe
                 });
             }

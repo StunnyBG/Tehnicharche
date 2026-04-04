@@ -1,6 +1,5 @@
 #nullable disable
 
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,8 +16,8 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account.Manage
             _userManager = userManager;
         }
 
-        public bool Is2faEnabled      { get; set; }
-        public int  RecoveryCodesLeft { get; set; }
+        public bool Is2faEnabled { get; set; }
+        public int RecoveryCodesLeft { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -28,7 +27,7 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account.Manage
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return NotFound();
 
-            Is2faEnabled      = await _userManager.GetTwoFactorEnabledAsync(user);
+            Is2faEnabled = await _userManager.GetTwoFactorEnabledAsync(user);
             RecoveryCodesLeft = await _userManager.CountRecoveryCodesAsync(user);
 
             return Page();

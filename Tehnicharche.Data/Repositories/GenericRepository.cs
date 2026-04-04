@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using Tehnicharche.Data.Repositories.Interfaces;
 
 namespace Tehnicharche.Data.Repositories

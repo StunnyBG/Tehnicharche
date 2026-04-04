@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Tehnicharche.Data.Models;
@@ -11,6 +12,7 @@ namespace Tehnicharche.Tests;
 [TestFixture]
 public class AdminCityServiceTests
 {
+    private Mock<ILogger<AdminCityService>> logger;
     private Mock<IAdminCityRepository> cityRepo;
     private Mock<IAdminRegionRepository> regionRepo;
     private IMemoryCache cache;
@@ -19,10 +21,11 @@ public class AdminCityServiceTests
     [SetUp]
     public void SetUp()
     {
+        logger = new Mock<ILogger<AdminCityService>>();
         cityRepo = new Mock<IAdminCityRepository>();
         regionRepo = new Mock<IAdminRegionRepository>();
         cache = new MemoryCache(new MemoryCacheOptions());
-        sut = new AdminCityService(cityRepo.Object, regionRepo.Object, cache);
+        sut = new AdminCityService(cityRepo.Object, regionRepo.Object, cache, logger.Object);
     }
 
     [TearDown]

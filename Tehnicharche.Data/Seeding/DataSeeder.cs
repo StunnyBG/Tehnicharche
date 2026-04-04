@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Seeding.DTOs;
+using static Tehnicharche.GCommon.ApplicationConstants;
 
 namespace Tehnicharche.Data.Seeding
 {
     public class DataSeeder
     {
-        public static string[] Roles = { "Admin", "User" };
+        public static readonly string[] Roles = { AdminRole, UserRole };
 
         private static string SeedsPath =>
             Path.GetFullPath(@"..\Tehnicharche.Data\Seeding\Seeds\");
@@ -39,22 +40,18 @@ namespace Tehnicharche.Data.Seeding
             await SeedListingsFromJsonAsync();
         }
 
-        public async Task SeedRolesAsync()
+        private async Task SeedRolesAsync()
         {
             foreach (var roleName in Roles)
             {
-                var roleExists = await roleManager.RoleExistsAsync(roleName);
-                if (!roleExists)
-                {
+                if (!await roleManager.RoleExistsAsync(roleName))
                     await roleManager.CreateAsync(new IdentityRole(roleName));
-                }
             }
         }
 
-
         private async Task SeedCategoriesFromJsonAsync()
         {
-            if (await context.Categories.AnyAsync()) 
+            if (await context.Categories.AnyAsync())
                 return;
 
             var json = await ReadSeedFileAsync("categories.json");
@@ -63,14 +60,11 @@ namespace Tehnicharche.Data.Seeding
             var categories = dtos.Select(d => new Category { Id = d.Id, Name = d.Name });
 
             await context.Database.OpenConnectionAsync();
-
             try
             {
                 await SetIdentityInsertOnAsync("Categories");
-
                 await context.Categories.AddRangeAsync(categories);
                 await context.SaveChangesAsync();
-
                 await SetIdentityInsertOffAsync("Categories");
             }
             finally
@@ -79,10 +73,9 @@ namespace Tehnicharche.Data.Seeding
             }
         }
 
-
         private async Task SeedRegionsFromJsonAsync()
         {
-            if (await context.Regions.AnyAsync()) 
+            if (await context.Regions.AnyAsync())
                 return;
 
             var json = await ReadSeedFileAsync("regions.json");
@@ -91,14 +84,11 @@ namespace Tehnicharche.Data.Seeding
             var regions = dtos.Select(d => new Region { Id = d.Id, Name = d.Name });
 
             await context.Database.OpenConnectionAsync();
-
             try
             {
                 await SetIdentityInsertOnAsync("Regions");
-
                 await context.Regions.AddRangeAsync(regions);
                 await context.SaveChangesAsync();
-
                 await SetIdentityInsertOffAsync("Regions");
             }
             finally
@@ -107,10 +97,9 @@ namespace Tehnicharche.Data.Seeding
             }
         }
 
-
         private async Task SeedCitiesFromJsonAsync()
         {
-            if (await context.Cities.AnyAsync()) 
+            if (await context.Cities.AnyAsync())
                 return;
 
             var json = await ReadSeedFileAsync("cities.json");
@@ -124,14 +113,11 @@ namespace Tehnicharche.Data.Seeding
             });
 
             await context.Database.OpenConnectionAsync();
-
             try
             {
                 await SetIdentityInsertOnAsync("Cities");
-
                 await context.Cities.AddRangeAsync(cities);
                 await context.SaveChangesAsync();
-
                 await SetIdentityInsertOffAsync("Cities");
             }
             finally
@@ -140,7 +126,6 @@ namespace Tehnicharche.Data.Seeding
             }
         }
 
-
         private async Task SeedUsersFromJsonAsync()
         {
             var json = await ReadSeedFileAsync("users.json");
@@ -148,7 +133,7 @@ namespace Tehnicharche.Data.Seeding
 
             foreach (var dto in dtos)
             {
-                if (await userManager.FindByIdAsync(dto.Id) != null) 
+                if (await userManager.FindByIdAsync(dto.Id) != null)
                     continue;
 
                 var user = new ApplicationUser
@@ -164,10 +149,9 @@ namespace Tehnicharche.Data.Seeding
                 var result = await userManager.CreateAsync(user, dto.Password);
 
                 if (!result.Succeeded)
-                {
                     throw new InvalidOperationException(
-                        $"Failed to seed user '{dto.UserName}'");
-                }
+                        $"Failed to seed user '{dto.UserName}': " +
+                        string.Join(", ", result.Errors.Select(e => e.Description)));
 
                 if (dto.Roles != null)
                 {
@@ -177,10 +161,9 @@ namespace Tehnicharche.Data.Seeding
             }
         }
 
-
         private async Task SeedListingsFromJsonAsync()
         {
-            if (await context.Listings.IgnoreQueryFilters().AnyAsync()) 
+            if (await context.Listings.IgnoreQueryFilters().AnyAsync())
                 return;
 
             var json = await ReadSeedFileAsync("listings.json");
@@ -203,14 +186,11 @@ namespace Tehnicharche.Data.Seeding
             });
 
             await context.Database.OpenConnectionAsync();
-
             try
             {
                 await SetIdentityInsertOnAsync("Listings");
-
                 await context.Listings.AddRangeAsync(listings);
                 await context.SaveChangesAsync();
-
                 await SetIdentityInsertOffAsync("Listings");
             }
             finally
@@ -219,8 +199,8 @@ namespace Tehnicharche.Data.Seeding
             }
         }
 
+        // helpers
 
-        // helper methods
         private static async Task<string> ReadSeedFileAsync(string fileName)
         {
             var path = Path.Combine(SeedsPath, fileName);
@@ -231,19 +211,15 @@ namespace Tehnicharche.Data.Seeding
             return await File.ReadAllTextAsync(path);
         }
 
-        // IDENTITY_INSERT has to be enabled in order to seed explicit ids into identity columns
-        // NOTE: this must run on the same open db connection as SaveChanges(),
-        // otherwise IDENTITY_INSERT can still be treated as OFF (scope issue)
-
-        // SQL injection isn't possible here because the methods are only used internally
+        // SET IDENTITY_INSERT must run on the same open connection as SaveChanges;
+        // otherwise SQL Server treats it as OFF (it is connection-scoped).
+        // Raw SQL is safe here — table names are internal constants, not user input.
         private async Task SetIdentityInsertOnAsync(string tableName)
-        {
-            await context.Database.ExecuteSqlRawAsync($"SET IDENTITY_INSERT [{tableName}] ON");
-        }
+            => await context.Database.ExecuteSqlRawAsync(
+                $"SET IDENTITY_INSERT [{tableName}] ON");
 
         private async Task SetIdentityInsertOffAsync(string tableName)
-        {
-            await context.Database.ExecuteSqlRawAsync($"SET IDENTITY_INSERT [{tableName}] OFF");
-        }
+            => await context.Database.ExecuteSqlRawAsync(
+                $"SET IDENTITY_INSERT [{tableName}] OFF");
     }
 }

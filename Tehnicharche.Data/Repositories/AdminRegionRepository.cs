@@ -39,7 +39,7 @@ namespace Tehnicharche.Data.Repositories
 
         public async Task<bool> IsInUseAsync(int id)
         {
-            if (await context.Cities.AnyAsync(c => c.RegionId == id)) 
+            if (await context.Cities.AnyAsync(c => c.RegionId == id))
                 return true;
             return await context.Listings.IgnoreQueryFilters().AnyAsync(l => l.RegionId == id);
         }

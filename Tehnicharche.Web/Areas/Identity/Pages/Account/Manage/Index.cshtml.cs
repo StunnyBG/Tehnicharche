@@ -1,30 +1,29 @@
 #nullable disable
 
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 using Tehnicharche.Data.Models;
 
 namespace Tehnicharche.Web.Areas.Identity.Pages.Account.Manage
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<ApplicationUser>  _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         public IndexModel(
-            UserManager<ApplicationUser>  userManager,
+            UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
         {
-            _userManager   = userManager;
+            _userManager = userManager;
             _signInManager = signInManager;
         }
 
         // ── Display-only properties ──────────────────────────────────────────
         public string CurrentUsername { get; set; }
-        public string CurrentEmail    { get; set; }
+        public string CurrentEmail { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
@@ -72,11 +71,11 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account.Manage
 
         private async Task LoadAsync(ApplicationUser user)
         {
-            CurrentUsername       = user.UserName;
-            CurrentEmail          = user.Email;
-            PhoneInput            = new PhoneInputModel    { PhoneNumber = user.PhoneNumber };
-            UsernameInput         = new UsernameInputModel { NewUsername  = user.UserName   };
-            EmailInput            = new EmailInputModel    { NewEmail     = user.Email      };
+            CurrentUsername = user.UserName;
+            CurrentEmail = user.Email;
+            PhoneInput = new PhoneInputModel { PhoneNumber = user.PhoneNumber };
+            UsernameInput = new UsernameInputModel { NewUsername = user.UserName };
+            EmailInput = new EmailInputModel { NewEmail = user.Email };
         }
 
         // ── GET ──────────────────────────────────────────────────────────────

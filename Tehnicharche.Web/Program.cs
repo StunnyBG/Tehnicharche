@@ -17,10 +17,12 @@ namespace Tehnicharche.Web
             var builder = WebApplication.CreateBuilder(args);
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+                ?? throw new InvalidOperationException(
+                    "Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<TehnicharcheDbContext>(options =>
                 options.UseSqlServer(connectionString));
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
@@ -50,7 +52,7 @@ namespace Tehnicharche.Web
             builder.Services.AddScoped<IGenericRepository<Region>, GenericRepository<Region>>();
             builder.Services.AddScoped<IGenericRepository<City>, GenericRepository<City>>();
 
-            // Services 
+            // Services
             builder.Services.AddScoped<IListingService, ListingService>();
             builder.Services.AddScoped<ISavedListingService, SavedListingService>();
             builder.Services.AddScoped<IAdminListingService, AdminListingService>();
@@ -61,10 +63,14 @@ namespace Tehnicharche.Web
             builder.Services.AddScoped<IAdminCityService, AdminCityService>();
             builder.Services.AddScoped<IUserManagerWrapper, UserManagerWrapper>();
 
-            builder.Services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, AppClaimsPrincipalFactory>();
+            builder.Services.AddScoped<
+                IUserClaimsPrincipalFactory<ApplicationUser>,
+                AppClaimsPrincipalFactory>();
+
             builder.Services.AddScoped<DataSeeder>();
 
             builder.Services.AddControllersWithViews();
+
 
             var app = builder.Build();
 
@@ -93,12 +99,13 @@ namespace Tehnicharche.Web
             app.UseAuthorization();
 
             app.MapControllerRoute(
-               name: "areas",
-               pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
+                name: "areas",
+                pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
             app.MapRazorPages();
 
             app.Run();

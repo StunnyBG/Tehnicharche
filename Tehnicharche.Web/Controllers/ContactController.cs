@@ -8,10 +8,14 @@ namespace Tehnicharche.Web.Controllers
     public class ContactController : Controller
     {
         private readonly IContactMessageRepository messageRepository;
+        private readonly ILogger<ContactController> logger;
 
-        public ContactController(IContactMessageRepository messageRepository)
+        public ContactController(
+            IContactMessageRepository messageRepository,
+            ILogger<ContactController> logger)
         {
             this.messageRepository = messageRepository;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -41,7 +45,13 @@ namespace Tehnicharche.Web.Controllers
             await messageRepository.AddAsync(message);
             await messageRepository.SaveChangesAsync();
 
-            TempData["SuccessMessage"] = "Thank you for reaching out! We'll get back to you as soon as possible.";
+            logger.LogInformation(
+                "Contact message received from '{Email}' with subject '{Subject}'.",
+                model.Email, model.Subject);
+
+            TempData["SuccessMessage"] =
+                "Thank you for reaching out! We'll get back to you as soon as possible.";
+
             return RedirectToAction(nameof(Index));
         }
     }

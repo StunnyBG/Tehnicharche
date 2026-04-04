@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Tehnicharche.Data.Models;
@@ -11,6 +12,7 @@ namespace Tehnicharche.Tests;
 [TestFixture]
 public class AdminUserServiceTests
 {
+    private Mock<ILogger<AdminUserService>> logger;
     private Mock<IUserManagerWrapper> userManager;
     private Mock<IAdminListingRepository> listingRepo;
     private Mock<IContactMessageRepository> messageRepo;
@@ -23,11 +25,17 @@ public class AdminUserServiceTests
     [SetUp]
     public void SetUp()
     {
+        logger = new Mock<ILogger<AdminUserService>>();
         userManager = new Mock<IUserManagerWrapper>();
         listingRepo = new Mock<IAdminListingRepository>();
         messageRepo = new Mock<IContactMessageRepository>();
         categoryRepo = new Mock<IGenericRepository<Category>>();
-        sut = new AdminUserService(userManager.Object, listingRepo.Object, messageRepo.Object, categoryRepo.Object);
+        sut = new AdminUserService(
+            userManager.Object,
+            listingRepo.Object,
+            messageRepo.Object,
+            categoryRepo.Object,
+            logger.Object);
     }
 
     // helpers

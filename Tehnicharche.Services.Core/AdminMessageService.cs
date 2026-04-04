@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.Services.Core.Interfaces;
@@ -9,10 +10,14 @@ namespace Tehnicharche.Services.Core
     public class AdminMessageService : IAdminMessageService
     {
         private readonly IContactMessageRepository messageRepository;
+        private readonly ILogger<AdminMessageService> logger;
 
-        public AdminMessageService(IContactMessageRepository messageRepository)
+        public AdminMessageService(
+            IContactMessageRepository messageRepository,
+            ILogger<AdminMessageService> logger)
         {
             this.messageRepository = messageRepository;
+            this.logger = logger;
         }
 
         public async Task<AdminMessagesViewModel> GetMessagesAsync(string filter, int page)
@@ -46,6 +51,7 @@ namespace Tehnicharche.Services.Core
             {
                 message.IsRead = true;
                 await messageRepository.SaveChangesAsync();
+                logger.LogInformation("Message {MessageId} marked as read on first view.", id);
             }
 
             return MapToRow(message);
@@ -65,6 +71,7 @@ namespace Tehnicharche.Services.Core
             var message = await GetTrackedOrThrowAsync(id);
             message.IsRead = true;
             await messageRepository.SaveChangesAsync();
+            logger.LogInformation("Message {MessageId} marked as read by admin.", id);
         }
 
         public async Task MarkUnreadAsync(int id)
@@ -72,23 +79,23 @@ namespace Tehnicharche.Services.Core
             var message = await GetTrackedOrThrowAsync(id);
             message.IsRead = false;
             await messageRepository.SaveChangesAsync();
+            logger.LogInformation("Message {MessageId} marked as unread by admin.", id);
         }
 
         public async Task DeleteAsync(int id)
         {
             var message = await GetTrackedOrThrowAsync(id);
             await messageRepository.DeleteAsync(message);
+            logger.LogInformation("Message {MessageId} permanently deleted by admin.", id);
         }
 
-
-        // helper methods
+        // helpers 
         private async Task<ContactMessage> GetTrackedOrThrowAsync(int id)
             => await messageRepository.GetByIdTrackedAsync(id)
                ?? throw new InvalidOperationException($"Message {id} not found.");
 
-        private static AdminMessageRowViewModel MapToRow(ContactMessage m)
-        {
-            return new AdminMessageRowViewModel
+        private static AdminMessageRowViewModel MapToRow(ContactMessage m) =>
+            new AdminMessageRowViewModel
             {
                 Id = m.Id,
                 Name = m.Name,
@@ -99,6 +106,5 @@ namespace Tehnicharche.Services.Core
                 IsRead = m.IsRead,
                 SentAt = m.SentAt.ToString(DateFormat)
             };
-        }
     }
 }

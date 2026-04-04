@@ -7,10 +7,14 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
     public class CitiesController : AdminBaseController
     {
         private readonly IAdminCityService cityService;
+        private readonly ILogger<CitiesController> logger;
 
-        public CitiesController(IAdminCityService cityService)
+        public CitiesController(
+            IAdminCityService cityService,
+            ILogger<CitiesController> logger)
         {
             this.cityService = cityService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -36,6 +40,7 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(ex, "Failed to add city '{CityName}' to region {RegionId}.", name, regionId);
                 TempData["AdminError"] = ex.Message;
             }
 
@@ -76,6 +81,7 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(ex, "Failed to update city {CityId}.", model.Id);
                 var reloaded = await cityService.GetForEditAsync(model.Id);
                 model.Regions = reloaded.Regions;
                 ModelState.AddModelError(string.Empty, ex.Message);
@@ -93,6 +99,7 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(ex, "Failed to delete city {CityId}.", id);
                 TempData["AdminError"] = ex.Message;
             }
 

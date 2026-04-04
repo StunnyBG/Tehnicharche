@@ -1,11 +1,9 @@
 #nullable disable
 
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using Tehnicharche.Data.Models;
 
 namespace Tehnicharche.Web.Areas.Identity.Pages.Account
@@ -19,7 +17,7 @@ namespace Tehnicharche.Web.Areas.Identity.Pages.Account
         public LogoutModel(SignInManager<ApplicationUser> signInManager, ILogger<LogoutModel> logger)
         {
             _signInManager = signInManager;
-            _logger        = logger;
+            _logger = logger;
         }
 
         public IActionResult OnGet()

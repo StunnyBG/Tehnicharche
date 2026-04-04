@@ -10,11 +10,16 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
     {
         private readonly IAdminUserService userService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly ILogger<UsersController> logger;
 
-        public UsersController(IAdminUserService userService, UserManager<ApplicationUser> userManager)
+        public UsersController(
+            IAdminUserService userService,
+            UserManager<ApplicationUser> userManager,
+            ILogger<UsersController> logger)
         {
             this.userService = userService;
             this.userManager = userManager;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -33,6 +38,8 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(
+                    ex, "Failed to toggle role '{Role}' for user {UserId}.", role, userId);
                 TempData["AdminError"] = ex.Message;
             }
 
@@ -49,6 +56,7 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(ex, "Failed to ban user {UserId}.", userId);
                 TempData["AdminError"] = ex.Message;
             }
 
@@ -65,6 +73,7 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(ex, "Failed to unban user {UserId}.", userId);
                 TempData["AdminError"] = ex.Message;
             }
 

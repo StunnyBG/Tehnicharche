@@ -1,8 +1,10 @@
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.Services.Core.Interfaces;
 using Tehnicharche.ViewModels.Admin;
+using static Tehnicharche.GCommon.ApplicationConstants;
 
 namespace Tehnicharche.Services.Core
 {
@@ -10,12 +12,16 @@ namespace Tehnicharche.Services.Core
     {
         private readonly IAdminRegionRepository repo;
         private readonly IMemoryCache cache;
-        private const string CacheKey = "Regions:All";
+        private readonly ILogger<AdminRegionService> logger;
 
-        public AdminRegionService(IAdminRegionRepository repo, IMemoryCache cache)
+        public AdminRegionService(
+            IAdminRegionRepository repo,
+            IMemoryCache cache,
+            ILogger<AdminRegionService> logger)
         {
             this.repo = repo;
             this.cache = cache;
+            this.logger = logger;
         }
 
         public async Task<AdminRegionsViewModel> GetRegionsAsync()
@@ -39,39 +45,47 @@ namespace Tehnicharche.Services.Core
         public async Task AddAsync(string name)
         {
             name = name.Trim();
+
             if (await repo.NameExistsAsync(name))
                 throw new InvalidOperationException($"A region named \"{name}\" already exists.");
 
             await repo.AddAsync(new Region { Name = name });
             await repo.SaveChangesAsync();
-            cache.Remove(CacheKey);
+            cache.Remove(RegionsCacheKey);
+
+            logger.LogInformation("Region '{RegionName}' added by admin.", name);
         }
 
         public async Task<EditRegionViewModel> GetForEditAsync(int id)
         {
             var r = await repo.GetByIdAsync(id)
-                ?? throw new InvalidOperationException("Region not found.");
+                ?? throw new InvalidOperationException($"Region {id} not found.");
+
             return new EditRegionViewModel { Id = r.Id, Name = r.Name };
         }
 
         public async Task UpdateAsync(EditRegionViewModel model)
         {
             var r = await repo.GetByIdAsync(model.Id)
-                ?? throw new InvalidOperationException("Region not found.");
+                ?? throw new InvalidOperationException($"Region {model.Id} not found.");
 
             var name = model.Name.Trim();
+
             if (await repo.NameExistsAsync(name, excludeId: model.Id))
                 throw new InvalidOperationException($"A region named \"{name}\" already exists.");
 
             r.Name = name;
             await repo.SaveChangesAsync();
-            cache.Remove(CacheKey);
+            cache.Remove(RegionsCacheKey);
+
+            logger.LogInformation(
+                "Region {RegionId} renamed to '{RegionName}' by admin.", model.Id, name);
         }
 
         public async Task DeleteAsync(int id)
         {
             var r = await repo.GetByIdAsync(id)
-                ?? throw new InvalidOperationException("Region not found.");
+                ?? throw new InvalidOperationException($"Region {id} not found.");
 
             if (await repo.IsInUseAsync(id))
                 throw new InvalidOperationException(
@@ -80,7 +94,9 @@ namespace Tehnicharche.Services.Core
 
             await repo.DeleteAsync(r);
             await repo.SaveChangesAsync();
-            cache.Remove(CacheKey);
+            cache.Remove(RegionsCacheKey);
+
+            logger.LogInformation("Region {RegionId} deleted by admin.", id);
         }
     }
 }

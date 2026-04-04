@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Tehnicharche.Data.Models;
@@ -9,14 +10,16 @@ namespace Tehnicharche.Tests;
 [TestFixture]
 public class AdminMessageServiceTests
 {
+    private Mock<ILogger<AdminMessageService>> logger;
     private Mock<IContactMessageRepository> repo;
     private AdminMessageService sut;
 
     [SetUp]
     public void SetUp()
     {
+        logger = new Mock<ILogger<AdminMessageService>>();
         repo = new Mock<IContactMessageRepository>();
-        sut = new AdminMessageService(repo.Object);
+        sut = new AdminMessageService(repo.Object, logger.Object);
     }
 
     // helpers

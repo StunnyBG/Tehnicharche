@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Tehnicharche.Data.Models;
@@ -10,6 +11,7 @@ namespace Tehnicharche.Tests;
 [TestFixture]
 public class SavedListingServiceTests
 {
+    private Mock<ILogger<SavedListingService>> logger;
     private Mock<ISavedListingRepository> repo;
     private SavedListingService sut;
 
@@ -18,8 +20,9 @@ public class SavedListingServiceTests
     [SetUp]
     public void SetUp()
     {
+        logger = new Mock<ILogger<SavedListingService>>();
         repo = new Mock<ISavedListingRepository>();
-        sut = new SavedListingService(repo.Object);
+        sut = new SavedListingService(repo.Object, logger.Object);
     }
 
     // helpers

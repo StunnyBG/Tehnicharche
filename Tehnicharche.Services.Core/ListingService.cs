@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.Services.Core.Interfaces;
@@ -14,37 +15,35 @@ namespace Tehnicharche.Services.Core
         private readonly IGenericRepository<Region> regionRepository;
         private readonly IGenericRepository<City> cityRepository;
         private readonly IMemoryCache cache;
-
-        private const string CategoriesCacheKey = "Categories:All";
-        private const string RegionsCacheKey = "Regions:All";
-        private const string CitiesCacheKey = "Cities:All";
+        private readonly ILogger<ListingService> logger;
 
         public ListingService(
             IListingRepository listingRepository,
             IGenericRepository<Category> categoryRepository,
             IGenericRepository<Region> regionRepository,
             IGenericRepository<City> cityRepository,
-            IMemoryCache cache)
+            IMemoryCache cache,
+            ILogger<ListingService> logger)
         {
             this.listingRepository = listingRepository;
             this.categoryRepository = categoryRepository;
             this.regionRepository = regionRepository;
             this.cityRepository = cityRepository;
             this.cache = cache;
+            this.logger = logger;
         }
-
 
         public async Task<ListingIndexQueryModel> GetIndexListingsAsync(ListingIndexQueryModel query)
         {
             query.Page = query.Page <= 0 ? DefaultPage : query.Page;
 
             var (items, total) = await listingRepository.GetFilteredPagedAsync(
-                query.Page, 
+                query.Page,
                 IndexPageSize,
-                query.CategoryId, 
-                query.RegionId, 
+                query.CategoryId,
+                query.RegionId,
                 query.CityId,
-                query.MinPrice, 
+                query.MinPrice,
                 query.MaxPrice,
                 query.SearchTerm);
 
@@ -67,7 +66,6 @@ namespace Tehnicharche.Services.Core
 
             return query;
         }
-
 
         public async Task<MyListingsQueryModel> GetMyListingsAsync(MyListingsQueryModel query, string creatorId)
         {
@@ -95,11 +93,10 @@ namespace Tehnicharche.Services.Core
             return query;
         }
 
-
         public async Task<ListingDetailsViewModel> GetListingDetailsByIdAsync(int id)
         {
             var listing = await listingRepository.GetByIdWithDetailsAsync(id)
-                ?? throw new InvalidOperationException("Listing not found.");
+                ?? throw new InvalidOperationException($"Listing {id} not found.");
 
             return new ListingDetailsViewModel
             {
@@ -119,7 +116,6 @@ namespace Tehnicharche.Services.Core
                 UpdatedAt = listing.UpdatedAt.ToString(DateFormat)
             };
         }
-
 
         public async Task<ListingCreateViewModel> GetListingCreateViewModelAsync()
         {
@@ -149,16 +145,19 @@ namespace Tehnicharche.Services.Core
 
             await listingRepository.AddAsync(listing);
             await listingRepository.SaveChangesAsync();
-        }
 
+            logger.LogInformation(
+                "Listing '{Title}' created by user {UserId}.", model.Title, creatorId);
+        }
 
         public async Task<ListingEditViewModel> GetListingEditAsync(int id, string userId)
         {
             var listing = await listingRepository.GetByIdAsync(id)
-                ?? throw new InvalidOperationException("Listing not found.");
+                ?? throw new InvalidOperationException($"Listing {id} not found.");
 
             if (listing.CreatorId != userId)
-                throw new UnauthorizedAccessException("You are not authorized to make this action.");
+                throw new UnauthorizedAccessException(
+                    $"User {userId} is not authorized to edit listing {id}.");
 
             return new ListingEditViewModel
             {
@@ -179,10 +178,11 @@ namespace Tehnicharche.Services.Core
         public async Task EditListingAsync(ListingEditViewModel model, string userId)
         {
             var listing = await listingRepository.GetByIdTrackedAsync(model.Id)
-                ?? throw new InvalidOperationException("Listing not found.");
+                ?? throw new InvalidOperationException($"Listing {model.Id} not found.");
 
             if (listing.CreatorId != userId)
-                throw new UnauthorizedAccessException("You are not authorized to make this action.");
+                throw new UnauthorizedAccessException(
+                    $"User {userId} is not authorized to edit listing {model.Id}.");
 
             await ValidateCategoryRegionCityAsync(model.CategoryId, model.RegionId, model.CityId);
 
@@ -196,16 +196,19 @@ namespace Tehnicharche.Services.Core
             listing.UpdatedAt = DateTime.UtcNow;
 
             await listingRepository.SaveChangesAsync();
-        }
 
+            logger.LogInformation(
+                "Listing {ListingId} updated by user {UserId}.", model.Id, userId);
+        }
 
         public async Task<ListingDeleteViewModel> GetListingDeleteDetailsAsync(int id, string userId)
         {
             var listing = await listingRepository.GetByIdAsync(id)
-                ?? throw new InvalidOperationException("Listing not found.");
+                ?? throw new InvalidOperationException($"Listing {id} not found.");
 
             if (listing.CreatorId != userId)
-                throw new UnauthorizedAccessException("You are not authorized to make this action.");
+                throw new UnauthorizedAccessException(
+                    $"User {userId} is not authorized to delete listing {id}.");
 
             return new ListingDeleteViewModel
             {
@@ -217,53 +220,59 @@ namespace Tehnicharche.Services.Core
         public async Task DeleteListingAsync(int id, string userId)
         {
             var listing = await listingRepository.GetByIdTrackedAsync(id)
-                ?? throw new InvalidOperationException("Listing not found.");
+                ?? throw new InvalidOperationException($"Listing {id} not found.");
 
             if (listing.CreatorId != userId)
-                throw new UnauthorizedAccessException("You are not authorized to make this action.");
+                throw new UnauthorizedAccessException(
+                    $"User {userId} is not authorized to delete listing {id}.");
 
             await listingRepository.SoftDeleteAsync(listing);
-        }
 
+            logger.LogInformation(
+                "Listing {ListingId} soft-deleted by user {UserId}.", id, userId);
+        }
 
         public async Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync()
         {
-            if (cache.TryGetValue(CategoriesCacheKey, out IEnumerable<CategoryViewModel>? cached) && cached is not null)
+            if (cache.TryGetValue(CategoriesCacheKey, out IEnumerable<CategoryViewModel>? cached)
+                && cached is not null)
                 return cached;
 
             var categories = await categoryRepository.GetAllAsync();
 
-            var categoryViewModels = categories
+            var result = categories
                 .Select(c => new CategoryViewModel { Id = c.Id, Name = c.Name })
                 .ToList();
 
-            cache.Set(CategoriesCacheKey, categoryViewModels, TimeSpan.FromHours(6));
-            return categoryViewModels;
+            cache.Set(CategoriesCacheKey, result, TimeSpan.FromHours(6));
+            return result;
         }
 
         public async Task<IEnumerable<RegionViewModel>> GetAllRegionsAsync()
         {
-            if (cache.TryGetValue(RegionsCacheKey, out IEnumerable<RegionViewModel>? cached) && cached is not null)
+            if (cache.TryGetValue(RegionsCacheKey, out IEnumerable<RegionViewModel>? cached)
+                && cached is not null)
                 return cached;
 
             var regions = await regionRepository.GetAllAsync();
-            
-            var regionViewModels = regions
+
+            var result = regions
                 .Select(r => new RegionViewModel { Id = r.Id, Name = r.Name })
                 .ToList();
 
-            cache.Set(RegionsCacheKey, regionViewModels, TimeSpan.FromHours(6));
-            return regionViewModels;
+            cache.Set(RegionsCacheKey, result, TimeSpan.FromHours(6));
+            return result;
         }
 
         public async Task<IEnumerable<CityViewModel>> GetAllCitiesAsync()
         {
-            if (cache.TryGetValue(CitiesCacheKey, out IEnumerable<CityViewModel>? cached) && cached is not null)
+            if (cache.TryGetValue(CitiesCacheKey, out IEnumerable<CityViewModel>? cached)
+                && cached is not null)
                 return cached;
 
             var cities = await cityRepository.GetAllAsync();
 
-            var cityViewModels = cities
+            var result = cities
                 .Select(c => new CityViewModel
                 {
                     Id = c.Id,
@@ -272,12 +281,11 @@ namespace Tehnicharche.Services.Core
                 })
                 .ToList();
 
-            cache.Set(CitiesCacheKey, cityViewModels, TimeSpan.FromHours(6));
-            return cityViewModels;
+            cache.Set(CitiesCacheKey, result, TimeSpan.FromHours(6));
+            return result;
         }
 
-
-        // helper method
+        // helper
         private async Task ValidateCategoryRegionCityAsync(int? categoryId, int? regionId, int? cityId)
         {
             if (!await categoryRepository.ExistsAsync(c => c.Id == categoryId))
@@ -292,7 +300,8 @@ namespace Tehnicharche.Services.Core
                     ?? throw new InvalidOperationException("Invalid city id.");
 
                 if (city.RegionId != regionId)
-                    throw new InvalidOperationException("City does not belong to the selected region.");
+                    throw new InvalidOperationException(
+                        "City does not belong to the selected region.");
             }
         }
     }

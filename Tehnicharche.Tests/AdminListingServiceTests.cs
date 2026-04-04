@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Tehnicharche.Data.Models;
@@ -9,14 +10,16 @@ namespace Tehnicharche.Tests;
 [TestFixture]
 public class AdminListingServiceTests
 {
+    private Mock<ILogger<AdminListingService>> logger;
     private Mock<IAdminListingRepository> repo;
     private AdminListingService sut;
 
     [SetUp]
     public void SetUp()
     {
+        logger = new Mock<ILogger<AdminListingService>>();
         repo = new Mock<IAdminListingRepository>();
-        sut = new AdminListingService(repo.Object);
+        sut = new AdminListingService(repo.Object, logger.Object);
     }
 
     // helpers
@@ -171,7 +174,7 @@ public class AdminListingServiceTests
     public async Task HardDeleteAsync_Found_CallsHardDelete()
     {
         var listing = MakeListing();
-        repo.Setup(r => r.GetByIdTrackedAsync(1)).ReturnsAsync(listing);
+        repo.Setup(r => r.GetByIdDeletedAsync(1)).ReturnsAsync(listing);
 
         await sut.HardDeleteAsync(1);
 

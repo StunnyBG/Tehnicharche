@@ -8,7 +8,7 @@ namespace Tehnicharche.Services.Core.Interfaces
         Task<ListingIndexQueryModel> GetIndexListingsAsync(ListingIndexQueryModel query);
 
         Task<MyListingsQueryModel> GetMyListingsAsync(MyListingsQueryModel query, string creatorId);
-        
+
         Task<ListingDetailsViewModel> GetListingDetailsByIdAsync(int id);
 
         Task<ListingCreateViewModel> GetListingCreateViewModelAsync();
@@ -24,7 +24,7 @@ namespace Tehnicharche.Services.Core.Interfaces
         Task<ListingDeleteViewModel> GetListingDeleteDetailsAsync(int id, string userId);
 
         Task<IEnumerable<CategoryViewModel>> GetAllCategoriesAsync();
-        
+
         Task<IEnumerable<CityViewModel>> GetAllCitiesAsync();
 
         Task<IEnumerable<RegionViewModel>> GetAllRegionsAsync();

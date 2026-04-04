@@ -7,10 +7,14 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
     public class MessagesController : AdminBaseController
     {
         private readonly IAdminMessageService messageService;
+        private readonly ILogger<MessagesController> logger;
 
-        public MessagesController(IAdminMessageService messageService)
+        public MessagesController(
+            IAdminMessageService messageService,
+            ILogger<MessagesController> logger)
         {
             this.messageService = messageService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -39,22 +43,49 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> MarkRead(int id, string filter = "all")
         {
-            await messageService.MarkReadAsync(id);
+            try
+            {
+                await messageService.MarkReadAsync(id);
+            }
+            catch (InvalidOperationException ex)
+            {
+                logger.LogWarning(ex, "Failed to mark message {MessageId} as read.", id);
+                TempData["AdminError"] = ex.Message;
+            }
+
             return RedirectToAction(nameof(Index), new { filter });
         }
 
         [HttpPost]
         public async Task<IActionResult> MarkUnread(int id, string filter = "all")
         {
-            await messageService.MarkUnreadAsync(id);
+            try
+            {
+                await messageService.MarkUnreadAsync(id);
+            }
+            catch (InvalidOperationException ex)
+            {
+                logger.LogWarning(ex, "Failed to mark message {MessageId} as unread.", id);
+                TempData["AdminError"] = ex.Message;
+            }
+
             return RedirectToAction(nameof(Index), new { filter });
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id, string filter = "all")
         {
-            await messageService.DeleteAsync(id);
-            TempData["AdminSuccess"] = "Message deleted.";
+            try
+            {
+                await messageService.DeleteAsync(id);
+                TempData["AdminSuccess"] = "Message deleted.";
+            }
+            catch (InvalidOperationException ex)
+            {
+                logger.LogWarning(ex, "Failed to delete message {MessageId}.", id);
+                TempData["AdminError"] = ex.Message;
+            }
+
             return RedirectToAction(nameof(Index), new { filter });
         }
     }

@@ -7,10 +7,14 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
     public class RegionsController : AdminBaseController
     {
         private readonly IAdminRegionService regionService;
+        private readonly ILogger<RegionsController> logger;
 
-        public RegionsController(IAdminRegionService regionService)
+        public RegionsController(
+            IAdminRegionService regionService,
+            ILogger<RegionsController> logger)
         {
             this.regionService = regionService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -36,6 +40,7 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(ex, "Failed to add region '{RegionName}'.", name);
                 TempData["AdminError"] = ex.Message;
             }
 
@@ -59,7 +64,8 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(EditRegionViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            if (!ModelState.IsValid)
+                return View(model);
 
             try
             {
@@ -69,6 +75,7 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(ex, "Failed to update region {RegionId}.", model.Id);
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return View(model);
             }
@@ -84,6 +91,7 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
             }
             catch (InvalidOperationException ex)
             {
+                logger.LogWarning(ex, "Failed to delete region {RegionId}.", id);
                 TempData["AdminError"] = ex.Message;
             }
 
