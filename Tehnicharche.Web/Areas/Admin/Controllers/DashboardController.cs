@@ -5,17 +5,17 @@ namespace Tehnicharche.Web.Areas.Admin.Controllers
 {
     public class DashboardController : AdminBaseController
     {
-        private readonly IAdminUserService userService;
+        private readonly IAdminDashboardService dashboardService;
 
-        public DashboardController(IAdminUserService userService)
+        public DashboardController(IAdminDashboardService dashboardService)
         {
-            this.userService = userService;
+            this.dashboardService = dashboardService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var model = await userService.GetDashboardStatsAsync();
+            var model = await dashboardService.GetDashboardStatsAsync();
             return View(model);
         }
     }

@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.Services.Core;
-using Tehnicharche.ViewModels;
+using Tehnicharche.ViewModels.Listing;
 
 namespace Tehnicharche.Tests;
 

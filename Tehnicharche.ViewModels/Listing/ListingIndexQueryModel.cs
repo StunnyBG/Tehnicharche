@@ -1,4 +1,4 @@
-﻿using Tehnicharche.GCommon;
+﻿using Tehnicharche.GCommon.Attributes;
 using static Tehnicharche.GCommon.ApplicationConstants;
 using static Tehnicharche.GCommon.ValidationConstants.Listing;
 

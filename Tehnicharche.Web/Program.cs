@@ -44,6 +44,7 @@ namespace Tehnicharche.Web
             builder.Services.AddScoped<IListingRepository, ListingRepository>();
             builder.Services.AddScoped<ISavedListingRepository, SavedListingRepository>();
             builder.Services.AddScoped<IContactMessageRepository, ContactMessageRepository>();
+            builder.Services.AddScoped<IAdminDashboardService, AdminDashboardService>();
             builder.Services.AddScoped<IAdminListingRepository, AdminListingRepository>();
             builder.Services.AddScoped<IAdminCategoryRepository, AdminCategoryRepository>();
             builder.Services.AddScoped<IAdminRegionRepository, AdminRegionRepository>();

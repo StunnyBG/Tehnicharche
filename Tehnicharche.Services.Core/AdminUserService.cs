@@ -73,51 +73,6 @@ namespace Tehnicharche.Services.Core
             };
         }
 
-        public async Task<AdminDashboardViewModel> GetDashboardStatsAsync()
-        {
-            int activeCount = await listingRepository.GetActiveCountAsync();
-            int deletedCount = await listingRepository.GetDeletedCountAsync();
-            int totalUsers = await userManager.CountAsync(null);
-            int totalMsgs = await messageRepository.GetTotalCountAsync();
-            int unreadMsgs = await messageRepository.GetUnreadCountAsync();
-
-            var categories = await categoryRepository.GetAllAsync();
-            int totalCats = categories.Count();
-
-            var recentListings = await listingRepository.GetRecentAdminAsync(RecentListingsCount);
-            var recentMessages = await messageRepository.GetRecentAsync(RecentMessagesCount);
-
-            return new AdminDashboardViewModel
-            {
-                TotalActiveListings = activeCount,
-                TotalDeletedListings = deletedCount,
-                TotalUsers = totalUsers,
-                TotalMessages = totalMsgs,
-                UnreadMessages = unreadMsgs,
-                TotalCategories = totalCats,
-                RecentListings = recentListings.Select(l => new AdminListingRowViewModel
-                {
-                    Id = l.Id,
-                    Title = l.Title,
-                    CreatorName = l.Creator.UserName!,
-                    CategoryName = l.Category.Name,
-                    Price = l.Price,
-                    IsDeleted = l.IsDeleted,
-                    CreatedAt = l.CreatedAt.ToString(DateFormat),
-                }),
-                RecentMessages = recentMessages.Select(m => new AdminMessageRowViewModel
-                {
-                    Id = m.Id,
-                    Name = m.Name,
-                    Email = m.Email,
-                    Subject = m.Subject,
-                    Message = m.Message,
-                    IsRead = m.IsRead,
-                    SentAt = m.SentAt.ToString(DateFormat),
-                }),
-            };
-        }
-
         public async Task ToggleRoleAsync(string userId, string role, string currentAdminId)
         {
             if (userId == currentAdminId && role == AdminRole)
