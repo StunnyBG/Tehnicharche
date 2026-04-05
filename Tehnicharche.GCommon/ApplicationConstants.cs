@@ -7,8 +7,9 @@ namespace Tehnicharche.GCommon
 
         // Pagination
         public const int DefaultPage = 1;
-        public const int IndexPageSize = 6;
+        public const int IndexPageSize = 8;
         public const int MyListingsPageSize = 3;
+        public const int SavedListingsPageSize = 3;
         public const int AdminPageSize = 10;
 
         // Dashboard

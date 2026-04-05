@@ -1,70 +1,70 @@
 @page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+	ViewData["Title"] = "Create Account";
+	Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card shadow p-4">
-            <h3 class="text-center mb-4 text-success">Create Account</h3>
+<div class="auth-wrap">
+	<div class="auth-box" style="max-width:460px;">
+		<h1 class="auth-title">Create Account</h1>
+		<p class="auth-sub">Join Tehnicharche and start offering or finding services.</p>
 
-            <form method="post">
-                @if (ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
-                {
-                    <div asp-validation-summary="All" class="alert alert-danger py-2"></div>
-                }
+		<form method="post">
+			@if (ViewData.ModelState.Values.Any(v => v.Errors.Count > 0))
+			{
+				<div asp-validation-summary="All" class="alert alert-danger" style="margin-bottom:1.25rem;"></div>
+			}
 
-                <div class="mb-3">
-                    <label asp-for="Input.Username"></label>
-                    <input asp-for="Input.Username" class="form-control" autocomplete="username" />
-                    <span asp-validation-for="Input.Username" class="text-danger small"></span>
-                </div>
+			<div class="mb-3">
+				<label asp-for="Input.Username">Username</label>
+				<input asp-for="Input.Username" class="form-control" autocomplete="username" />
+				<span asp-validation-for="Input.Username" class="text-danger"></span>
+			</div>
 
-                <div class="mb-3">
-                    <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" autocomplete="email" />
-                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
-                </div>
+			<div class="mb-3">
+				<label asp-for="Input.Email">Email</label>
+				<input asp-for="Input.Email" class="form-control" autocomplete="email" />
+				<span asp-validation-for="Input.Email" class="text-danger"></span>
+			</div>
 
-                <div class="mb-3">
-                    <label asp-for="Input.PhoneNumber"></label>
-                    <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="tel" />
-                    <small class="form-text text-muted">Optional — visible to other users on your listings.</small>
-                    <span asp-validation-for="Input.PhoneNumber" class="text-danger small d-block"></span>
-                </div>
+			<div class="mb-3">
+				<label asp-for="Input.PhoneNumber">Phone <span style="text-transform:none;letter-spacing:0;font-size:0.85em;color:var(--ink3);">(optional — shown on listings)</span></label>
+				<input asp-for="Input.PhoneNumber" class="form-control" autocomplete="tel" />
+				<span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+			</div>
 
-                <div class="mb-3">
-                    <label asp-for="Input.Password"></label>
-                    <div class="input-group">
-                        <input asp-for="Input.Password" class="form-control" id="reg-password" autocomplete="new-password" />
-                        <button class="btn btn-outline-secondary btn-toggle-password" data-target="reg-password" tabindex="-1"></button>
-                    </div>
-                    <small class="form-text text-muted">Minimum 6 characters, must include uppercase and digit.</small>
-                    <span asp-validation-for="Input.Password" class="text-danger small d-block"></span>
-                </div>
+			<div class="mb-3">
+				<label asp-for="Input.Password">Password</label>
+				<div style="position:relative;">
+					<input asp-for="Input.Password" class="form-control" id="reg-password" autocomplete="new-password" style="padding-right:42px;" />
+					<button class="btn-toggle-password" data-target="reg-password" type="button"
+							style="position:absolute;right:0;top:0;height:100%;width:40px;background:none;border:none;border-left:1px solid var(--bd);cursor:pointer;color:var(--ink5);"></button>
+				</div>
+				<span style="font-size:0.75rem; color:var(--ink3); margin-top:3px; display:block;">Min 6 chars, must include uppercase and digit.</span>
+				<span asp-validation-for="Input.Password" class="text-danger"></span>
+			</div>
 
-                <div class="mb-3">
-                    <label asp-for="Input.ConfirmPassword"></label>
-                    <div class="input-group">
-                        <input asp-for="Input.ConfirmPassword" class="form-control" id="reg-confirm-password" autocomplete="new-password" />
-                        <button class="btn btn-outline-secondary btn-toggle-password" data-target="reg-confirm-password" tabindex="-1"></button>
-                    </div>
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger small d-block"></span>
-                </div>
+			<div class="mb-3">
+				<label asp-for="Input.ConfirmPassword">Confirm Password</label>
+				<div style="position:relative;">
+					<input asp-for="Input.ConfirmPassword" class="form-control" id="reg-confirm-password" autocomplete="new-password" style="padding-right:42px;" />
+					<button class="btn-toggle-password" data-target="reg-confirm-password" type="button"
+							style="position:absolute;right:0;top:0;height:100%;width:40px;background:none;border:none;border-left:1px solid var(--bd);cursor:pointer;color:var(--ink5);"></button>
+				</div>
+				<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+			</div>
 
-                <button type="submit" class="btn btn-success w-100">Create Account</button>
-            </form>
+			<button type="submit" class="btn btn-success w-100">Create Account</button>
+		</form>
 
-            <p class="text-center mt-3 small">
-                Already have an account?
-                <a asp-page="./Login">Sign in</a>
-            </p>
-        </div>
-    </div>
+		<div class="auth-footer">
+			Already have an account? <a asp-page="./Login">Sign in</a>
+		</div>
+	</div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script src="~/js/password-toggle.js"></script>
+	<partial name="_ValidationScriptsPartial" />
+	<script src="~/js/password-toggle.js"></script>
 }

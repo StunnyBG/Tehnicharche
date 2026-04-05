@@ -4,20 +4,22 @@
     ViewData["Title"] = "Generate Recovery Codes";
 }
 
-<h4 class="mb-4">Generate Recovery Codes</h4>
+<h4 style="font-family:var(--fh); font-size:1.1rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink); margin-bottom:1.25rem;">Generate Recovery Codes</h4>
 
-<div class="alert alert-danger mb-4">
-    <strong>Generating new codes will invalidate all existing ones.</strong>
-    If you have recovery codes stored somewhere, they will no longer work.
-</div>
+<div style="background:#fff; border:1px solid var(--bd); border-top:2px solid var(--rust); padding:1.25rem; max-width:480px;">
+    <div class="alert alert-danger" style="margin-bottom:1.25rem; font-size:0.88rem;">
+        <strong>Generating new codes invalidates all existing ones.</strong>
+        If you have codes stored somewhere, they will no longer work.
+    </div>
 
-<div class="card shadow-sm p-4">
-    <p class="text-muted mb-4">
-        You will receive 10 new recovery codes. Make sure to save them in a safe place.
+    <p style="color:var(--ink5); font-size:0.9rem; line-height:1.65; margin-bottom:1.25rem;">
+        You will receive 10 new recovery codes. Store them somewhere safe.
     </p>
 
     <form method="post">
-        <button type="submit" class="btn btn-danger">Generate New Recovery Codes</button>
-        <a asp-page="./TwoFactorAuthentication" class="btn btn-outline-secondary ms-2">Cancel</a>
+        <div style="display:flex; gap:0.75rem;">
+            <button type="submit" class="btn btn-danger">Generate New Codes</button>
+            <a asp-page="./TwoFactorAuthentication" class="btn btn-outline-secondary">Cancel</a>
+        </div>
     </form>
 </div>

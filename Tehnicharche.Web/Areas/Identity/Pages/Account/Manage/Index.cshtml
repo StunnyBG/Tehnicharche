@@ -4,67 +4,47 @@
     ViewData["Title"] = "My Profile";
 }
 
-<h4 class="mb-4">My Profile</h4>
+<h4 style="font-family:var(--fh); font-size:1.1rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink); margin-bottom:1.25rem;">My Profile</h4>
 <partial name="_StatusMessage" model="@Model.StatusMessage" />
 
-@* ── Phone number ──────────────────────────────────────────────────── *@
-<div class="card shadow-sm p-4 mb-4">
-    <h6 class="fw-semibold mb-3">📞 Phone Number</h6>
+<div style="background:#fff; border:1px solid var(--bd); border-top:2px solid var(--g700); padding:1.25rem; margin-bottom:1rem;">
+    <p style="font-family:var(--fh); font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink3); margin-bottom:0.9rem; border-bottom:1px solid var(--bd); padding-bottom:0.4rem;">📞 Phone Number</p>
     <form method="post" asp-page-handler="Phone">
-        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
-
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger" style="margin-bottom:1rem;"></div>
         <div class="mb-3">
-            <label asp-for="PhoneInput.PhoneNumber" class="form-label"></label>
-            <input asp-for="PhoneInput.PhoneNumber"
-                   class="form-control"
-                   placeholder="+359 88 123 4567"
-                   autocomplete="tel" />
-            <span asp-validation-for="PhoneInput.PhoneNumber" class="text-danger small"></span>
-            <small class="form-text text-muted">Shown to other users on your listings.</small>
+            <label asp-for="PhoneInput.PhoneNumber">Phone Number</label>
+            <input asp-for="PhoneInput.PhoneNumber" class="form-control" placeholder="+359 88 123 4567" autocomplete="tel" />
+            <span asp-validation-for="PhoneInput.PhoneNumber" class="text-danger"></span>
+            <span style="font-size:0.75rem; color:var(--ink3); margin-top:3px; display:block;">Shown on your listings.</span>
         </div>
-
-        <button type="submit" class="btn btn-success btn-sm">Save Phone Number</button>
+        <button type="submit" class="btn btn-success btn-sm">Save Phone</button>
     </form>
 </div>
 
-@* ── Change username ───────────────────────────────────────────────── *@
-<div class="card shadow-sm p-4 mb-4">
-    <h6 class="fw-semibold mb-3">👤 Change Username</h6>
+<div style="background:#fff; border:1px solid var(--bd); border-top:2px solid var(--g700); padding:1.25rem; margin-bottom:1rem;">
+    <p style="font-family:var(--fh); font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink3); margin-bottom:0.9rem; border-bottom:1px solid var(--bd); padding-bottom:0.4rem;">👤 Change Username</p>
     <form method="post" asp-page-handler="Username">
-        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
-
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger" style="margin-bottom:1rem;"></div>
         <div class="mb-3">
-            <label asp-for="UsernameInput.NewUsername" class="form-label"></label>
-            <input asp-for="UsernameInput.NewUsername"
-                   class="form-control"
-                   autocomplete="username" />
-            <span asp-validation-for="UsernameInput.NewUsername" class="text-danger small"></span>
-            <small class="form-text text-muted">
-                Current username: <strong>@Model.CurrentUsername</strong>
-            </small>
+            <label asp-for="UsernameInput.NewUsername">New Username</label>
+            <input asp-for="UsernameInput.NewUsername" class="form-control" autocomplete="username" />
+            <span asp-validation-for="UsernameInput.NewUsername" class="text-danger"></span>
+            <span style="font-size:0.75rem; color:var(--ink3); margin-top:3px; display:block; font-family:var(--fm);">Current: @Model.CurrentUsername</span>
         </div>
-
         <button type="submit" class="btn btn-success btn-sm">Save Username</button>
     </form>
 </div>
 
-@* ── Change email ──────────────────────────────────────────────────── *@
-<div class="card shadow-sm p-4 mb-4">
-    <h6 class="fw-semibold mb-3">✉️ Change Email</h6>
+<div style="background:#fff; border:1px solid var(--bd); border-top:2px solid var(--g700); padding:1.25rem; margin-bottom:1rem;">
+    <p style="font-family:var(--fh); font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink3); margin-bottom:0.9rem; border-bottom:1px solid var(--bd); padding-bottom:0.4rem;">✉️ Change Email</p>
     <form method="post" asp-page-handler="Email">
-        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
-
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger" style="margin-bottom:1rem;"></div>
         <div class="mb-3">
-            <label asp-for="EmailInput.NewEmail" class="form-label"></label>
-            <input asp-for="EmailInput.NewEmail"
-                   class="form-control"
-                   autocomplete="email" />
-            <span asp-validation-for="EmailInput.NewEmail" class="text-danger small"></span>
-            <small class="form-text text-muted">
-                Current email: <strong>@Model.CurrentEmail</strong>
-            </small>
+            <label asp-for="EmailInput.NewEmail">New Email Address</label>
+            <input asp-for="EmailInput.NewEmail" class="form-control" autocomplete="email" />
+            <span asp-validation-for="EmailInput.NewEmail" class="text-danger"></span>
+            <span style="font-size:0.75rem; color:var(--ink3); margin-top:3px; display:block; font-family:var(--fm);">Current: @Model.CurrentEmail</span>
         </div>
-
         <button type="submit" class="btn btn-success btn-sm">Save Email</button>
     </form>
 </div>

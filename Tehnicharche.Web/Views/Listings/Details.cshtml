@@ -1,73 +1,103 @@
+@using Tehnicharche.ViewModels.Listing
 @model ListingDetailsViewModel
 @using System.Security.Claims
-@using Tehnicharche.ViewModels.Listing
 
-<h1 class="mb-4 text-break">@Model.Title</h1>
+@{
+    ViewData["Title"] = Model.Title;
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var isOwner = !string.IsNullOrEmpty(currentUserId) && currentUserId == Model.CreatorId;
+}
 
-<div class="card shadow-sm p-4">
-    <div class="row">
+<div class="container">
 
-        <div class="col-md-4 text-center">
-            <img src="@Model.ImageUrl"
-                 class="w-100 h-100 rounded shadow-sm"
-                 style="max-height: 300px; object-fit: cover;"
-                 onerror="this.onerror=null;this.src='/images/placeholder.png';" />
+    <div style="margin-bottom:1rem;">
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">← Back to listings</a>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 320px 1fr; gap:1.5rem; align-items:flex-start;">
+
+        <!-- Left: image + contact -->
+        <div>
+            <div style="border:1px solid var(--bd); background:#fff;">
+                <img src="@Model.ImageUrl"
+                     style="width:100%; height:260px; object-fit:cover; display:block; border-bottom:1px solid var(--bd);"
+                     onerror="this.onerror=null;this.src='/images/placeholder.png';"
+                     alt="@Model.Title" />
+
+                <div style="padding:1rem 1.25rem; border-bottom:1px solid var(--bd);">
+                    <span style="font-family:var(--fm); font-size:1.6rem; font-weight:600; color:var(--ink);">@Model.Price</span>
+                    <span style="font-family:var(--fh); font-size:0.8rem; letter-spacing:0.05em; color:var(--ink5); margin-left:4px;">EUR</span>
+                </div>
+
+                <div style="padding:1rem 1.25rem;">
+                    <div style="font-family:var(--fh); font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink3); margin-bottom:0.75rem;">Contact</div>
+
+                    <div style="margin-bottom:0.6rem;">
+                        <strong style="font-family:var(--fh); font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink5); display:block; margin-bottom:2px;">Provider</strong>
+                        <span style="font-family:var(--fm); font-size:0.88rem;">@Model.CreatorName</span>
+                    </div>
+
+                    <div style="margin-bottom:0.6rem;">
+                        <strong style="font-family:var(--fh); font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink5); display:block; margin-bottom:2px;">Email</strong>
+                        <a href="mailto:@Model.CreatorEmail" style="font-family:var(--fm); font-size:0.82rem; word-break:break-all;">@Model.CreatorEmail</a>
+                    </div>
+
+                    @if (!string.IsNullOrWhiteSpace(Model.CreatorPhoneNumber))
+                    {
+                        <div>
+                            <strong style="font-family:var(--fh); font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink5); display:block; margin-bottom:2px;">Phone</strong>
+                            <a href="tel:@Model.CreatorPhoneNumber" style="font-family:var(--fm); font-size:0.88rem;">@Model.CreatorPhoneNumber</a>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
 
-        <div class="col-md-8">
+        <!-- Right: details -->
+        <div style="background:#fff; border:1px solid var(--bd); border-top:3px solid var(--g700); padding:1.5rem;">
 
-            <p class="display-6 fw-bold text-dark mb-3">@Model.Price €</p>
+            <span class="badge-tag badge-tag-green" style="margin-bottom:0.75rem; display:inline-block;">@Model.CategoryName</span>
 
-            <hr />
+            <h1 style="font-family:var(--fh); font-weight:700; font-size:1.9rem; letter-spacing:0.02em; color:var(--ink); margin-bottom:1rem; line-height:1.2; word-break:break-word;">
+                @Model.Title
+            </h1>
 
-            <p><strong>Category:</strong> @Model.CategoryName</p>
-
-            <p>
-                <strong>Location:</strong>
-                @Model.RegionName
+            <div style="display:flex; gap:2rem; flex-wrap:wrap; margin-bottom:1.25rem; padding-bottom:1.25rem; border-bottom:1px solid var(--bd);">
+                <div>
+                    <strong style="font-family:var(--fh); font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink3); display:block; margin-bottom:2px;">Region</strong>
+                    <span style="font-size:0.9rem;">@Model.RegionName</span>
+                </div>
                 @if (!string.IsNullOrWhiteSpace(Model.CityName))
                 {
-                    <span> - @Model.CityName</span>
+                    <div>
+                        <strong style="font-family:var(--fh); font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink3); display:block; margin-bottom:2px;">City</strong>
+                        <span style="font-size:0.9rem;">@Model.CityName</span>
+                    </div>
                 }
-            </p>
-
-            <div class="text-muted small">
-                <div><strong>Created:</strong> @Model.CreatedAt</div>
-                <div><strong>Last Updated:</strong> @Model.UpdatedAt</div>
+                <div>
+                    <strong style="font-family:var(--fh); font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink3); display:block; margin-bottom:2px;">Posted</strong>
+                    <span style="font-size:0.88rem; font-family:var(--fm);">@Model.CreatedAt</span>
+                </div>
+                <div>
+                    <strong style="font-family:var(--fh); font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink3); display:block; margin-bottom:2px;">Updated</strong>
+                    <span style="font-size:0.88rem; font-family:var(--fm);">@Model.UpdatedAt</span>
+                </div>
             </div>
 
-            <hr />
-
-            <p>@Model.Description</p>
-
-            <hr />
-
-            <h5>Contact</h5>
-
-            <p>
-                <strong>Email:</strong>
-                <a href="mailto:@Model.CreatorEmail">@Model.CreatorEmail</a>
-            </p>
-
-            @if (!string.IsNullOrWhiteSpace(Model.CreatorPhoneNumber))
+            @if (!string.IsNullOrWhiteSpace(Model.Description))
             {
-                <p>
-                    <strong>Phone:</strong>
-                    <a href="tel:@Model.CreatorPhoneNumber">@Model.CreatorPhoneNumber</a>
-                </p>
+                <div style="font-size:0.95rem; line-height:1.8; color:var(--ink7); margin-bottom:1.5rem; white-space:pre-wrap;">@Model.Description</div>
+            }
+            else
+            {
+                <p style="color:var(--ink3); font-size:0.88rem; font-style:italic; margin-bottom:1.5rem;">No description provided.</p>
             }
 
-            <div class="mt-4 d-flex flex-wrap gap-2 align-items-center">
-                @{
-                    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                    var isOwner = !string.IsNullOrEmpty(currentUserId)
-                                  && currentUserId == Model.CreatorId;
-                }
-
+            <div style="display:flex; gap:0.75rem; flex-wrap:wrap; padding-top:1.25rem; border-top:1px solid var(--bd);">
                 @if (isOwner)
                 {
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-                    <a class="btn btn-danger"  asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+                    <a class="btn btn-warning btn-sm" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                    <a class="btn btn-danger btn-sm" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
                 }
                 else if (User.Identity?.IsAuthenticated == true)
                 {
@@ -75,18 +105,17 @@
                         <input type="hidden" name="listingId" value="@Model.Id" />
                         @if (Model.IsSaved)
                         {
-                            <button type="submit" class="btn btn-warning">Saved — click to unsave</button>
+                            <button type="submit" class="btn btn-warning btn-sm">★ Saved — unsave</button>
                         }
                         else
                         {
-                            <button type="submit" class="btn btn-outline-warning">Save listing</button>
+                            <button type="submit" class="btn btn-outline-warning btn-sm">☆ Save listing</button>
                         }
                     </form>
                 }
-
-                <a class="btn btn-outline-secondary" asp-action="Index">Back</a>
+                <a class="btn btn-outline-secondary btn-sm" asp-action="Index">← All listings</a>
             </div>
-
         </div>
+
     </div>
 </div>

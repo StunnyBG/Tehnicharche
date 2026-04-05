@@ -44,7 +44,7 @@ namespace Tehnicharche.Services.Core
             query.Page = query.Page <= 0 ? DefaultPage : query.Page;
 
             var (items, total) = await savedListingRepository.GetSavedByUserPagedAsync(
-                userId, query.Page, MyListingsPageSize, query.SearchTerm);
+                userId, query.Page, SavedListingsPageSize, query.SearchTerm);
 
             query.TotalListings = total;
             query.Listings = items.Select(l => new ListingIndexViewModel

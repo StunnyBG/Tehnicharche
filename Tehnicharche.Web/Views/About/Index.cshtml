@@ -1,146 +1,91 @@
 @{
-    ViewData["Title"] = "About";
+	ViewData["Title"] = "About";
 }
 
-<div class="container py-4">
+<div class="container" style="padding-top:1rem; padding-bottom:3rem;">
 
-    <!-- Hero -->
-    <div class="row mb-5">
-        <div class="col-lg-8 mx-auto text-center">
-            <h1 class="fw-bold mb-3">About Tehnicharche</h1>
-            <p class="lead text-muted">
-                Connecting people with skilled technical professionals across Bulgaria —
-                one listing at a time.
-            </p>
-        </div>
-    </div>
+	<div class="page-head">
+		<h2>About Tehnicharche</h2>
+	</div>
 
-    <!-- Mission -->
-    <div class="row align-items-center mb-5 g-4">
-        <div class="col-md-6">
-            <h2 class="fw-bold mb-3">Our Mission</h2>
-            <p>
-                Tehnicharche was built on a simple idea: finding reliable, hands-on technical help
-                should not be difficult. Whether your washing machine stopped mid-cycle, your laptop
-                refuses to boot, or you need a new socket installed safely — the right person for
-                the job is out there.
-            </p>
-            <p>
-                We provide a free, open platform where skilled technicians, repairers, and craftspeople
-                can publish their services, and where anyone can browse and connect with them directly —
-                no middlemen, no hidden fees.
-            </p>
-        </div>
-        <div class="col-md-6">
-            <img src="https://cdn.pixabay.com/photo/2017/09/19/22/10/tool-2766835_1280.jpg"
-                 class="img-fluid rounded shadow"
-                 style="height: 300px; width: 100%; object-fit: cover;"
-                 alt="Technical tools" />
-        </div>
-    </div>
+	<div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; align-items:start; margin-bottom:2.5rem;">
+		<div>
+			<p style="font-family:var(--fh); font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--g700); margin-bottom:0.5rem;">Our Mission</p>
+			<h3 style="font-family:var(--fh); font-size:1.5rem; font-weight:600; color:var(--ink); margin-bottom:1rem;">Practical help shouldn't be hard to find.</h3>
+			<p style="color:var(--ink5); line-height:1.8; font-size:0.95rem;">
+				Tehnicharche was built on a simple premise: the right person for a technical job is
+				out there, but finding them is harder than it should be. Whether your washing machine
+				stopped mid-cycle, your laptop won't boot, or you need a socket wired safely —
+				someone local has the skills.
+			</p>
+			<p style="color:var(--ink5); line-height:1.8; font-size:0.95rem;">
+				We provide a free, open platform where skilled technicians, repairers, and craftspeople
+				can publish their services. No middlemen, no hidden fees, no request queues.
+			</p>
+		</div>
+		<div>
+			<img src="https://cdn.pixabay.com/photo/2017/09/19/22/10/tool-2766835_1280.jpg"
+				 style="width:100%; height:280px; object-fit:cover; display:block; border:1px solid var(--bd);"
+				 alt="Technical tools" />
+		</div>
+	</div>
 
-    <!-- What We Offer -->
-    <div class="row mb-5">
-        <div class="col-12 text-center mb-4">
-            <h2 class="fw-bold">What We Offer</h2>
-            <p class="text-muted">A platform built for the technical community</p>
-        </div>
+	<div style="margin-bottom:2.5rem;">
+		<p style="font-family:var(--fh); font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink3); margin-bottom:1.25rem; border-bottom:1px solid var(--bd); padding-bottom:0.4rem;">
+			Service Categories
+		</p>
+		<div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:1rem;">
+			@foreach (var item in new[] {
+						("⚡", "Electronics Repair"),
+						("🫧", "Appliance Repair"),
+						("🔩", "Soldering & PCB Assembly"),
+						("💻", "Computer Repair"),
+						("📱", "Mobile Phone Repair"),
+						("📺", "TV & Audio Repair"),
+						("🏠", "Home Wiring & Electrical"),
+						("🛠️", "Handyman (general technical)"),
+						("🖨️", "3D Printing & Prototyping")
+						})
+			{
+				<div style="background:#fff; border:1px solid var(--bd); border-left:3px solid var(--g700); padding:0.75rem 1rem; display:flex; align-items:center; gap:0.75rem;">
+					<span style="font-size:1.1rem;">@item.Item1</span>
+					<span style="font-family:var(--fh); font-size:0.82rem; letter-spacing:0.04em; color:var(--ink7);">@item.Item2</span>
+				</div>
+			}
+		</div>
+	</div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 border-0 shadow-sm text-center p-4">
-                <div class="mb-3 fs-1">🔧</div>
-                <h5 class="fw-bold">Service Listings</h5>
-                <p class="text-muted">
-                    Browse hundreds of listings covering electronics repair, soldering, computer
-                    diagnostics, home wiring, appliance repair, and much more.
-                </p>
-            </div>
-        </div>
+	<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2.5rem;">
+		<div style="background:#fff; border:1px solid var(--bd); border-top:2px solid var(--g700); padding:1.25rem;">
+			<span style="font-size:1.3rem; display:block; margin-bottom:0.6rem;">🔧</span>
+			<h5 style="font-family:var(--fh); font-size:0.82rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink); margin-bottom:0.5rem;">Service Listings</h5>
+			<p style="font-size:0.85rem; color:var(--ink5); margin:0; line-height:1.65;">Browse hundreds of listings covering every technical discipline.</p>
+		</div>
+		<div style="background:#fff; border:1px solid var(--bd); border-top:2px solid var(--g700); padding:1.25rem;">
+			<span style="font-size:1.3rem; display:block; margin-bottom:0.6rem;">📍</span>
+			<h5 style="font-family:var(--fh); font-size:0.82rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink); margin-bottom:0.5rem;">Location-Based</h5>
+			<p style="font-size:0.85rem; color:var(--ink5); margin:0; line-height:1.65;">Filter by any of Bulgaria's 28 regions and cities.</p>
+		</div>
+		<div style="background:#fff; border:1px solid var(--bd); border-top:2px solid var(--g700); padding:1.25rem;">
+			<span style="font-size:1.3rem; display:block; margin-bottom:0.6rem;">🤝</span>
+			<h5 style="font-family:var(--fh); font-size:0.82rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink); margin-bottom:0.5rem;">Direct Contact</h5>
+			<p style="font-size:0.85rem; color:var(--ink5); margin:0; line-height:1.65;">Contact the provider directly — no waiting, no queue.</p>
+		</div>
+	</div>
 
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 border-0 shadow-sm text-center p-4">
-                <div class="mb-3 fs-1">📍</div>
-                <h5 class="fw-bold">Location-Based Search</h5>
-                <p class="text-muted">
-                    Filter by region and city to find technical professionals near you across
-                    all 28 regions of Bulgaria.
-                </p>
-            </div>
-        </div>
-
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 border-0 shadow-sm text-center p-4">
-                <div class="mb-3 fs-1">🤝</div>
-                <h5 class="fw-bold">Direct Contact</h5>
-                <p class="text-muted">
-                    Every listing shows the provider's contact details so you can reach them
-                    directly — no waiting, no request queues.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Categories -->
-    <div class="row mb-5">
-        <div class="col-lg-8 mx-auto">
-            <div class="card border-0 shadow-sm p-4">
-                <h3 class="fw-bold mb-4 text-center">Service Categories</h3>
-                <div class="row g-2">
-                    @foreach (var category in new[]
-                    {
-                        ("⚡", "Electronics Repair"),
-                        ("🫧", "Appliance Repair"),
-                        ("🔩", "Soldering & PCB Assembly"),
-                        ("💻", "Computer Repair"),
-                        ("📱", "Mobile Phone Repair"),
-                        ("📺", "TV & Audio Repair"),
-                        ("🏠", "Home Wiring & Electrical"),
-                        ("🛠️", "Handyman (general technical)"),
-                        ("🖨️", "3D Printing & Prototyping")
-                    })
-                    {
-                        <div class="col-md-6">
-                            <div class="d-flex align-items-center gap-2 p-2">
-                                <span class="fs-5">@category.Item1</span>
-                                <span>@category.Item2</span>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Open Source -->
-    <div class="row mb-4">
-        <div class="col-lg-8 mx-auto text-center">
-            <div class="card border-0 bg-success text-white p-5 shadow">
-                <h3 class="fw-bold mb-3">Open Source & Free</h3>
-                <p class="mb-4">
-                    Tehnicharche is an open-source project licensed under the MIT License.
-                    The platform is free to use for both service providers and customers.
-                    Contributions, feedback, and ideas are always welcome.
-                </p>
-                <a href="https://github.com/StunnyBG/Tehnicharche"
-                   target="_blank"
-                   class="btn btn-light btn-lg">
-                    View on GitHub
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- CTA -->
-    <div class="row mt-4">
-        <div class="col text-center">
-            <h4 class="mb-3">Ready to get started?</h4>
-            <a asp-controller="Listings" asp-action="Index" class="btn btn-success btn-lg me-2">
-                Browse Listings
-            </a>
-            <a asp-controller="Contact" asp-action="Index" class="btn btn-outline-success btn-lg">
-                Contact Us
-            </a>
-        </div>
-    </div>
+	<div style="background:var(--g800); padding:2.5rem; text-align:center; position:relative; overflow:hidden;">
+		<div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 18px,rgba(255,255,255,.018) 18px,rgba(255,255,255,.018) 19px);"></div>
+		<div style="position:relative;">
+			<h3 style="font-family:var(--fh); font-size:1.5rem; color:#fff; margin-bottom:0.5rem;">Open Source & Free</h3>
+			<p style="color:rgba(255,255,255,.55); max-width:500px; margin:0 auto 1.5rem; font-size:0.9rem; line-height:1.75;">
+				Tehnicharche is MIT-licensed. It's free for providers and customers alike.
+				Contributions and feedback are welcome on GitHub.
+			</p>
+			<a href="https://github.com/StunnyBG/Tehnicharche" target="_blank"
+			   class="btn btn-success">
+				View on GitHub
+			</a>
+		</div>
+	</div>
 
 </div>

@@ -1,76 +1,104 @@
-﻿@model ListingEditViewModel
-@using Tehnicharche.ViewModels
 @using Tehnicharche.ViewModels.Listing
+@model ListingEditViewModel
 
-<h2>Edit Listing</h2>
+@{
+    ViewData["Title"] = "Edit Listing";
+}
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
+<div class="container">
+    <div style="max-width:660px;">
+        <div class="page-head">
+            <h2>Edit Listing</h2>
+            <a class="btn btn-outline-secondary btn-sm" asp-action="MyListings">← My Listings</a>
+        </div>
 
-    <div asp-validation-summary="All" class="text-danger"></div>
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
 
-    <div class="mb-3">
-        <label asp-for="Title"></label>
-        <input asp-for="Title" class="form-control" />
+            <div asp-validation-summary="All" class="validation-summary-errors text-danger"></div>
+
+            <div style="background:#fff; border:1px solid var(--bd); border-top:3px solid var(--g700); padding:1.5rem;">
+
+                <p style="font-family:var(--fh); font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink3); margin-bottom:1.25rem; border-bottom:1px solid var(--bd); padding-bottom:0.4rem;">
+                    Listing Details
+                </p>
+
+                <div class="mb-3">
+                    <label asp-for="Title">Title</label>
+                    <input asp-for="Title" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description">Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Price">Price (€)</label>
+                    <input asp-for="Price" class="form-control" style="font-family:var(--fm);" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <p style="font-family:var(--fh); font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink3); margin-bottom:1.25rem; margin-top:1.5rem; border-bottom:1px solid var(--bd); padding-bottom:0.4rem;">
+                    Category & Location
+                </p>
+
+                <div class="mb-3">
+                    <label asp-for="CategoryId">Category</label>
+                    <select asp-for="CategoryId" class="form-select">
+                        <option value="">— Select category —</option>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="RegionId">Region</label>
+                    <select asp-for="RegionId" class="form-select" id="RegionSelect">
+                        <option value="">— Select region —</option>
+                        @foreach (var region in Model.Regions)
+                        {
+                            <option value="@region.Id">@region.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="RegionId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CityId">
+                        City
+                        <span style="text-transform:none; letter-spacing:0; font-size:0.85em; color:var(--ink3);">(select region first)</span>
+                    </label>
+                    <select asp-for="CityId" class="form-select" id="CitySelect">
+                        <option value="">— Select city —</option>
+                        @foreach (var c in Model.Cities)
+                        {
+                            <option value="@c.Id" data-region="@c.RegionId">@c.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <p style="font-family:var(--fh); font-size:0.62rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink3); margin-bottom:1.25rem; margin-top:1.5rem; border-bottom:1px solid var(--bd); padding-bottom:0.4rem;">
+                    Image
+                </p>
+
+                <div class="mb-3">
+                    <label asp-for="ImageUrl">Image URL</label>
+                    <input asp-for="ImageUrl" class="form-control" placeholder="https://…" />
+                </div>
+
+            </div>
+
+            <div style="display:flex; gap:0.75rem; margin-top:1rem;">
+                <button class="btn btn-success">Save Changes</button>
+                <a class="btn btn-outline-secondary" asp-action="MyListings">Cancel</a>
+            </div>
+        </form>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="Description"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="CategoryId">Category</label>
-        <select asp-for="CategoryId" class="form-select">
-            <option value="">-- Select Category --</option>
-            @foreach (var category in Model.Categories)
-            {
-                <option value="@category.Id">@category.Name</option>
-            }
-        </select>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="RegionId">Region</label>
-        <select asp-for="RegionId" class="form-select" id="RegionSelect">
-            <option value="">-- Select Region --</option>
-            @foreach (var region in Model.Regions)
-            {
-                <option value="@region.Id">@region.Name</option>
-            }
-        </select>
-        <span asp-validation-for="RegionId" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="CityId">City <span class="text-secondary">(you must select a region first)</span></label>
-        <select asp-for="CityId" class="form-select" id="CitySelect">
-            <option value="">-- Select city --</option>
-            @foreach (var c in Model.Cities)
-            {
-                <option value="@c.Id" data-region="@c.RegionId">@c.Name</option>
-            }
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="ImageUrl"></label>
-        <input asp-for="ImageUrl" class="form-control" />
-    </div>
-
-    <button class="btn btn-success me-2">Save</button>
-
-    <a class="btn btn-outline-secondary" href="/Listings/MyListings">
-        Back
-    </a>
-</form>
+</div>
 
 @section Scripts {
     <script src="~/js/city-filter.js"></script>

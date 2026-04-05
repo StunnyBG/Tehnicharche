@@ -1,13 +1,10 @@
-﻿@{
-    Layout = "_Layout";
+@{
+	Layout = "_Layout";
 }
 
-<div class="text-center mt-5">
-    <h1 class="display-4 text-danger">404</h1>
-    <h2>Page Not Found</h2>
-    <p>The page you are looking for does not exist.</p>
-
-    <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">
-        Back to Home
-    </a>
+<div class="container" style="text-align:center; padding:5rem 1rem;">
+	<span style="font-family:var(--fm); font-size:8rem; font-weight:600; color:var(--g700); opacity:0.25; line-height:1; display:block;">404</span>
+	<h2 style="font-family:var(--fh); font-size:1.6rem; font-weight:600; color:var(--ink); margin-bottom:0.5rem;">Page Not Found</h2>
+	<p style="color:var(--ink5); margin-bottom:2rem;">The page you're looking for doesn't exist or has been moved.</p>
+	<a asp-controller="Home" asp-action="Index" class="btn btn-success">Back to Home</a>
 </div>

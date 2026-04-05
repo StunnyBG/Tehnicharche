@@ -1,66 +1,51 @@
 @page
 @model TwoFactorAuthenticationModel
 @{
-    ViewData["Title"] = "Two-Factor Authentication";
+    ViewData["Title"] = "Two-Factor Auth";
 }
 
-<h4 class="mb-4">Two-Factor Authentication</h4>
+<h4 style="font-family:var(--fh); font-size:1.1rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink); margin-bottom:1.25rem;">Two-Factor Authentication</h4>
 <partial name="_StatusMessage" model="@Model.StatusMessage" />
 
 @if (Model.Is2faEnabled)
 {
-    <div class="card shadow-sm border-success p-4 mb-3">
-        <h6 class="fw-semibold text-success mb-2">2FA is enabled</h6>
-        <p class="text-muted small mb-3">
-            Your account is protected with a time-based one-time password (TOTP) authenticator app.
+    <div style="background:#fff; border:1px solid var(--bd); border-top:2px solid var(--g700); padding:1.25rem; margin-bottom:1rem; max-width:480px;">
+        <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.75rem;">
+            <span class="badge-tag badge-tag-green">2FA Enabled</span>
+        </div>
+        <p style="font-size:0.88rem; color:var(--ink5); margin-bottom:1rem; line-height:1.65;">
+            Your account is protected with a time-based one-time password authenticator app.
         </p>
-
-        <div class="d-flex gap-2 flex-wrap">
-            <a asp-page="./EnableAuthenticator" class="btn btn-outline-secondary btn-sm">
-                Re-configure authenticator
-            </a>
-            <a asp-page="./Disable2fa" class="btn btn-outline-danger btn-sm">
-                Disable 2FA
-            </a>
+        <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <a asp-page="./EnableAuthenticator" class="btn btn-outline-secondary btn-sm">Re-configure</a>
+            <a asp-page="./Disable2fa" class="btn btn-outline-danger btn-sm">Disable 2FA</a>
         </div>
     </div>
 
-    <div class="card shadow-sm p-4">
-        <h6 class="fw-semibold mb-2">Recovery Codes</h6>
-        <p class="text-muted small mb-3">
-            Recovery codes let you sign in if you lose access to your authenticator app.
-            You have <strong>@Model.RecoveryCodesLeft</strong> unused code(s) remaining.
+    <div style="background:#fff; border:1px solid var(--bd); border-top:2px solid var(--g700); padding:1.25rem; max-width:480px;">
+        <p style="font-family:var(--fh); font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink3); margin-bottom:0.75rem; border-bottom:1px solid var(--bd); padding-bottom:0.4rem;">Recovery Codes</p>
+        <p style="font-size:0.88rem; color:var(--ink5); margin-bottom:0.75rem; line-height:1.65;">
+            You have <strong style="font-family:var(--fm);">@Model.RecoveryCodesLeft</strong> unused recovery code@(Model.RecoveryCodesLeft == 1 ? "" : "s") remaining.
         </p>
-
         @if (Model.RecoveryCodesLeft == 0)
         {
-            <div class="alert alert-danger small py-2">
-                <strong>No recovery codes left.</strong>
-                Generate new ones below before you lose access to your account.
-            </div>
+            <div class="alert alert-danger" style="margin-bottom:1rem; font-size:0.82rem;">No codes left — generate new ones now.</div>
         }
         else if (Model.RecoveryCodesLeft <= 3)
         {
-            <div class="alert alert-warning small py-2">
-                Running low on recovery codes. Consider generating new ones soon.
-            </div>
+            <div class="alert alert-warning" style="margin-bottom:1rem; font-size:0.82rem;">Running low on recovery codes.</div>
         }
-
-        <a asp-page="./GenerateRecoveryCodes" class="btn btn-outline-secondary btn-sm">
-            Generate New Recovery Codes
-        </a>
+        <a asp-page="./GenerateRecoveryCodes" class="btn btn-outline-secondary btn-sm">Generate New Codes</a>
     </div>
 }
 else
 {
-    <div class="card shadow-sm p-4">
-        <h6 class="fw-semibold text-muted mb-2">2FA is not enabled</h6>
-        <p class="text-muted small mb-4">
+    <div style="background:#fff; border:1px solid var(--bd); border-top:2px solid var(--bd2); padding:1.25rem; max-width:480px;">
+        <span class="badge-tag badge-tag-amber" style="margin-bottom:0.75rem; display:inline-block;">2FA Disabled</span>
+        <p style="font-size:0.88rem; color:var(--ink5); margin-bottom:1.25rem; line-height:1.65;">
             Add an extra layer of security by linking an authenticator app such as Google Authenticator,
-            Authy, or any TOTP-compatible app. Once enabled, you will need a code from the app each time you sign in.
+            Authy, or any TOTP-compatible app.
         </p>
-        <a asp-page="./EnableAuthenticator" class="btn btn-success">
-            Enable Authenticator App
-        </a>
+        <a asp-page="./EnableAuthenticator" class="btn btn-success btn-sm">Enable Authenticator App</a>
     </div>
 }

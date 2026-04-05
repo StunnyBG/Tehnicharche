@@ -2,11 +2,10 @@
 
 @if (!string.IsNullOrEmpty(Model))
 {
-    var isError    = Model.StartsWith("Error", StringComparison.OrdinalIgnoreCase);
-    var alertClass = isError ? "alert-danger" : "alert-success";
-
-    <div class="alert @alertClass alert-dismissible fade show" role="alert">
+    var isError = Model.StartsWith("Error", StringComparison.OrdinalIgnoreCase);
+    <div class="alert @(isError ? "alert-danger" : "alert-success")" role="alert" style="position:relative; padding-right:2.5rem;">
         @Model
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <button type="button" onclick="this.parentElement.remove();"
+                style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; font-size:1rem; cursor:pointer; opacity:0.5; color:inherit;">×</button>
     </div>
 }

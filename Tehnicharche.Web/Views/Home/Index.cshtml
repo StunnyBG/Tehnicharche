@@ -1,84 +1,106 @@
-﻿@{
-    ViewData["Title"] = "Home";
+@{
+	ViewData["Title"] = "Home";
 }
 
-<section class="hero-section text-white d-flex align-items-center">
-    <div class="container text-center">
-        <h1 class="display-4 fw-bold mb-3">
-            Find Technical Services Near You
-        </h1>
-        <p class="lead mb-4">
-            From soldering and electronics to appliance repair —
-            connect with skilled people ready to help.
-        </p>
+<div class="hero-wrap">
+	<div class="container">
+		<div style="max-width:600px;">
+			<span class="hero-eyebrow">Technical Services — Bulgaria</span>
+			<h1 class="hero-title">
+				Find skilled hands<br>
+				for the job that <mark>needs doing</mark>.
+			</h1>
+			<p class="hero-sub">
+				From circuit boards to cracked pipes — connect directly with
+				technicians, repairers, and craftspeople across all 28 regions.
+				No middlemen. No fees.
+			</p>
+			<div class="hero-btns">
+				<a asp-controller="Listings" asp-action="Index" class="btn btn-success btn-lg">
+					Browse Listings
+				</a>
+				@if (User.Identity!.IsAuthenticated)
+				{
+					<a asp-controller="Listings" asp-action="Create" class="btn btn-outline-success btn-lg"
+					   style="color:#fff; border-color:rgba(255,255,255,.4);">
+						Offer a Service
+					</a>
+				}
+				else
+				{
+					<a asp-area="Identity" asp-page="/Account/Register"
+					   class="btn btn-outline-success btn-lg"
+					   style="color:#fff; border-color:rgba(255,255,255,.4);">
+						Create Account
+					</a>
+				}
+			</div>
+		</div>
+	</div>
+</div>
 
-        <a asp-controller="Listings"
-           asp-action="Index"
-           class="btn btn-success btn-lg me-2">
-            Browse Listings
-        </a>
+<div class="container" style="padding-top:3rem; padding-bottom:3rem;">
 
-        @if (User.Identity!.IsAuthenticated)
-        {
-            <a asp-controller="Listings"
-               asp-action="Create"
-               class="btn btn-outline-light btn-lg">
-                Offer a Service
-            </a>
-        }
-    </div>
-</section>
+	<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem; margin-bottom:3rem;">
 
+		<div style="border:1px solid var(--bd); border-left:4px solid var(--g700); background:#fff; padding:1.5rem;">
+			<span style="font-size:1.6rem; display:block; margin-bottom:0.75rem;">⚡</span>
+			<h3 style="font-family:var(--fh); font-size:1rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink); margin-bottom:0.5rem;">Electronics & Repairs</h3>
+			<p style="font-size:0.88rem; color:var(--ink5); margin:0; line-height:1.65;">
+				PCB soldering, appliance repair, computer diagnostics, TV audio — find specialists for every circuit.
+			</p>
+		</div>
 
-<section class="py-5">
-    <div class="container">
-        <div class="row g-4">
+		<div style="border:1px solid var(--bd); border-left:4px solid var(--g700); background:#fff; padding:1.5rem;">
+			<span style="font-size:1.6rem; display:block; margin-bottom:0.75rem;">📍</span>
+			<h3 style="font-family:var(--fh); font-size:1rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink); margin-bottom:0.5rem;">By Region & City</h3>
+			<p style="font-size:0.88rem; color:var(--ink5); margin:0; line-height:1.65;">
+				Filter by any of Bulgaria's 28 regions and find professionals near you, not halfway across the country.
+			</p>
+		</div>
 
-            <div class="col-md-4">
-                <img src="https://cdn.pixabay.com/photo/2017/09/19/22/10/tool-2766835_1280.jpg"
-                     class="img-fluid rounded shadow"
-                     style="height: 300px; width: 100%; object-fit: cover;" />
-            </div>
+		<div style="border:1px solid var(--bd); border-left:4px solid var(--g700); background:#fff; padding:1.5rem;">
+			<span style="font-size:1.6rem; display:block; margin-bottom:0.75rem;">🤝</span>
+			<h3 style="font-family:var(--fh); font-size:1rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink); margin-bottom:0.5rem;">Direct Contact</h3>
+			<p style="font-size:0.88rem; color:var(--ink5); margin:0; line-height:1.65;">
+				Each listing shows real contact details — email and phone — so you reach the person who does the work.
+			</p>
+		</div>
 
-            <div class="col-md-4">
-                <img src="https://cdn.pixabay.com/photo/2019/05/12/15/07/electric-4198293_1280.jpg"
-                     class="img-fluid rounded shadow"
-                     style="height: 300px; width: 100%; object-fit: cover;" />
-            </div>
+	</div>
 
-            <div class="col-md-4">
-                <img src="https://cdn.pixabay.com/photo/2015/11/11/11/49/solder-1038522_1280.jpg"
-                     class="img-fluid rounded shadow"
-                     style="height: 300px; width: 100%; object-fit: cover;" />
-            </div>
+	<div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px; margin-bottom:3rem;">
+		<img src="https://cdn.pixabay.com/photo/2017/09/19/22/10/tool-2766835_1280.jpg"
+			 style="width:100%; height:260px; object-fit:cover; display:block;" alt="Technical tools" />
+		<img src="https://cdn.pixabay.com/photo/2019/05/12/15/07/electric-4198293_1280.jpg"
+			 style="width:100%; height:260px; object-fit:cover; display:block;" alt="Electrical work" />
+		<img src="https://cdn.pixabay.com/photo/2015/11/11/11/49/solder-1038522_1280.jpg"
+			 style="width:100%; height:260px; object-fit:cover; display:block;" alt="Soldering" />
+	</div>
 
-        </div>
-    </div>
-</section>
+	<div style="background:var(--g800); color:#fff; padding:2.5rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.5rem; position:relative; overflow:hidden;">
+		<div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,255,255,.015) 20px,rgba(255,255,255,.015) 21px);"></div>
+		<div style="position:relative;">
+			<p style="font-family:var(--fh); font-size:0.7rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--g500); margin-bottom:0.4rem;">For Technicians</p>
+			<h2 style="font-family:var(--fh); font-size:1.8rem; font-weight:700; color:#fff; margin-bottom:0.5rem; line-height:1.1;">Have skills? Put them to work.</h2>
+			<p style="color:rgba(255,255,255,.6); max-width:420px; font-size:0.92rem; margin:0; line-height:1.65;">
+				Creating a listing takes two minutes. It's free, it's open, and it reaches everyone looking for your skills.
+			</p>
+		</div>
+		<div style="position:relative; flex-shrink:0;">
+			@if (!User.Identity!.IsAuthenticated)
+			{
+				<a asp-area="Identity" asp-page="/Account/Register" class="btn btn-success btn-lg">
+					Create Account
+				</a>
+			}
+			else
+			{
+				<a asp-controller="Listings" asp-action="Create" class="btn btn-success btn-lg">
+					Create a Listing
+				</a>
+			}
+		</div>
+	</div>
 
-
-<section class="py-5 text-center bg-light">
-    <div class="container">
-        <h2 class="fw-bold mb-3">Have Technical Skills?</h2>
-        <p class="lead mb-4">
-            Join the community and start offering your services today.
-        </p>
-
-        @if (!User.Identity!.IsAuthenticated)
-        {
-            <a asp-area="Identity"
-               asp-page="/Account/Register"
-               class="btn btn-success btn-lg">
-                Create an Account
-            </a>
-        }
-        else
-        {
-            <a asp-controller="Listings"
-               asp-action="Create"
-               class="btn btn-success btn-lg">
-                Create Your First Listing
-            </a>
-        }
-    </div>
-</section>
+</div>

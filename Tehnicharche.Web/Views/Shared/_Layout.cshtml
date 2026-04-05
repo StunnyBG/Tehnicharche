@@ -1,139 +1,112 @@
 @using Microsoft.AspNetCore.Identity
 @using static Tehnicharche.GCommon.ApplicationConstants
 @inject SignInManager<Tehnicharche.Data.Models.ApplicationUser> SignInManager
-@inject UserManager<Tehnicharche.Data.Models.ApplicationUser>   UserManager
+@inject UserManager<Tehnicharche.Data.Models.ApplicationUser> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Tehnicharche</title>
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] — Tehnicharche</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body>
 
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-            <div class="container">
-                <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">Tehnicharche</a>
+	<nav class="site-nav">
+		<div class="container" style="position:relative;">
+			<a class="nav-brand" asp-controller="Home" asp-action="Index">
+				Tehnicharche
+			</a>
 
-                <button class="navbar-toggler" type="button"
-                        data-bs-toggle="collapse" data-bs-target="#mainNav"
-                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+			<button class="nav-toggler" id="navToggler" aria-label="Menu">≡</button>
 
-                <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Listings" asp-action="Index">Listings</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="About" asp-action="Index">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Contact" asp-action="Index">Contact</a>
-                        </li>
-                    </ul>
+			<div class="nav-collapse" id="navCollapse">
+				<ul class="nav-links">
+					<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+					<li><a asp-area="" asp-controller="Listings" asp-action="Index">Listings</a></li>
+					<li><a asp-area="" asp-controller="About" asp-action="Index">About</a></li>
+					<li><a asp-area="" asp-controller="Contact" asp-action="Index">Contact</a></li>
+				</ul>
 
-                    <ul class="navbar-nav align-items-center">
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle"
-                                   href="#" id="accountMenu"
-                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    @User.Identity!.Name
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">
+				<div class="nav-right">
+					@if (SignInManager.IsSignedIn(User))
+					{
+						<div class="nav-dropdown-wrap">
+							<button class="nav-user-toggle" id="userToggle">@User.Identity?.Name</button>
+							<ul class="nav-dropdown-menu" id="userMenu">
+								@if (User.IsInRole(AdminRole))
+								{
+									<li>
+										<a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="admin-link">
+											Admin Panel
+										</a>
+									</li>
+									<li class="nav-dropdown-sep"></li>
+								}
+								<li><a asp-area="" asp-controller="Listings" asp-action="MyListings">My Listings</a></li>
+								<li><a asp-area="" asp-controller="Listings" asp-action="SavedListings">Saved Listings</a></li>
+								<li><a asp-area="Identity" asp-page="/Account/Manage/Index">Manage Account</a></li>
+								<li class="nav-dropdown-sep"></li>
+								<li>
+									<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="/" method="post">
+										<button type="submit" class="danger-link">Logout</button>
+									</form>
+								</li>
+							</ul>
+						</div>
+					}
+					else
+					{
+						<a asp-area="Identity" asp-page="/Account/Login" class="nav-auth-link nav-auth-ghost">Login</a>
+						<a asp-area="Identity" asp-page="/Account/Register" class="nav-auth-link nav-auth-solid">Register</a>
+					}
+				</div>
+			</div>
+		</div>
+	</nav>
 
-                                    @if (User.IsInRole(AdminRole))
-                                    {
-                                        <li>
-                                            <a class="dropdown-item fw-semibold"
-                                               asp-area="Admin"
-                                               asp-controller="Dashboard"
-                                               asp-action="Index"
-                                               style="color: #16a34a;">
-                                                <i class="bi bi-shield-fill-check me-1"></i> Admin Panel
-                                            </a>
-                                        </li>
-                                        <li><hr class="dropdown-divider" /></li>
-                                    }
+	<main>
+		@RenderBody()
+	</main>
 
-                                    <li>
-                                        <a class="dropdown-item"
-                                           asp-area=""
-                                           asp-controller="Listings"
-                                           asp-action="MyListings">
-                                            My Listings
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           asp-area=""
-                                           asp-controller="Listings"
-                                           asp-action="SavedListings">
-                                            Saved Listings
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item"
-                                           asp-area="Identity" asp-page="/Account/Manage/Index">
-                                            Manage Account
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider" /></li>
-                                    <li>
-                                        <form asp-area="Identity" asp-page="/Account/Logout"
-                                              asp-route-returnUrl="/" method="post">
-                                            <button type="submit" class="dropdown-item text-danger">
-                                                Logout
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn btn-light btn-sm ms-1"
-                                   asp-area="Identity" asp-page="/Account/Register">
-                                    Register
-                                </a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+	<footer class="site-footer">
+		<div class="container">
+			<span>© @DateTime.UtcNow.Year Tehnicharche</span>
+			<span style="color:rgba(255,255,255,.25);">
+				Images: <a href="https://pixabay.com/" target="_blank" rel="noopener">Pixabay</a>
+			</span>
+		</div>
+	</footer>
 
-    <main class="flex-grow-1 container py-4">
-        @RenderBody()
-    </main>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script>
+		// Mobile nav toggle
+		const toggler = document.getElementById('navToggler');
+		const collapse = document.getElementById('navCollapse');
+		if (toggler && collapse) {
+			toggler.addEventListener('click', () => {
+				collapse.classList.toggle('open');
+			});
+		}
 
-    <footer class="text-center mt-5 p-3 bg-light border-top">
-        <small class="me-5">@DateTime.UtcNow.Year - Tehnicharche</small>
-        <small>
-            Images sourced from <a href="https://pixabay.com/" target="_blank">Pixabay</a>
-            under their respective licensing terms.
-        </small>
-    </footer>
+		// User dropdown
+		const userToggle = document.getElementById('userToggle');
+		const userMenu = document.getElementById('userMenu');
+		if (userToggle && userMenu) {
+			userToggle.addEventListener('click', (e) => {
+				e.stopPropagation();
+				userToggle.closest('.nav-dropdown-wrap').classList.toggle('open');
+			});
+			document.addEventListener('click', () => {
+				const wrap = userToggle.closest('.nav-dropdown-wrap');
+				if (wrap) wrap.classList.remove('open');
+			});
+		}
+	</script>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

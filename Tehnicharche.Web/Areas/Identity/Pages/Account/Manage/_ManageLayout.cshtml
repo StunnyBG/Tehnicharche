@@ -2,12 +2,33 @@
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row">
-    <div class="col-md-3 mb-4">
-        <partial name="_ManageNav" />
-    </div>
-    <div class="col-md-9">
-        @RenderBody()
+<div class="container" style="padding-top:1rem; padding-bottom:3rem;">
+    <div style="display:flex; gap:2rem; align-items:flex-start; flex-wrap:wrap;">
+
+        <nav style="width:200px; flex-shrink:0;">
+            @{
+                var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? string.Empty;
+                bool IsActive(string pg) => currentPage.EndsWith(pg, StringComparison.OrdinalIgnoreCase);
+            }
+            <div style="font-family:var(--fh); font-size:0.62rem; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink3); margin-bottom:0.5rem; padding-bottom:0.4rem; border-bottom:1px solid var(--bd);">Account</div>
+
+            <a asp-page="./Index"
+               style="display:block; padding:9px 12px; font-family:var(--fh); font-size:0.78rem; letter-spacing:0.05em; text-transform:uppercase; text-decoration:none; color:@(IsActive("Index")?"var(--g700)":"var(--ink5)"); border-left:2px solid @(IsActive("Index")?"var(--g700)":"transparent"); background:@(IsActive("Index")?"var(--g50)":"transparent"); border-bottom:1px solid var(--bd); transition:all .1s;">
+                Profile
+            </a>
+            <a asp-page="./ChangePassword"
+               style="display:block; padding:9px 12px; font-family:var(--fh); font-size:0.78rem; letter-spacing:0.05em; text-transform:uppercase; text-decoration:none; color:@(IsActive("ChangePassword")?"var(--g700)":"var(--ink5)"); border-left:2px solid @(IsActive("ChangePassword")?"var(--g700)":"transparent"); background:@(IsActive("ChangePassword")?"var(--g50)":"transparent"); border-bottom:1px solid var(--bd); transition:all .1s;">
+                Change Password
+            </a>
+            <a asp-page="./TwoFactorAuthentication"
+               style="display:block; padding:9px 12px; font-family:var(--fh); font-size:0.78rem; letter-spacing:0.05em; text-transform:uppercase; text-decoration:none; color:@(IsActive("TwoFactorAuthentication")?"var(--g700)":"var(--ink5)"); border-left:2px solid @(IsActive("TwoFactorAuthentication")?"var(--g700)":"transparent"); background:@(IsActive("TwoFactorAuthentication")?"var(--g50)":"transparent"); border-bottom:1px solid var(--bd); transition:all .1s;">
+                Two-Factor Auth
+            </a>
+        </nav>
+
+        <div style="flex:1; min-width:0;">
+            @RenderBody()
+        </div>
     </div>
 </div>
 
