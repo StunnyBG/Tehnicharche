@@ -1,8 +1,8 @@
-using static Tehnicharche.GCommon.ApplicationConstants;
+﻿using static Tehnicharche.GCommon.ApplicationConstants;
 
-namespace Tehnicharche.ViewModels
+namespace Tehnicharche.ViewModels.Listing
 {
-    public class SavedListingsQueryModel
+    public class MyListingsQueryModel
     {
         public int Page { get; set; } = DefaultPage;
 

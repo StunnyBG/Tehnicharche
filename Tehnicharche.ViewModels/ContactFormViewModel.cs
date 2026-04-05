@@ -7,13 +7,13 @@ namespace Tehnicharche.ViewModels
     public class ContactFormViewModel
     {
         [Required]
-        [Display(Name = "Your Name")]
+        [Display(Name = NameDisplayName)]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; } = null!;
 
         [Required]
         [EmailAddress]
-        [Display(Name = "Email Address")]
+        [Display(Name = EmailDisplayName)]
         [MaxLength(EmailMaxLength)]
         public string Email { get; set; } = null!;
 

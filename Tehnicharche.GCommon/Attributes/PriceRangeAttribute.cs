@@ -1,7 +1,7 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-namespace Tehnicharche.GCommon
+namespace Tehnicharche.GCommon.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class PriceRangeAttribute : ValidationAttribute

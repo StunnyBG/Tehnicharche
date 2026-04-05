@@ -1,14 +1,12 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
-using Tehnicharche.GCommon;
+using Tehnicharche.GCommon.Attributes;
 using static Tehnicharche.GCommon.ValidationConstants.Listing;
 
-namespace Tehnicharche.ViewModels
+namespace Tehnicharche.ViewModels.Listing
 {
-    public class ListingEditViewModel
+    public class ListingCreateViewModel
     {
-        public int Id { get; set; }
-
         [Required]
         [MinLength(TitleMinLength)]
         [MaxLength(TitleMaxLength)]

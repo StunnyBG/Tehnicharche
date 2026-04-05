@@ -1,5 +1,4 @@
-﻿
-namespace Tehnicharche.ViewModels
+﻿namespace Tehnicharche.ViewModels.Listing
 {
     public class ListingDeleteViewModel
     {

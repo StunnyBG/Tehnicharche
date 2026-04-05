@@ -1,5 +1,6 @@
 ﻿
 using Tehnicharche.ViewModels;
+using Tehnicharche.ViewModels.Listing;
 
 namespace Tehnicharche.Services.Core.Interfaces
 {

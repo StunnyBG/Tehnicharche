@@ -48,19 +48,24 @@
         {
             // Name
             public const int NameMaxLength = 100;
+            public const string NameDisplayName = "Your Name";
 
             // Email
             public const int EmailMaxLength = 256;
+            public const string EmailDisplayName = "Email Address";
 
             // Phone number
             public const int PhoneNumberMaxLength = 20;
+            public const string PhoneNumberDisplayName = "Phone Number";
 
             // Subject
             public const int SubjectMaxLength = 150;
+            public const string SubjectDisplayName = "Subject";
 
             // Message
             public const int MessageMaxLength = 2000;
             public const int MessageMinLength = 10;
+            public const string MessageDisplayName = "Message";
         }
     }
 }

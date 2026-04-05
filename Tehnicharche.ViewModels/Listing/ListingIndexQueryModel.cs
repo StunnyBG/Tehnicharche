@@ -1,9 +1,8 @@
-﻿
-using Tehnicharche.GCommon;
+﻿using Tehnicharche.GCommon;
 using static Tehnicharche.GCommon.ApplicationConstants;
 using static Tehnicharche.GCommon.ValidationConstants.Listing;
 
-namespace Tehnicharche.ViewModels
+namespace Tehnicharche.ViewModels.Listing
 {
     [PriceRange(PriceMinValue, PriceMaxValue)]
     public class ListingIndexQueryModel

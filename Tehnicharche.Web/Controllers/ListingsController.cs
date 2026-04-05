@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Services.Core.Interfaces;
-using Tehnicharche.ViewModels;
+using Tehnicharche.ViewModels.Listing;
 
 namespace Tehnicharche.Web.Controllers
 {

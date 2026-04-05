@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.Services.Core.Interfaces;
-using Tehnicharche.ViewModels;
+using Tehnicharche.ViewModels.Listing;
 using static Tehnicharche.GCommon.ApplicationConstants;
 
 namespace Tehnicharche.Services.Core
