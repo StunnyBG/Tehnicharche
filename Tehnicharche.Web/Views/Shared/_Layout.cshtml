@@ -1,4 +1,5 @@
 @using Microsoft.AspNetCore.Identity
+@using static Tehnicharche.GCommon.ApplicationConstants
 @inject SignInManager<Tehnicharche.Data.Models.ApplicationUser> SignInManager
 @inject UserManager<Tehnicharche.Data.Models.ApplicationUser>   UserManager
 
@@ -51,7 +52,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="accountMenu">
 
-                                    @if (User.IsInRole("Admin"))
+                                    @if (User.IsInRole(AdminRole))
                                     {
                                         <li>
                                             <a class="dropdown-item fw-semibold"

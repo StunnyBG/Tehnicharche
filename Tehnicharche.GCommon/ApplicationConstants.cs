@@ -20,7 +20,7 @@ namespace Tehnicharche.GCommon
         public const string AdminArea = "Admin";
 
         // Identity roles
-        public const string AdminRole = "Admin";
+        public const string AdminRole = "Administrator";
         public const string UserRole = "User";
 
         // Custom claims

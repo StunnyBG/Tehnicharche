@@ -37,6 +37,6 @@
     "email": "admin@tehnicharche.bg",
     "phoneNumber": null,
     "password": "Admin_1!",
-    "roles": [ "Admin", "User" ]
+    "roles": [ "Administrator", "User" ]
   }
 ]
