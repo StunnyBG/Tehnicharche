@@ -1,21 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
-using Tehnicharche.Data.Models;
-using Tehnicharche.Data.Repositories.Interfaces;
+using Tehnicharche.Services.Core.Interfaces;
 using Tehnicharche.ViewModels;
 
 namespace Tehnicharche.Web.Controllers
 {
     public class ContactController : Controller
     {
-        private readonly IContactMessageRepository messageRepository;
-        private readonly ILogger<ContactController> logger;
+        private readonly IContactService contactService;
 
-        public ContactController(
-            IContactMessageRepository messageRepository,
-            ILogger<ContactController> logger)
+        public ContactController(IContactService contactService)
         {
-            this.messageRepository = messageRepository;
-            this.logger = logger;
+            this.contactService = contactService;
         }
 
         [HttpGet]
@@ -31,23 +26,7 @@ namespace Tehnicharche.Web.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var message = new ContactMessage
-            {
-                Name = model.Name,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber,
-                Subject = model.Subject,
-                Message = model.Message,
-                SentAt = DateTime.UtcNow,
-                IsRead = false
-            };
-
-            await messageRepository.AddAsync(message);
-            await messageRepository.SaveChangesAsync();
-
-            logger.LogInformation(
-                "Contact message received from '{Email}' with subject '{Subject}'.",
-                model.Email, model.Subject);
+            await contactService.SubmitAsync(model);
 
             TempData["SuccessMessage"] =
                 "Thank you for reaching out! We'll get back to you as soon as possible.";

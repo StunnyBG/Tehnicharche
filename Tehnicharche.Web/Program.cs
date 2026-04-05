@@ -56,6 +56,7 @@ namespace Tehnicharche.Web
             // Services
             builder.Services.AddScoped<IListingService, ListingService>();
             builder.Services.AddScoped<ISavedListingService, SavedListingService>();
+            builder.Services.AddScoped<IContactService, ContactService>();
             builder.Services.AddScoped<IAdminListingService, AdminListingService>();
             builder.Services.AddScoped<IAdminMessageService, AdminMessageService>();
             builder.Services.AddScoped<IAdminUserService, AdminUserService>();
