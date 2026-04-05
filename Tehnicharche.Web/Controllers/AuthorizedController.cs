@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tehnicharche.Data.Models;
+using static Tehnicharche.GCommon.ApplicationConstants;
 
 namespace Tehnicharche.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = UserRole)]
     [AutoValidateAntiforgeryToken]
     public abstract class AuthorizedController : Controller
     {

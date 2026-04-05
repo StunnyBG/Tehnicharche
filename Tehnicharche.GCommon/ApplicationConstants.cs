@@ -15,6 +15,10 @@ namespace Tehnicharche.GCommon
         public const int RecentListingsCount = 6;
         public const int RecentMessagesCount = 5;
 
+
+        // Areas
+        public const string AdminArea = "Admin";
+
         // Identity roles
         public const string AdminRole = "Admin";
         public const string UserRole = "User";
