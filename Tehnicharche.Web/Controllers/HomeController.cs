@@ -21,10 +21,28 @@ namespace Tehnicharche.Web.Controllers
                 return View("Error400");
             }
 
+            if (statusCode == 403)
+            {
+                Response.StatusCode = 403;
+                return View("Error403");
+            }
+
             if (statusCode == 404)
             {
                 Response.StatusCode = 404;
                 return View("Error404");
+            }
+
+            if (statusCode == 405)
+            {
+                Response.StatusCode = 405;
+                return View("Error405");
+            }
+
+            if (statusCode == 429)
+            {
+                Response.StatusCode = 429;
+                return View("Error429");
             }
 
             var exceptionFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
