@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tehnicharche.Services.Core"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{21DEB042-5038-42D7-BE83-E72533B26C4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tehnicharche.Tests", "Tehnicharche.Tests\Tehnicharche.Tests.csproj", "{A12FA44C-37C8-1E12-1661-E17337E11B04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tehnicharche.Services.Tests", "Tehnicharche.Tests\Tehnicharche.Services.Tests.csproj", "{A12FA44C-37C8-1E12-1661-E17337E11B04}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

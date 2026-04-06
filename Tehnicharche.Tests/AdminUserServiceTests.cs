@@ -6,6 +6,7 @@ using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Repositories.Interfaces;
 using Tehnicharche.Services.Core;
 using Tehnicharche.Services.Core.Interfaces;
+using static Tehnicharche.GCommon.ApplicationConstants;
 
 namespace Tehnicharche.Tests;
 
@@ -98,11 +99,11 @@ public class AdminUserServiceTests
     {
         var user = MakeUser("u1", "gosho");
         SetupPagedUsers(new[] { user }, 1);
-        userManager.Setup(m => m.GetRolesAsync(user)).ReturnsAsync(new List<string> { "Admin" });
+        userManager.Setup(m => m.GetRolesAsync(user)).ReturnsAsync(new List<string> { AdminRole });
 
         var result = await sut.GetUsersAsync(1, null);
 
-        Assert.That(result.Users.First().Roles, Does.Contain("Admin"));
+        Assert.That(result.Users.First().Roles, Does.Contain(AdminRole));
     }
 
     [Test]
@@ -133,11 +134,11 @@ public class AdminUserServiceTests
     {
         var user = MakeUser(RegularId, "pesho");
         userManager.Setup(m => m.FindByIdAsync(RegularId)).ReturnsAsync(user);
-        userManager.Setup(m => m.IsInRoleAsync(user, "User")).ReturnsAsync(false);
+        userManager.Setup(m => m.IsInRoleAsync(user, UserRole)).ReturnsAsync(false);
 
-        await sut.ToggleRoleAsync(RegularId, "User", AdminId);
+        await sut.ToggleRoleAsync(RegularId, UserRole, AdminId);
 
-        userManager.Verify(m => m.AddToRoleAsync(user, "User"), Times.Once);
+        userManager.Verify(m => m.AddToRoleAsync(user, UserRole), Times.Once);
         userManager.Verify(m => m.RemoveFromRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Never);
     }
 
@@ -146,11 +147,11 @@ public class AdminUserServiceTests
     {
         var user = MakeUser(RegularId, "pesho");
         userManager.Setup(m => m.FindByIdAsync(RegularId)).ReturnsAsync(user);
-        userManager.Setup(m => m.IsInRoleAsync(user, "User")).ReturnsAsync(true);
+        userManager.Setup(m => m.IsInRoleAsync(user, UserRole)).ReturnsAsync(true);
 
-        await sut.ToggleRoleAsync(RegularId, "User", AdminId);
+        await sut.ToggleRoleAsync(RegularId, UserRole, AdminId);
 
-        userManager.Verify(m => m.RemoveFromRoleAsync(user, "User"), Times.Once);
+        userManager.Verify(m => m.RemoveFromRoleAsync(user, UserRole), Times.Once);
         userManager.Verify(m => m.AddToRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Never);
     }
 
@@ -158,7 +159,7 @@ public class AdminUserServiceTests
     public void ToggleRoleAsync_AdminRemovingOwnAdminRole_Throws()
     {
         Assert.ThrowsAsync<InvalidOperationException>(
-            () => sut.ToggleRoleAsync(AdminId, "Admin", AdminId));
+            () => sut.ToggleRoleAsync(AdminId, AdminRole, AdminId));
     }
 
     [Test]
@@ -167,7 +168,7 @@ public class AdminUserServiceTests
         userManager.Setup(m => m.FindByIdAsync("nikoj")).ReturnsAsync((ApplicationUser?)null);
 
         Assert.ThrowsAsync<InvalidOperationException>(
-            () => sut.ToggleRoleAsync("nikoj", "User", AdminId));
+            () => sut.ToggleRoleAsync("nikoj", UserRole, AdminId));
     }
 
     // BanAsync
@@ -177,7 +178,7 @@ public class AdminUserServiceTests
     {
         var user = MakeUser(RegularId, "pesho");
         userManager.Setup(m => m.FindByIdAsync(RegularId)).ReturnsAsync(user);
-        userManager.Setup(m => m.IsInRoleAsync(user, "Admin")).ReturnsAsync(false);
+        userManager.Setup(m => m.IsInRoleAsync(user, AdminRole)).ReturnsAsync(false);
         userManager.Setup(m => m.UpdateAsync(user)).ReturnsAsync(IdentityResult.Success);
         userManager.Setup(m => m.UpdateSecurityStampAsync(user)).ReturnsAsync(IdentityResult.Success);
 
@@ -192,7 +193,7 @@ public class AdminUserServiceTests
     {
         var admin = MakeUser(AdminId, "admin");
         userManager.Setup(m => m.FindByIdAsync(AdminId)).ReturnsAsync(admin);
-        userManager.Setup(m => m.IsInRoleAsync(admin, "Admin")).ReturnsAsync(true);
+        userManager.Setup(m => m.IsInRoleAsync(admin, AdminRole)).ReturnsAsync(true);
 
         Assert.ThrowsAsync<InvalidOperationException>(() => sut.BanAsync(AdminId));
         listingRepo.Verify(r => r.SoftDeleteAllByUserAsync(It.IsAny<string>()), Times.Never);
