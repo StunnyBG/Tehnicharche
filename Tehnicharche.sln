@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{21DEB042
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tehnicharche.Services.Tests", "Tehnicharche.Services.Tests\Tehnicharche.Services.Tests.csproj", "{A12FA44C-37C8-1E12-1661-E17337E11B04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tehnicharche.IntegrationTests", "Tehnicharche.IntegrationTests\Tehnicharche.IntegrationTests.csproj", "{26FFF5F5-F2F9-FADA-C21B-580E9060F903}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{A12FA44C-37C8-1E12-1661-E17337E11B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A12FA44C-37C8-1E12-1661-E17337E11B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A12FA44C-37C8-1E12-1661-E17337E11B04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26FFF5F5-F2F9-FADA-C21B-580E9060F903}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26FFF5F5-F2F9-FADA-C21B-580E9060F903}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26FFF5F5-F2F9-FADA-C21B-580E9060F903}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26FFF5F5-F2F9-FADA-C21B-580E9060F903}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{9DC5455D-4297-410C-9CFA-EEE709E198F0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{457FDD6A-B547-4A3C-9625-F49E4E2758D0} = {25D7E815-4015-4188-B7D4-F649553DFD16}
 		{A12FA44C-37C8-1E12-1661-E17337E11B04} = {21DEB042-5038-42D7-BE83-E72533B26C4E}
+		{26FFF5F5-F2F9-FADA-C21B-580E9060F903} = {21DEB042-5038-42D7-BE83-E72533B26C4E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BFC2D89-BBB2-4905-838D-159E4EECA59C}
