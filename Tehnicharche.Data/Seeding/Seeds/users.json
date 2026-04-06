@@ -31,6 +31,376 @@
     "password": "DevUser_4!",
     "roles": [ "User" ]
   },
+
+  {
+    "id": "00000000-0000-0000-0000-000000000005",
+    "userName": "varna.fixer",
+    "email": "varna5@example.com",
+    "phoneNumber": "+359888100005",
+    "password": "DevUser_5!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000006",
+    "userName": "sofia.tech",
+    "email": "sofia6@example.com",
+    "phoneNumber": "+359888100006",
+    "password": "DevUser_6!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000007",
+    "userName": "burgas.repair",
+    "email": "burgas7@example.com",
+    "phoneNumber": "+359888100007",
+    "password": "DevUser_7!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000008",
+    "userName": "dobrich.service",
+    "email": "dobrich8@example.com",
+    "phoneNumber": "+359888100008",
+    "password": "DevUser_8!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000009",
+    "userName": "ruse.fix",
+    "email": "ruse9@example.com",
+    "phoneNumber": "+359888100009",
+    "password": "DevUser_9!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000010",
+    "userName": "pleven.tech",
+    "email": "pleven10@example.com",
+    "phoneNumber": "+359888100010",
+    "password": "DevUser_10!",
+    "roles": [ "User" ]
+  },
+
+  {
+    "id": "00000000-0000-0000-0000-000000000011",
+    "userName": "montana.electric",
+    "email": "montana11@example.com",
+    "phoneNumber": "+359888100011",
+    "password": "DevUser_11!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000012",
+    "userName": "vidin.fix",
+    "email": "vidin12@example.com",
+    "phoneNumber": "+359888100012",
+    "password": "DevUser_12!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000013",
+    "userName": "vratsa.repairs",
+    "email": "vratsa13@example.com",
+    "phoneNumber": "+359888100013",
+    "password": "DevUser_13!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000014",
+    "userName": "lovech.tech",
+    "email": "lovech14@example.com",
+    "phoneNumber": "+359888100014",
+    "password": "DevUser_14!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000015",
+    "userName": "gabrovo.fix",
+    "email": "gabrovo15@example.com",
+    "phoneNumber": "+359888100015",
+    "password": "DevUser_15!",
+    "roles": [ "User" ]
+  },
+
+  {
+    "id": "00000000-0000-0000-0000-000000000016",
+    "userName": "sliven.service",
+    "email": "sliven16@example.com",
+    "phoneNumber": "+359888100016",
+    "password": "DevUser_16!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000017",
+    "userName": "yambol.tech",
+    "email": "yambol17@example.com",
+    "phoneNumber": "+359888100017",
+    "password": "DevUser_17!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000018",
+    "userName": "haskovo.fix",
+    "email": "haskovo18@example.com",
+    "phoneNumber": "+359888100018",
+    "password": "DevUser_18!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000019",
+    "userName": "kardzhali.repairs",
+    "email": "kardzhali19@example.com",
+    "phoneNumber": "+359888100019",
+    "password": "DevUser_19!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000020",
+    "userName": "smolyan.tech",
+    "email": "smolyan20@example.com",
+    "phoneNumber": "+359888100020",
+    "password": "DevUser_20!",
+    "roles": [ "User" ]
+  },
+
+  {
+    "id": "00000000-0000-0000-0000-000000000021",
+    "userName": "pernik.fix",
+    "email": "pernik21@example.com",
+    "phoneNumber": "+359888100021",
+    "password": "DevUser_21!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000022",
+    "userName": "kyustendil.service",
+    "email": "kyustendil22@example.com",
+    "phoneNumber": "+359888100022",
+    "password": "DevUser_22!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000023",
+    "userName": "blagoevgrad.tech",
+    "email": "blagoevgrad23@example.com",
+    "phoneNumber": "+359888100023",
+    "password": "DevUser_23!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000024",
+    "userName": "razgrad.fix",
+    "email": "razgrad24@example.com",
+    "phoneNumber": "+359888100024",
+    "password": "DevUser_24!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000025",
+    "userName": "silistra.repairs",
+    "email": "silistra25@example.com",
+    "phoneNumber": "+359888100025",
+    "password": "DevUser_25!",
+    "roles": [ "User" ]
+  },
+
+  {
+    "id": "00000000-0000-0000-0000-000000000026",
+    "userName": "targovishte.tech",
+    "email": "targovishte26@example.com",
+    "phoneNumber": "+359888100026",
+    "password": "DevUser_26!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000027",
+    "userName": "shumen.fix",
+    "email": "shumen27@example.com",
+    "phoneNumber": "+359888100027",
+    "password": "DevUser_27!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000028",
+    "userName": "veliko.tech",
+    "email": "veliko28@example.com",
+    "phoneNumber": "+359888100028",
+    "password": "DevUser_28!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000029",
+    "userName": "svishtov.fix",
+    "email": "svishtov29@example.com",
+    "phoneNumber": "+359888100029",
+    "password": "DevUser_29!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000030",
+    "userName": "kazanlak.repairs",
+    "email": "kazanlak30@example.com",
+    "phoneNumber": "+359888100030",
+    "password": "DevUser_30!",
+    "roles": [ "User" ]
+  },
+
+  {
+    "id": "00000000-0000-0000-0000-000000000031",
+    "userName": "samokov.tech",
+    "email": "samokov31@example.com",
+    "phoneNumber": "+359888100031",
+    "password": "DevUser_31!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000032",
+    "userName": "ihtiman.fix",
+    "email": "ihtiman32@example.com",
+    "phoneNumber": "+359888100032",
+    "password": "DevUser_32!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000033",
+    "userName": "karlovo.service",
+    "email": "karlovo33@example.com",
+    "phoneNumber": "+359888100033",
+    "password": "DevUser_33!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000034",
+    "userName": "troyan.tech",
+    "email": "troyan34@example.com",
+    "phoneNumber": "+359888100034",
+    "password": "DevUser_34!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000035",
+    "userName": "lom.fix",
+    "email": "lom35@example.com",
+    "phoneNumber": "+359888100035",
+    "password": "DevUser_35!",
+    "roles": [ "User" ]
+  },
+
+  {
+    "id": "00000000-0000-0000-0000-000000000036",
+    "userName": "devnya.repairs",
+    "email": "devnya36@example.com",
+    "phoneNumber": "+359888100036",
+    "password": "DevUser_36!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000037",
+    "userName": "nesebar.tech",
+    "email": "nesebar37@example.com",
+    "phoneNumber": "+359888100037",
+    "password": "DevUser_37!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000038",
+    "userName": "sozopol.fix",
+    "email": "sozopol38@example.com",
+    "phoneNumber": "+359888100038",
+    "password": "DevUser_38!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000039",
+    "userName": "balchik.service",
+    "email": "balchik39@example.com",
+    "phoneNumber": "+359888100039",
+    "password": "DevUser_39!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000040",
+    "userName": "kavarna.tech",
+    "email": "kavarna40@example.com",
+    "phoneNumber": "+359888100040",
+    "password": "DevUser_40!",
+    "roles": [ "User" ]
+  },
+
+  {
+    "id": "00000000-0000-0000-0000-000000000041",
+    "userName": "pomorie.fix",
+    "email": "pomorie41@example.com",
+    "phoneNumber": "+359888100041",
+    "password": "DevUser_41!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000042",
+    "userName": "petrich.repairs",
+    "email": "petrich42@example.com",
+    "phoneNumber": "+359888100042",
+    "password": "DevUser_42!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000043",
+    "userName": "sandanski.tech",
+    "email": "sandanski43@example.com",
+    "phoneNumber": "+359888100043",
+    "password": "DevUser_43!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000044",
+    "userName": "bansko.fix",
+    "email": "bansko44@example.com",
+    "phoneNumber": "+359888100044",
+    "password": "DevUser_44!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000045",
+    "userName": "dupnitsa.service",
+    "email": "dupnitsa45@example.com",
+    "phoneNumber": "+359888100045",
+    "password": "DevUser_45!",
+    "roles": [ "User" ]
+  },
+
+  {
+    "id": "00000000-0000-0000-0000-000000000046",
+    "userName": "radomir.tech",
+    "email": "radomir46@example.com",
+    "phoneNumber": "+359888100046",
+    "password": "DevUser_46!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000047",
+    "userName": "kostinbrod.fix",
+    "email": "kostinbrod47@example.com",
+    "phoneNumber": "+359888100047",
+    "password": "DevUser_47!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000048",
+    "userName": "pirdop.repairs",
+    "email": "pirdop48@example.com",
+    "phoneNumber": "+359888100048",
+    "password": "DevUser_48!",
+    "roles": [ "User" ]
+  },
+  {
+    "id": "00000000-0000-0000-0000-000000000049",
+    "userName": "elhovo.tech",
+    "email": "elhovo49@example.com",
+    "phoneNumber": "+359888100049",
+    "password": "DevUser_49!",
+    "roles": [ "User" ]
+  },
+
   {
     "id": "00000000-0000-0000-0000-000000000099",
     "userName": "admin",

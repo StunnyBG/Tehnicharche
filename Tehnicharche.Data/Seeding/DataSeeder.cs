@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 using Tehnicharche.Data.Models;
 using Tehnicharche.Data.Seeding.DTOs;
@@ -28,6 +29,8 @@ namespace Tehnicharche.Data.Seeding
             this.roleManager = roleManager;
         }
 
+        // If there is already data in the database, nothing will be seeded.
+        // During seeding, invalid DTOs are skipped (not inserted).
         public async Task SeedAsync()
         {
             await context.Database.MigrateAsync();
@@ -57,7 +60,19 @@ namespace Tehnicharche.Data.Seeding
             var json = await ReadSeedFileAsync("categories.json");
             var dtos = JsonSerializer.Deserialize<IEnumerable<CategoryDto>>(json)!;
 
-            var categories = dtos.Select(d => new Category { Id = d.Id, Name = d.Name });
+            var categories = new List<Category>();
+
+            foreach (var dto in dtos)
+            {
+                if (IsValid(dto))
+                {
+                    categories.Add(new Category()
+                    {
+                        Id = dto.Id,
+                        Name = dto.Name
+                    });
+                }
+            }
 
             await context.Database.OpenConnectionAsync();
             try
@@ -81,7 +96,19 @@ namespace Tehnicharche.Data.Seeding
             var json = await ReadSeedFileAsync("regions.json");
             var dtos = JsonSerializer.Deserialize<IEnumerable<RegionDto>>(json)!;
 
-            var regions = dtos.Select(d => new Region { Id = d.Id, Name = d.Name });
+            var regions = new List<Region>();
+
+            foreach (var dto in dtos)
+            {
+                if (IsValid(dto))
+                {
+                    regions.Add(new Region()
+                    {
+                        Id = dto.Id,
+                        Name = dto.Name
+                    });
+                }
+            }
 
             await context.Database.OpenConnectionAsync();
             try
@@ -105,12 +132,20 @@ namespace Tehnicharche.Data.Seeding
             var json = await ReadSeedFileAsync("cities.json");
             var dtos = JsonSerializer.Deserialize<IEnumerable<CityDto>>(json)!;
 
-            var cities = dtos.Select(d => new City
+            var cities = new List<City>();
+
+            foreach (var dto in dtos)
             {
-                Id = d.Id,
-                Name = d.Name,
-                RegionId = d.RegionId
-            });
+                if (IsValid(dto))
+                {
+                    cities.Add(new City
+                    {
+                        Id = dto.Id,
+                        Name = dto.Name,
+                        RegionId = dto.RegionId
+                    });
+                }
+            }
 
             await context.Database.OpenConnectionAsync();
             try
@@ -133,30 +168,33 @@ namespace Tehnicharche.Data.Seeding
 
             foreach (var dto in dtos)
             {
-                if (await userManager.FindByIdAsync(dto.Id) != null)
-                    continue;
-
-                var user = new ApplicationUser
+                if (IsValid(dto))
                 {
-                    Id = dto.Id,
-                    UserName = dto.UserName,
-                    Email = dto.Email,
-                    PhoneNumber = dto.PhoneNumber,
-                    EmailConfirmed = true,
-                    PhoneNumberConfirmed = true
-                };
+                    if (await userManager.FindByIdAsync(dto.Id.ToString()) != null)
+                        continue;
 
-                var result = await userManager.CreateAsync(user, dto.Password);
+                    var user = new ApplicationUser
+                    {
+                        Id = dto.Id.ToString(),
+                        UserName = dto.UserName,
+                        Email = dto.Email,
+                        PhoneNumber = dto.PhoneNumber,
+                        EmailConfirmed = true,
+                        PhoneNumberConfirmed = true
+                    };
 
-                if (!result.Succeeded)
-                    throw new InvalidOperationException(
-                        $"Failed to seed user '{dto.UserName}': " +
-                        string.Join(", ", result.Errors.Select(e => e.Description)));
+                    var result = await userManager.CreateAsync(user, dto.Password);
 
-                if (dto.Roles != null)
-                {
-                    foreach (var role in dto.Roles)
-                        await userManager.AddToRoleAsync(user, role);
+                    if (!result.Succeeded)
+                        throw new InvalidOperationException(
+                            $"Failed to seed user '{dto.UserName}': " +
+                            string.Join(", ", result.Errors.Select(e => e.Description)));
+
+                    if (dto.Roles != null)
+                    {
+                        foreach (var role in dto.Roles)
+                            await userManager.AddToRoleAsync(user, role);
+                    }
                 }
             }
         }
@@ -169,21 +207,29 @@ namespace Tehnicharche.Data.Seeding
             var json = await ReadSeedFileAsync("listings.json");
             var dtos = JsonSerializer.Deserialize<IEnumerable<ListingDto>>(json)!;
 
-            var listings = dtos.Select(d => new Listing
+            var listings = new List<Listing>();
+
+            foreach (var dto in dtos)
             {
-                Id = d.Id,
-                Title = d.Title,
-                Description = d.Description,
-                Price = d.Price,
-                CategoryId = d.CategoryId,
-                RegionId = d.RegionId,
-                CityId = d.CityId,
-                ImageUrl = d.ImageUrl,
-                CreatorId = d.CreatorId,
-                CreatedAt = d.CreatedAt,
-                UpdatedAt = d.CreatedAt,
-                IsDeleted = false
-            });
+                if (IsValid(dto))
+                {
+                    listings.Add(new Listing
+                    {
+                        Id = dto.Id,
+                        Title = dto.Title,
+                        Description = dto.Description,
+                        Price = dto.Price,
+                        CategoryId = dto.CategoryId,
+                        RegionId = dto.RegionId,
+                        CityId = dto.CityId,
+                        ImageUrl = dto.ImageUrl,
+                        CreatorId = dto.CreatorId.ToString(),
+                        CreatedAt = dto.CreatedAt,
+                        UpdatedAt = dto.CreatedAt,
+                        IsDeleted = false
+                    });
+                }
+            }
 
             await context.Database.OpenConnectionAsync();
             try
@@ -200,6 +246,14 @@ namespace Tehnicharche.Data.Seeding
         }
 
         // helpers
+        public static bool IsValid<T>(T dto)
+        {
+            if (dto == null)
+                return false;
+
+            var context = new ValidationContext(dto);
+            return Validator.TryValidateObject(dto, context, null, validateAllProperties: true);
+        }
 
         private static async Task<string> ReadSeedFileAsync(string fileName)
         {

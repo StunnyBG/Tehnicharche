@@ -34,5 +34,29 @@
   {
     "id": 9,
     "name": "3D Printing & Prototyping"
+  },
+  {
+    "id": 10,
+    "name": "Smart Home Installation"
+  },
+  {
+    "id": 11,
+    "name": "Networking & Internet Setup"
+  },
+  {
+    "id": 12,
+    "name": "Security Systems & CCTV"
+  },
+  {
+    "id": 13,
+    "name": "Battery Replacement & Power Systems"
+  },
+  {
+    "id": 14,
+    "name": "Drone Repair & Assembly"
+  },
+  {
+    "id": 15,
+    "name": "Automotive Electronics"
   }
 ]

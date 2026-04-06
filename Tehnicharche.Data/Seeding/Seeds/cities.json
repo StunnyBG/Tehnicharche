@@ -1,186 +1,351 @@
 [
   {
     "id": 1,
-    "name": "Blagoevgrad",
-    "regionId": 1
+    "name": "Aksakovo",
+    "regionId": 3
   },
   {
     "id": 2,
-    "name": "Bansko",
-    "regionId": 1
-  },
-  {
-    "id": 3,
-    "name": "Sandanski",
-    "regionId": 1
-  },
-  {
-    "id": 4,
-    "name": "Burgas",
-    "regionId": 2
-  },
-  {
-    "id": 5,
-    "name": "Nesebar",
-    "regionId": 2
-  },
-  {
-    "id": 6,
-    "name": "Sozopol",
-    "regionId": 2
-  },
-  {
-    "id": 7,
-    "name": "Varna",
-    "regionId": 3
-  },
-  {
-    "id": 8,
-    "name": "Provadiya",
-    "regionId": 3
-  },
-  {
-    "id": 9,
-    "name": "Veliko Tarnovo",
-    "regionId": 4
-  },
-  {
-    "id": 10,
-    "name": "Gorna Oryahovitsa",
-    "regionId": 4
-  },
-  {
-    "id": 11,
-    "name": "Vidin",
-    "regionId": 5
-  },
-  {
-    "id": 12,
-    "name": "Vratsa",
-    "regionId": 6
-  },
-  {
-    "id": 13,
-    "name": "Gabrovo",
-    "regionId": 7
-  },
-  {
-    "id": 14,
-    "name": "Dobrich",
-    "regionId": 8
-  },
-  {
-    "id": 15,
-    "name": "Balchik",
-    "regionId": 8
-  },
-  {
-    "id": 16,
-    "name": "Kardzhali",
-    "regionId": 9
-  },
-  {
-    "id": 17,
-    "name": "Kyustendil",
-    "regionId": 10
-  },
-  {
-    "id": 18,
-    "name": "Lovech",
-    "regionId": 11
-  },
-  {
-    "id": 19,
-    "name": "Montana",
-    "regionId": 12
-  },
-  {
-    "id": 20,
-    "name": "Pazardzhik",
-    "regionId": 13
-  },
-  {
-    "id": 21,
-    "name": "Pernik",
-    "regionId": 14
-  },
-  {
-    "id": 22,
-    "name": "Pleven",
-    "regionId": 15
-  },
-  {
-    "id": 23,
-    "name": "Plovdiv",
-    "regionId": 16
-  },
-  {
-    "id": 24,
     "name": "Asenovgrad",
     "regionId": 16
   },
   {
-    "id": 25,
-    "name": "Razgrad",
-    "regionId": 17
+    "id": 3,
+    "name": "Aytos",
+    "regionId": 2
   },
   {
-    "id": 26,
-    "name": "Ruse",
-    "regionId": 18
+    "id": 4,
+    "name": "Balchik",
+    "regionId": 8
   },
   {
-    "id": 27,
-    "name": "Shumen",
-    "regionId": 19
-  },
-  {
-    "id": 28,
-    "name": "Silistra",
-    "regionId": 20
-  },
-  {
-    "id": 29,
-    "name": "Sliven",
-    "regionId": 21
-  },
-  {
-    "id": 30,
-    "name": "Smolyan",
-    "regionId": 22
-  },
-  {
-    "id": 31,
-    "name": "Sofia",
+    "id": 5,
+    "name": "Bankya",
     "regionId": 23
   },
   {
-    "id": 32,
-    "name": "Kostinbrod",
-    "regionId": 24
+    "id": 6,
+    "name": "Bansko",
+    "regionId": 1
   },
   {
-    "id": 33,
-    "name": "Pirdop",
-    "regionId": 24
+    "id": 7,
+    "name": "Belogradchik",
+    "regionId": 5
   },
   {
-    "id": 34,
-    "name": "Stara Zagora",
-    "regionId": 25
+    "id": 8,
+    "name": "Blagoevgrad",
+    "regionId": 1
   },
   {
-    "id": 35,
-    "name": "Targovishte",
-    "regionId": 26
+    "id": 9,
+    "name": "Burgas",
+    "regionId": 2
   },
   {
-    "id": 36,
+    "id": 10,
+    "name": "Byala",
+    "regionId": 18
+  },
+  {
+    "id": 11,
+    "name": "Cherven Bryag",
+    "regionId": 15
+  },
+  {
+    "id": 12,
+    "name": "Devin",
+    "regionId": 22
+  },
+  {
+    "id": 13,
+    "name": "Devnya",
+    "regionId": 3
+  },
+  {
+    "id": 14,
+    "name": "Dimitrovgrad",
+    "regionId": 27
+  },
+  {
+    "id": 15,
+    "name": "Dobrich",
+    "regionId": 8
+  },
+  {
+    "id": 16,
+    "name": "Dupnitsa",
+    "regionId": 10
+  },
+  {
+    "id": 17,
+    "name": "Elhovo",
+    "regionId": 28
+  },
+  {
+    "id": 18,
+    "name": "Gabrovo",
+    "regionId": 7
+  },
+  {
+    "id": 19,
+    "name": "Gorna Oryahovitsa",
+    "regionId": 4
+  },
+  {
+    "id": 20,
+    "name": "Gotse Delchev",
+    "regionId": 1
+  },
+  {
+    "id": 21,
     "name": "Haskovo",
     "regionId": 27
   },
   {
+    "id": 22,
+    "name": "Ihtiman",
+    "regionId": 24
+  },
+  {
+    "id": 23,
+    "name": "Isperih",
+    "regionId": 17
+  },
+  {
+    "id": 24,
+    "name": "Kardzhali",
+    "regionId": 9
+  },
+  {
+    "id": 25,
+    "name": "Karlovo",
+    "regionId": 16
+  },
+  {
+    "id": 26,
+    "name": "Kavarna",
+    "regionId": 8
+  },
+  {
+    "id": 27,
+    "name": "Kazanlak",
+    "regionId": 25
+  },
+  {
+    "id": 28,
+    "name": "Kostinbrod",
+    "regionId": 24
+  },
+  {
+    "id": 29,
+    "name": "Kozloduy",
+    "regionId": 6
+  },
+  {
+    "id": 30,
+    "name": "Kyustendil",
+    "regionId": 10
+  },
+  {
+    "id": 31,
+    "name": "Lovech",
+    "regionId": 11
+  },
+  {
+    "id": 32,
+    "name": "Lom",
+    "regionId": 12
+  },
+  {
+    "id": 33,
+    "name": "Momchilgrad",
+    "regionId": 9
+  },
+  {
+    "id": 34,
+    "name": "Montana",
+    "regionId": 12
+  },
+  {
+    "id": 35,
+    "name": "Nesebar",
+    "regionId": 2
+  },
+  {
+    "id": 36,
+    "name": "Nova Zagora",
+    "regionId": 21
+  },
+  {
     "id": 37,
+    "name": "Novi Pazar",
+    "regionId": 19
+  },
+  {
+    "id": 38,
+    "name": "Pavlikeni",
+    "regionId": 4
+  },
+  {
+    "id": 39,
+    "name": "Pazardzhik",
+    "regionId": 13
+  },
+  {
+    "id": 40,
+    "name": "Pernik",
+    "regionId": 14
+  },
+  {
+    "id": 41,
+    "name": "Petrich",
+    "regionId": 1
+  },
+  {
+    "id": 42,
+    "name": "Pirdop",
+    "regionId": 24
+  },
+  {
+    "id": 43,
+    "name": "Pleven",
+    "regionId": 15
+  },
+  {
+    "id": 44,
+    "name": "Plovdiv",
+    "regionId": 16
+  },
+  {
+    "id": 45,
+    "name": "Pomorie",
+    "regionId": 2
+  },
+  {
+    "id": 46,
+    "name": "Popovo",
+    "regionId": 26
+  },
+  {
+    "id": 47,
+    "name": "Provadiya",
+    "regionId": 3
+  },
+  {
+    "id": 48,
+    "name": "Radomir",
+    "regionId": 14
+  },
+  {
+    "id": 49,
+    "name": "Razgrad",
+    "regionId": 17
+  },
+  {
+    "id": 50,
+    "name": "Ruse",
+    "regionId": 18
+  },
+  {
+    "id": 51,
+    "name": "Samokov",
+    "regionId": 24
+  },
+  {
+    "id": 52,
+    "name": "Sandanski",
+    "regionId": 1
+  },
+  {
+    "id": 53,
+    "name": "Sevlievo",
+    "regionId": 7
+  },
+  {
+    "id": 54,
+    "name": "Shumen",
+    "regionId": 19
+  },
+  {
+    "id": 55,
+    "name": "Silistra",
+    "regionId": 20
+  },
+  {
+    "id": 56,
+    "name": "Sliven",
+    "regionId": 21
+  },
+  {
+    "id": 57,
+    "name": "Smolyan",
+    "regionId": 22
+  },
+  {
+    "id": 58,
+    "name": "Sozopol",
+    "regionId": 2
+  },
+  {
+    "id": 59,
+    "name": "Sofia",
+    "regionId": 23
+  },
+  {
+    "id": 60,
+    "name": "Stara Zagora",
+    "regionId": 25
+  },
+  {
+    "id": 61,
+    "name": "Svishtov",
+    "regionId": 4
+  },
+  {
+    "id": 62,
+    "name": "Targovishte",
+    "regionId": 26
+  },
+  {
+    "id": 63,
+    "name": "Troyan",
+    "regionId": 11
+  },
+  {
+    "id": 64,
+    "name": "Tutrakan",
+    "regionId": 20
+  },
+  {
+    "id": 65,
+    "name": "Varna",
+    "regionId": 3
+  },
+  {
+    "id": 66,
+    "name": "Veliko Tarnovo",
+    "regionId": 4
+  },
+  {
+    "id": 67,
+    "name": "Velingrad",
+    "regionId": 13
+  },
+  {
+    "id": 68,
+    "name": "Vidin",
+    "regionId": 5
+  },
+  {
+    "id": 69,
+    "name": "Vratsa",
+    "regionId": 6
+  },
+  {
+    "id": 70,
     "name": "Yambol",
     "regionId": 28
   }
