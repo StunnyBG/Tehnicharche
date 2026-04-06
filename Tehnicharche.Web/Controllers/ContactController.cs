@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using Tehnicharche.Services.Core.Interfaces;
 using Tehnicharche.ViewModels;
 
@@ -21,6 +22,7 @@ namespace Tehnicharche.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [EnableRateLimiting("contact")]
         public async Task<IActionResult> Index(ContactFormViewModel model)
         {
             if (!ModelState.IsValid)

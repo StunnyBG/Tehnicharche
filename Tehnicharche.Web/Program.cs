@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Tehnicharche.Data;
 using Tehnicharche.Data.Models;
@@ -82,6 +83,19 @@ namespace Tehnicharche.Web
                 };
             });
 
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddFixedWindowLimiter("contact", limiter =>
+                {
+                    limiter.Window = TimeSpan.FromMinutes(5);
+                    limiter.PermitLimit = 3;
+                    limiter.QueueLimit = 0;
+                    limiter.AutoReplenishment = true;
+                });
+
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+            });
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -107,6 +121,7 @@ namespace Tehnicharche.Web
             app.UseAuthentication();
             app.UseMiddleware<BanMiddleware>();
             app.UseAuthorization();
+            app.UseRateLimiter();
 
             app.MapControllerRoute(
                 name: "areas",
