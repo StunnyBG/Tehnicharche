@@ -18,12 +18,11 @@
 
         <div class="row-card-actions">
             <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-success btn-sm">View</a>
-            <form asp-controller="Listings" asp-action="ToggleSave" method="post" style="display:inline;">
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="listingId" value="@Model.Id" />
-                <input type="hidden" name="returnUrl" value="/Listings/SavedListings" />
-                <button type="submit" class="btn btn-outline-warning btn-sm">Unsave</button>
-            </form>
+            <button type="button"
+                    class="btn btn-outline-warning btn-sm js-unsave"
+                    data-listing-id="@Model.Id">
+                Unsave
+            </button>
         </div>
     </div>
 </div>

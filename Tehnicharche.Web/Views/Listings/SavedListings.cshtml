@@ -106,4 +106,32 @@
 
 @section Scripts {
 	<script src="~/js/pagination.js"></script>
+	<script>
+		document.addEventListener('click', function (e) {
+			const btn = e.target.closest('.js-unsave');
+			if (!btn) return;
+
+			const listingId = btn.getAttribute('data-listing-id');
+			const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+			const form = document.createElement('form');
+			form.method = 'post';
+			form.action = '/Listings/ToggleSave';
+
+			const addField = (name, value) => {
+				const input = document.createElement('input');
+				input.type = 'hidden';
+				input.name = name;
+				input.value = value;
+				form.appendChild(input);
+			};
+
+			addField('__RequestVerificationToken', token);
+			addField('listingId', listingId);
+			addField('returnUrl', '/Listings/SavedListings');
+
+			document.body.appendChild(form);
+			form.submit();
+		});
+	</script>
 }
