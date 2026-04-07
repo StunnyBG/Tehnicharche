@@ -17,9 +17,23 @@ Tehnicharche is a free, open marketplace where skilled individuals can list prac
 
 ## Screenshots
 
-| Public Listings | Listing Detail | Admin Dashboard |
-|---|---|---|
-| Filter by category, region, city, and price range | Full contact details and save/unsave | Stats, recent listings, and messages |
+<h3 align="center">Public Listings</h3>
+<p align="center"><em>Filter by category, region, city, and price range</em></p>
+<p align="center">
+<img width="85%" alt="image" src="https://github.com/user-attachments/assets/1312b4e8-1c4f-432c-ad58-0aea4eca77c0" />
+</p>
+
+<h3 align="center">Listing Detail</h3>
+<p align="center"><em>Full contact details and save/unsave</em></p>
+<p align="center">
+<img width="85%" alt="image" src="https://github.com/user-attachments/assets/60d33341-ed06-4714-b4b1-a254b934ec90" />
+</p>
+
+<h3 align="center">Admin Dashboard</h3>
+<p align="center"><em>Stats, recent listings, and messages</em></p>
+<p align="center">
+  <img width="85%" alt="image" src="https://github.com/user-attachments/assets/17dd9322-f855-47ad-97d0-3d13964105e1" />
+</p>
 
 ---
 
