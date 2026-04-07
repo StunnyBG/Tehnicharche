@@ -184,7 +184,7 @@ public class AdminListingServiceTests
     [Test]
     public void HardDeleteAsync_NotFound_Throws()
     {
-        repo.Setup(r => r.GetByIdTrackedAsync(99)).ReturnsAsync((Listing?)null);
+        repo.Setup(r => r.GetByIdDeletedAsync(99)).ReturnsAsync((Listing?)null);
 
         Assert.ThrowsAsync<InvalidOperationException>(() => sut.HardDeleteAsync(99));
     }

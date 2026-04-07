@@ -57,7 +57,7 @@ namespace Tehnicharche.Data.Repositories
             int totalCount = await query.CountAsync();
 
             var items = await query
-                .OrderBy(l => l.UpdatedAt)
+                .OrderByDescending(l => l.UpdatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -91,7 +91,7 @@ namespace Tehnicharche.Data.Repositories
             int totalCount = await query.CountAsync();
 
             var items = await query
-                .OrderBy(l => l.UpdatedAt)
+                .OrderByDescending(l => l.UpdatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
