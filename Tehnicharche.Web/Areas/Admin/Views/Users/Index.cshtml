@@ -1,3 +1,4 @@
+@using static Tehnicharche.GCommon.ApplicationConstants
 @model Tehnicharche.ViewModels.Admin.AdminUsersViewModel
 @{
     ViewData["Title"] = "Users";
@@ -76,7 +77,7 @@
             <tbody>
                 @foreach (var u in Model.Users)
                 {
-                    var isAdmin = u.Roles.Contains("Admin");
+                    var isAdmin = u.Roles.Contains(AdminRole);
                     <tr style="@(u.IsBanned ? "opacity:.6;" : "")">
                         <td>
                             <div style="display:flex; align-items:center; gap:10px;">
@@ -105,7 +106,7 @@
                             <div style="display:flex; gap:4px; flex-wrap:wrap;">
                                 @foreach (var role in u.Roles)
                                 {
-                                    <span class="@(role == "Admin" ? "badge-del" : "badge-ok")">@role</span>
+                                    <span class="@(role == AdminRole ? "badge-del" : "badge-ok")">@role</span>
                                 }
                                 @if (!u.Roles.Any())
                                 {
